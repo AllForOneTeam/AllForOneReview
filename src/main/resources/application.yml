@@ -1,17 +1,17 @@
 spring:
   profiles:
-    active: dev  # ?????? application-dev.yml ? ????? ??
-    include: secret # active ?? ???? (application-dev.yml) ??? application-secret.yml ? ????? ??
+    active: dev  # 기본적으로는 application-dev.yml 이 로딩된다는 의미
+    include: secret # active 되는 설정파일 (application-dev.yml) 다음에 application-secret.yml 이 로딩된다는 의미
   jpa:
     properties:
       hibernate:
-        default_batch_fetch_size: 100 # Lazy ??? ? ? ??? DB?? ???? ???? ?
-        show_sql: true # SQL ??? ?? ?? ???
-        format_sql: true # SQL ??? ?????
-        use_sql_comments: true # SQL ??? ???
+        default_batch_fetch_size: 100 # Lazy 로딩이 될 때 한번에 DB에서 가져오는 데이터의 수
+        show_sql: true # SQL 로그를 보기 좋게 포맷팅
+        format_sql: true # SQL 로그에 하이라이트
+        use_sql_comments: true # SQL 로그에 코멘트
   logging:
     level:
-      # SQL? ??? ?? ????, SQL? ??? ??
+      # SQL에 사용된 실제 파라미터, SQL의 결과도 출력
       org.hibernate.SQL: DEBUG
       org.hibernate.orm.jdbc.bind: TRACE
       org.hibernate.orm.jdbc.extract: TRACE
