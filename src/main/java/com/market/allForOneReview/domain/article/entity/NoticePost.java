@@ -1,6 +1,7 @@
 package com.market.allForOneReview.domain.article.entity;
 
 import com.market.allForOneReview.domain.member.entity.SiteUser;
+import com.market.allForOneReview.global.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -15,15 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class NoticePost {
+public class NoticePost extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column
     private String subject;
+    @Column(columnDefinition = "TEXT")
     private String content;
-    private LocalDateTime createDate;
-    private LocalDateTime modifyDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @EqualsAndHashCode.Exclude

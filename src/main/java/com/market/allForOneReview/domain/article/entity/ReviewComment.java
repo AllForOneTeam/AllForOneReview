@@ -1,6 +1,7 @@
 package com.market.allForOneReview.domain.article.entity;
 
 import com.market.allForOneReview.domain.member.entity.SiteUser;
+import com.market.allForOneReview.global.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,20 +19,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
-public class ReviewComment {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class ReviewComment extends BaseEntity {
 
     @Column(length=5000, nullable = false)
     private String content;
-
-    @Column(nullable = false)
-    private LocalDateTime createdDate;
-
-    @Column
-    private LocalDateTime modifiedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private SiteUser siteUser;
