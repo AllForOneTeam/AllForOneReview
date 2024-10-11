@@ -46,6 +46,10 @@ public class ReviewPost extends BaseEntity {
     @Column
     private int views;
 
+    @ElementCollection
+    private List<String> tags; // 태그를 리스트로 저장
+
+
     @Column
     private int vote;
 }
