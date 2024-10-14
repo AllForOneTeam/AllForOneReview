@@ -14,11 +14,10 @@ import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-
-
 public class ReviewPost extends BaseEntity {
 
     @Column(length = 100)
