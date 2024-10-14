@@ -22,13 +22,13 @@ import java.util.List;
 public class ReviewPost extends BaseEntity {
 
     @Column(length = 100)
-    private String subject;
+    private String title;
+
+    @Column(columnDefinition = "TEXT")
+    private String contentStory;
 
     @Column(columnDefinition = "TEXT")
     private String content;
-
-    @Column(columnDefinition = "TEXT")
-    private String contentDetail;
 
     @ManyToOne(targetEntity = SiteUser.class, fetch = FetchType.LAZY)
     private SiteUser user;
@@ -48,7 +48,6 @@ public class ReviewPost extends BaseEntity {
 
     @ElementCollection
     private List<String> tags; // 태그를 리스트로 저장
-
 
     @Column
     private int vote;
