@@ -19,7 +19,7 @@ import java.util.List;
 public class NoticePost extends BaseEntity {
 
     @Column
-    private String subject;
+    private String title;
     @Column(columnDefinition = "TEXT")
     private String content;
 
