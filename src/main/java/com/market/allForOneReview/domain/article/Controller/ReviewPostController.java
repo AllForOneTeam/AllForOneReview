@@ -19,10 +19,21 @@ import java.time.LocalDateTime;
 public class ReviewPostController {
     private final ReviewPostService reviewPostService;
 
+    @GetMapping("/sub")
+    public String sub() {
+        return "sub";
+    }
+
+    @GetMapping("/detail")
+    public String detail() {
+        return "sub_detail";
+    }
+
     @GetMapping("/create")
     public String create(ReviewPostForm reviewPostForm){
         return "create";
     }
+
     @PostMapping("/create")
     public String createReviewPost(@Valid ReviewPostForm reviewPostForm, BindingResult bindingResult) {
         if( bindingResult.hasErrors()){

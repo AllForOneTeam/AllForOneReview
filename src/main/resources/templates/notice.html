@@ -1,0 +1,190 @@
+<html layout:decorate="~{layout}">
+<head>
+  <link rel="stylesheet" th:href="@{/css/pages/notice.css}">
+</head>
+<div layout:fragment="content">
+  <!-- 경로 -->
+  <div class="navArea">
+    <a href="main.html">Home</a>
+    <span>|</span>
+    <a href="notice.html">Notices</a>
+    <span>|</span>
+    <span id="nav-tabTitle">Notice</span>
+  </div>
+
+  <!-- 주요 내용 -->
+  <div class="N-contentArea">
+    <div class="container mt-5">
+      <div class="N-titleBox">
+        <h3 id="tabTitle">Notice</h3>
+
+        <!-- 탭 메뉴 -->
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="tab1-tab" data-bs-toggle="tab" data-bs-target="#tab1" type="button"
+              role="tab" aria-controls="tab1" aria-selected="true">Notice</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="tab2-tab" data-bs-toggle="tab" data-bs-target="#tab2" type="button" role="tab"
+              aria-controls="tab2" aria-selected="false">FAQ</button>
+          </li>
+        </ul>
+
+      </div>
+
+      <div class="N-searchBox">
+
+        <p>전체 <strong>251</strong>(1/210)</p>
+
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="검색어 입력" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit"><img src="img/svg/ic_round-search.svg"
+              alt="icon"></button>
+        </form>
+      </div>
+
+      <!-- 탭 콘텐츠 -->
+      <div class="tab-content" id="myTabContent">
+        <!-- Tab 1 콘텐츠 -->
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+          <table class="table table-bordered">
+            <tbody>
+              <tr class="clickable-row" data-href="notice_detail.html?id=1">
+                <td>1</td>
+                <td> <a th:href="@{/notice/detail}">첫 번째 공지사항 제목</a>
+                   <br>
+                  <small class="text-muted">2024-10-11 | 관리자</small>
+                </td>
+                <td>
+                  <i class="bi bi-eye"></i> 120
+                </td>
+              </tr>
+              <tr class="clickable-row" data-href="notice-detail.html?id=2">
+                <td>2</td>
+                <td>
+                  두 번째 공지사항 제목 <br>
+                  <small class="text-muted">2024-10-11 | 관리자</small>
+                </td>
+                <td>
+                  <i class="bi bi-eye"></i> 95
+                </td>
+              </tr>
+              <tr class="clickable-row" data-href="notice-detail.html?id=3">
+                <td>3</td>
+                <td>
+                  세 번째 공지사항 제목 <br>
+                  <small class="text-muted">2024-10-10 | 관리자</small>
+                </td>
+                <td>
+                  <i class="bi bi-eye"></i> 150
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Tab 2 콘텐츠 -->
+        <div class="tab-pane fade" id="tab2" role="tabpanel" aria-labelledby="tab2-tab">
+          <table class="table table-bordered">
+            <tbody>
+              <tr class="clickable-row" data-href="notice-detail.html?id=1">
+                <td>1</td>
+                <td>
+                  첫 번째 FAQ 제목 <br>
+                  <small class="text-muted">2024-10-11 | 관리자</small>
+                </td>
+                <td>
+                  <i class="bi bi-eye"></i> 120
+                </td>
+              </tr>
+              <tr class="clickable-row" data-href="notice-detail.html?id=2">
+                <td>2</td>
+                <td>
+                  두 번째 FAQ 제목 <br>
+                  <small class="text-muted">2024-10-11 | 관리자</small>
+                </td>
+                <td>
+                  <i class="bi bi-eye"></i> 95
+                </td>
+              </tr>
+              <tr class="clickable-row" data-href="notice-detail.html?id=3">
+                <td>3</td>
+                <td>
+                  세 번째 FAQ 제목 <br>
+                  <small class="text-muted">2024-10-10 | 관리자</small>
+                </td>
+                <td>
+                  <i class="bi bi-eye"></i> 150
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+  <div class="page-bar">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item disabled">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">4</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item"><a class="page-link" href="#">6</a></li>
+        <li class="page-item"><a class="page-link" href="#">7</a></li>
+        <li class="page-item"><a class="page-link" href="#">8</a></li>
+        <li class="page-item"><a class="page-link" href="#">9</a></li>
+        <li class="page-item"><a class="page-link" href="#">10</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+</html>
+
+  <script>
+    // 탭이 변경될 때 h3 텍스트를 변경하는 함수
+    const tabTitle = document.getElementById('tabTitle'); // h3 요소
+
+    // 부트스트랩 탭 전환 이벤트 감지
+    const tabs = document.querySelectorAll('[data-bs-toggle="tab"]');
+    tabs.forEach(tab => {
+      tab.addEventListener('shown.bs.tab', function (event) {
+        // 현재 활성화된 탭의 텍스트로 h3의 텍스트를 변경
+        tabTitle.textContent = event.target.textContent;
+      });
+    });
+  </script>
+    <script>
+      // 탭이 변경될 때 h3 텍스트를 변경하는 함수
+      const navTabTitle = document.getElementById('nav-tabTitle'); // h3 요소
+  
+      // 부트스트랩 탭 전환 이벤트 감지
+      const navTabs = document.querySelectorAll('[data-bs-toggle="tab"]');
+      navTabs.forEach(tab => {
+        tab.addEventListener('shown.bs.tab', function (event) {
+          // 현재 활성화된 탭의 텍스트로 h3의 텍스트를 변경
+          navTabTitle.textContent = event.target.textContent;
+        });
+      });
+    </script>
+    <script>
+      // 테이블의 각 행을 클릭하면 해당 페이지로 이동하는 기능 추가
+      document.querySelectorAll('.clickable-row').forEach(function(row) {
+          row.addEventListener('click', function() {
+              window.location.href = row.dataset.href;
+          });
+      });
+  </script>

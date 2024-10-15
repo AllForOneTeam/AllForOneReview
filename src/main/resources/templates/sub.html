@@ -1,0 +1,315 @@
+<html layout:decorate="~{layout}">
+<head>
+  <link rel="stylesheet" th:href="@{/css/pages/sub.css}">
+</head>
+<div layout:fragment="content">
+
+  <!-- 경로 -->
+  <div class="navArea">
+    <a th:href="@{/}">Home</a>
+    <span>|</span>
+    <a th:href="@{/review/sub}" >Content</a>
+    <span>|</span>
+    <span>DRAMA</span>
+  </div>
+
+    <!-- 타이틀 이미지 -->
+    <section class="container-fluid text-center banner"></section>
+
+    <!-- 주요 내용 -->
+    <div class="sub-contentArea">
+      <section class="subArea">
+        <div class="container mt-5">
+          <!-- 탭 목록 -->
+          <div class="tabBox">
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+              <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#romance" type="button"
+                  role="tab" aria-controls="romance" aria-selected="true">로맨스</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#action" type="button"
+                  role="tab" aria-controls="action" aria-selected="false">액션</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#sf" type="button"
+                  role="tab" aria-controls="sf" aria-selected="false">SF</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#thriller" type="button"
+                  role="tab" aria-controls="thriller" aria-selected="false">스릴러</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#horror" type="button"
+                  role="tab" aria-controls="horror" aria-selected="false">공포</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#family" type="button"
+                  role="tab" aria-controls="family" aria-selected="false">가족</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#all" type="button"
+                  role="tab" aria-controls="all" aria-selected="false">기타</button>
+              </li>
+            </ul>
+
+            <p>전체 <strong>251</strong>(1/210)</p>
+
+          </div>
+
+          <!-- 탭 내용 -->
+          <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="romance" role="tabpanel" aria-labelledby="romance-tab">
+              <div class="sub-tab_contentBox">
+                <div class="sub-contentList_itemBox">
+                  <img th:src="@{/img/png/ex-img.png}" alt="img">
+                  <div class="sub-contentList_textBox">
+                    <img th:src="@{/img/svg/token-branded_lovely.svg}" alt="svg">
+                    <div class="sub-contentList_text">
+                      <p>nickname-Admin01</p>
+                      <p><strong><a th:href="@{/review/detail}">Title</a></strong> <span>|</span> Content Story</p>
+                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
+                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
+                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
+                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
+                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
+                      <div class="sub-content_hashtagBox">
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sub-contentList_timeBox">
+                    <span>2024.10.10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="action" role="tabpanel" aria-labelledby="action-tab">
+
+              <div class="sub-tab_contentBox">
+                <div class="sub-contentList_itemBox">
+                  <img th:src="@{/img/png/ex-img.png}" alt="img">
+                  <div class="sub-contentList_textBox">
+                    <img th:src="@{/img/svg/game-icons_extraction-orb.svg}"  alt="svg">
+                    <div class="sub-contentList_text">
+                      <p>nickname-Admin01</p>
+                      <p><strong>Title</strong> <span>|</span> Content Story</p>
+                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
+                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
+                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
+                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
+                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
+                      <div class="sub-content_hashtagBox">
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sub-contentList_timeBox">
+                    <span>2024.10.10</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="tab-pane fade" id="sf" role="tabpanel" aria-labelledby="sf-tab">
+
+              <div class="sub-tab_contentBox">
+                <div class="sub-contentList_itemBox">
+                  <img th:src="@{/img/png/ex-img.png}" alt="img">
+                  <div class="sub-contentList_textBox">
+                    <img th:src="@{/img/svg/simple-icons_sfml.svg}" alt="svg">
+                    <div class="sub-contentList_text">
+                      <p>nickname-Admin01</p>
+                      <p><strong>Title</strong> <span>|</span> Content Story</p>
+                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
+                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
+                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
+                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
+                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
+                      <div class="sub-content_hashtagBox">
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sub-contentList_timeBox">
+                    <span>2024.10.10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="thriller" role="tabpanel" aria-labelledby="thriller-tab">
+
+              <div class="sub-tab_contentBox">
+                <div class="sub-contentList_itemBox" >
+                  <img th:src="@{/img/png/ex-img.png}" alt="img">
+                  <div class="sub-contentList_textBox">
+                    <img th:src="@{/img/svg/covid_covid19-virus-warning-3.svg}" alt="svg">
+                    <div class="sub-contentList_text">
+                      <p>nickname-Admin01</p>
+                      <p><strong>Title</strong> <span>|</span> Content Story</p>
+                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
+                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
+                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
+                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
+                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
+                      <div class="sub-content_hashtagBox">
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sub-contentList_timeBox">
+                    <span>2024.10.10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="horror" role="tabpanel" aria-labelledby="horror-tab">
+
+              <div class="sub-tab_contentBox">
+                <div class="sub-contentList_itemBox">
+                  <img th:src="@{/img/png/ex-img.png}" alt="img">
+                  <div class="sub-contentList_textBox">
+                    <img th:src="@{/img/svg/mynaui_funny-ghost.svg}" alt="svg">
+                    <div class="sub-contentList_text">
+                      <p>nickname-Admin01</p>
+                      <p><strong>Title</strong> <span>|</span> Content Story</p>
+                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
+                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
+                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
+                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
+                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
+                      <div class="sub-content_hashtagBox">
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sub-contentList_timeBox">
+                    <span>2024.10.10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="family" role="tabpanel" aria-labelledby="family-tab">
+
+              <div class="sub-tab_contentBox">
+                <div class="sub-contentList_itemBox">
+                  <img th:src="@{/img/png/ex-img.png}" alt="img">
+                  <div class="sub-contentList_textBox">
+                    <img th:src="@{/img/svg/material-symbols_family-star.svg}" alt="svg">
+                    <div class="sub-contentList_text">
+                      <p>nickname-Admin01</p>
+                      <p><strong>Title</strong> <span>|</span> Content Story</p>
+                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
+                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
+                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
+                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
+                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
+                      <div class="sub-content_hashtagBox">
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sub-contentList_timeBox">
+                    <span>2024.10.10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+
+              <div class="sub-tab_contentBox">
+                <div class="sub-contentList_itemBox">
+                  <img th:src="@{/img/png/ex-img.png}" alt="img">
+                  <div class="sub-contentList_textBox">
+                    <img th:src="@{/img/svg/tabler_xbox-a-filled.svg}" alt="svg">
+                    <div class="sub-contentList_text">
+                      <p>nickname-Admin01</p>
+                      <p><strong>Title</strong> <span>|</span> Content Story</p>
+                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
+                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
+                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
+                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
+                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
+                      <div class="sub-content_hashtagBox">
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="sub-contentList_timeBox">
+                    <span>2024.10.10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="sub-createBTN">
+            <a class="a-btn btn btn-primary " th:href="@{/review/create}">글 등록</a>
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+    <div class="page-bar">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item"><a class="page-link" href="#">4</a></li>
+          <li class="page-item"><a class="page-link" href="#">5</a></li>
+          <li class="page-item"><a class="page-link" href="#">6</a></li>
+          <li class="page-item"><a class="page-link" href="#">7</a></li>
+          <li class="page-item"><a class="page-link" href="#">8</a></li>
+          <li class="page-item"><a class="page-link" href="#">9</a></li>
+          <li class="page-item"><a class="page-link" href="#">10</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+</div>
+</html>

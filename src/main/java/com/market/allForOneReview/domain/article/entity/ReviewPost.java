@@ -1,6 +1,6 @@
 package com.market.allForOneReview.domain.article.entity;
 
-import com.market.allForOneReview.domain.member.entity.SiteUser;
+import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.global.jpa.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

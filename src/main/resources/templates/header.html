@@ -1,0 +1,49 @@
+<header th:fragment="headerFragment">
+
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:href="@{/}">
+                    <img  th:src="@{/img/svg/logo.svg}" alt="icon">
+                    All For One
+                </a>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link active" aria-current="page" href="#">Content</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item"  th:href="@{/review/sub}">드라마</a></li>
+                                <li><a class="dropdown-item" href="#">영화</a></li>
+                                <li><a class="dropdown-item" href="#">소설</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#">Products</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">의류</a></li>
+                                <li><a class="dropdown-item" href="#">가전제품</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" href="#">Location/Culture</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">맛집</a></li>
+                                <li><a class="dropdown-item" href="#">놀거리</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link" th:href="@{/notice}">Notices</a>
+                            <ul class="dropdown-menu dropdown-menu-last">
+                                <li></li>
+                                <li></li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <a class="navbar-brand" th:href="@{/login}">
+                        <img th:src="@{/img/svg/login-icon.svg}" alt="icon">
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+</header>>
