@@ -1,0 +1,33 @@
+<html layout:decorate="~{layout}">
+<head>
+  <link rel="stylesheet" th:href="@{/css/pages/login.css}">
+</head>
+<div layout:fragment="content">
+  <!-- 주요 내용 -->
+  <div class="loginBox">
+
+    <h1>Login</h1>
+
+    <form>
+      <div class="input-group flex-nowrap">
+        <span class="input-group-text" id="addon-wrapping">ID</span>
+        <input type="text" class="form-control" placeholder="ID" aria-label="Username"
+          aria-describedby="addon-wrapping">
+      </div>
+      <div class="input-group flex-nowrap">
+        <span class="input-group-text" id="addon-wrapping">Password</span>
+        <input type="text" class="form-control" placeholder="Password" aria-label="Username"
+          aria-describedby="addon-wrapping">
+      </div>
+      <div>
+        <a href="#">아이디 찾기</a>
+        <span>/</span>
+        <a href="#">비밀번호 재설정</a>
+        <span>/</span>
+        <a th:href="@{/membership}" >회원가입</a>
+      </div>
+      <a class="a-btn btn btn-primary btn-login" th:href="@{/}" style="margin:auto !important;;">Login</a>
+    </form>
+  </div>
+</div>
+</html>

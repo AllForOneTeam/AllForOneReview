@@ -1,4 +1,4 @@
-package com.market.allForOneReview.domain.member.entity;
+package com.market.allForOneReview.domain.user.entity;
 
 import com.market.allForOneReview.domain.article.entity.NoticePost;
 import com.market.allForOneReview.domain.article.entity.ReviewPost;

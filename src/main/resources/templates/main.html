@@ -1,0 +1,130 @@
+<html layout:decorate="~{layout}">
+<head>
+  <link rel="stylesheet" th:href="@{/css/pages/main.css}">
+</head>
+<div layout:fragment="content">
+  <!-- 주요 내용 -->
+  <div class="mainArea">
+    <div class="main-searchArea">
+      <div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username"
+            aria-describedby="button-addon2">
+          <button class="btn" type="button" id="button-addon2">
+            <img src="img/svg/ic-search.svg" alt="icon">
+          </button>
+        </div>
+        <div class="main-hashtagBox">
+          <div class="textDiv"># 실시간검색01</div>
+          <div class="textDiv"># 글자는 ...처리</div>
+          <div class="textDiv"># 갯수를 고정으로 하는게 나을까요?</div>
+          <div class="textDiv"># 계속 늘어나면 width가 너무 작아보일수도</div>
+          <div class="textDiv"># 실시간검색</div>
+          <div class="textDiv"># 실시간검색</div>
+          <div class="textDiv"># 실시간검색</div>
+        </div>
+      </div>
+    </div>
+    <div class="main-bestArea">
+      <p>주간 인기리뷰</p>
+
+      <div class="main-cardBox">
+        <div class="card" style="width: 22rem;">
+          <img src="img/png/image.png" class="card-img-top" alt="Product-image">
+          <div class="card-body">
+            <h5 class="card-title">Product title</h5>
+            <p class="card-text">작성자</p>
+            <p class="card-text">💛💛💛💛💛</p>
+            <p class="card-text card-text-last">2024-10-06</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+
+        <div class="card" style="width: 22rem;">
+          <img src="img/png/image.png" class="card-img-top" alt="Product-image">
+          <div class="card-body">
+            <h5 class="card-title">Product title</h5>
+            <p class="card-text">작성자</p>
+            <p class="card-text">💛💛💛💛💛</p>
+            <p class="card-text card-text-last">2024-10-06</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+
+        <div class="card" style="width: 22rem;">
+          <img src="img/png/image.png" class="card-img-top" alt="Product-image">
+          <div class="card-body">
+            <h5 class="card-title">Product title</h5>
+            <p class="card-text">작성자</p>
+            <p class="card-text">💛💛💛💛💛</p>
+            <p class="card-text card-text-last">2024-10-06</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="main-optionArea">
+      <div class="main-optionBox">
+        <img src="img/svg/content.svg" alt="content-image">
+
+        <div class="drop-option">
+          <div class="drop-option_value">
+            <div class="drop-option-toggle">Content</div>
+            <img src="img/svg/range_down.svg" alt="range down icon" id="drop-option_icon" />
+          </div>
+
+          <div class="drop-option-menu">
+            <div class="drop-option-item" data-value="Content"><span>Content</span></div>
+            <div class="drop-option-item" data-value="Product"><span>Product</span></div>
+            <div class="drop-option-item" data-value="Location/Culture"><span>Location/Culture</span></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="main-cardBox">
+        <button type="button" class="btn btn-outline-light">
+          <img src="img/svg/ic_twotone-play-arrow-1.svg" alt="icon">
+        </button>
+
+        <div class="card" style="width: 22rem;">
+          <img src="img/png/image.png" class="card-img-top" alt="Product-image">
+          <div class="card-body">
+            <h5 class="card-title">Product title</h5>
+            <p class="card-text">작성자</p>
+            <p class="card-text">💛💛💛💛💛</p>
+            <p class="card-text card-text-last">2024-10-06</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+
+        <div class="card" style="width: 22rem;">
+          <img src="img/png/image.png" class="card-img-top" alt="Product-image">
+          <div class="card-body">
+            <h5 class="card-title">Product title</h5>
+            <p class="card-text">작성자</p>
+            <p class="card-text">💛💛💛💛💛</p>
+            <p class="card-text card-text-last">2024-10-06</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+
+        <div class="card" style="width: 22rem;">
+          <img src="img/png/image.png" class="card-img-top" alt="Product-image">
+          <div class="card-body">
+            <h5 class="card-title">Product title</h5>
+            <p class="card-text">작성자</p>
+            <p class="card-text">💛💛💛💛💛</p>
+            <p class="card-text card-text-last">2024-10-06</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-outline-light">
+          <img src="img/svg/ic_twotone-play-arrow.svg" alt="icon">
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+</html>
