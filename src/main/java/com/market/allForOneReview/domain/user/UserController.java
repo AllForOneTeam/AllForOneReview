@@ -16,35 +16,43 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/signup")
+    @GetMapping("/membership")
     public String signup(UserCreateForm userCreateForm) {
-        return "signup_form";
+        return "membership";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/membership")
     public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "signup_form";
+            return "membership";
         }
 
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect",
                     "2개의 패스워드가 일치하지 않습니다.");
-            return "signup_form";
+            return "membership";
         }
 
         try {
             userService.create(userCreateForm.getUserId(), userCreateForm.getNickname(), userCreateForm.getEmail(), userCreateForm.getPassword1());
-        }catch(DataIntegrityViolationException e) {
+        } catch(DataIntegrityViolationException e) {
             e.printStackTrace();
-            bindingResult.reject("signupFailed", "이미 등록된 사용자입니다.");
-            return "signup_form";
-        }catch(Exception e) {
+            String errorMessage = e.getMostSpecificCause().getMessage();
+            if (errorMessage.contains("user_id")) {
+                bindingResult.rejectValue("userId", "duplicate", "이미 등록된 사용자입니다.");
+            } else if (errorMessage.contains("email")) {
+                bindingResult.rejectValue("email", "duplicate", "이미 등록된 사용자입니다.");
+            } else if (errorMessage.contains("nickname")) {
+                bindingResult.rejectValue("nickname", "duplicate", "같은 닉네임이 이미 존재합니다.");
+            } else {
+                bindingResult.reject("signupFailed", "회원가입 중 오류가 발생했습니다.");
+            }
+            return "membership";
+        } catch(Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
-            return "signup_form";
+            return "membership";
         }
-
 
         return "redirect:/";
     }
