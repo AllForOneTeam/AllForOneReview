@@ -21,7 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SiteUser extends BaseEntity {
     @Column(length = 100, nullable = false, unique = true)
-    private String userId;
+    private String username;
 
     @Column(length = 100, nullable = false)
     private String nickname;

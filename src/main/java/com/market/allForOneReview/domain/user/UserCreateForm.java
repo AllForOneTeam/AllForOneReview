@@ -11,7 +11,7 @@ import lombok.Setter;
 public class UserCreateForm {
     @NotEmpty(message = "아이디는 필수입력 사항입니다.")
     @Pattern(regexp = "^[a-zA-Z0-9]{4,20}$", message = "아이디는 영문 대소문자와 숫자만 사용하여 4 ~ 20자리여야 합니다.")
-    private String userId;
+    private String username;
 
     @NotEmpty(message = "닉네임을 필수입력 사항입니다.")
     @Pattern(regexp = "^[가-힣a-zA-Z0-9]{3,10}$", message = "닉네임은 한글, 영문, 숫자만 사용하여 3 ~ 10자리여야 합니다.")
