@@ -1,10 +1,4 @@
-<div th:fragment="formErrorsFragment" class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
-  <ul class="mb-0">
-    <li th:each="err : ${#fields.errors('userId')}" th:text="${err}"></li>
-    <li th:each="err : ${#fields.errors('nickname')}" th:text="${err}"></li>
-    <li th:each="err : ${#fields.errors('password1')}" th:text="${err}"></li>
-    <li th:each="err : ${#fields.errors('password2')}" th:text="${err}"></li>
-    <li th:each="err : ${#fields.errors('email')}" th:text="${err}"></li>
-    <li th:each="err : ${#fields.errors('global')}" th:text="${err}"></li>
-  </ul>
+<div th:fragment="formErrorsFragment" class="alert alert-danger"
+     role="alert" th:if="${#fields.hasAnyErrors()}">
+  <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
 </div>

@@ -13,11 +13,20 @@ public class UserService {
 
     public SiteUser create(String userId, String nickname, String password, String email) {
         SiteUser user = SiteUser.builder()
-                .userId(userId)
-                .nickname(nickname)
-                .password(passwordEncoder.encode(password))
-                .build();
+                        .userId(userId)
+                        .nickname(nickname)
+                        .password(passwordEncoder.encode(password))
+                        .email(email)
+                        .build();
 
         return userRepository.save(user);
+    }
+
+    public boolean existsByUserId(String userId) {
+        return userRepository.existsByUserId(userId);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }
