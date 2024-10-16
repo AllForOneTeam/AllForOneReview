@@ -5,6 +5,8 @@ import com.market.allForOneReview.domain.article.entity.ReviewPost;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ReviewPostService {
@@ -15,5 +17,10 @@ public class ReviewPostService {
         reviewPost.setTitle(Title);
         reviewPost.setContent(content);
         reviewPost.setContentStory(contentStory);
+        reviewPostRepository.save(reviewPost);
     }
+    public List<ReviewPost> getAllReviewsByCategory(String categoryName) {
+        return reviewPostRepository.findByCategory_Category(categoryName);
+    }
+
 }

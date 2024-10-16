@@ -6,12 +6,15 @@ import com.market.allForOneReview.domain.article.entity.ReviewPostForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +23,10 @@ public class ReviewPostController {
     private final ReviewPostService reviewPostService;
 
     @GetMapping("/sub")
-    public String sub() {
+    public String showReviews(@RequestParam(value="category",defaultValue = "drama")String category,  Model model) {
+        List<ReviewPost> reviews = reviewPostService.getAllReviewsByCategory(category);  // 서비스에서 모든 리뷰 가져오기
+        model.addAttribute("reviews", reviews);
+        model.addAttribute("currentCategory", category);
         return "sub";
     }
 

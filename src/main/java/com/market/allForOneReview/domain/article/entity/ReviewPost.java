@@ -42,13 +42,13 @@ public class ReviewPost extends BaseEntity {
     private List<Image> images;
 
     @Column
-    private int views;
+    private Integer views;
 
     @ElementCollection
     private List<String> tags; // 태그를 리스트로 저장
 
     @Column
-    private int vote;
+    private Integer vote = 0;
 }
 
 
