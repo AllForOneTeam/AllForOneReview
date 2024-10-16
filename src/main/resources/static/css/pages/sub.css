@@ -4,6 +4,15 @@
     background-image: url(../../img/png/bg-sub-frame01.png);
 }
 
+.search-form{
+    margin : 10px;
+}
+
+.input-group{
+    width: 1110px;
+    height: auto;
+    margin: 0 auto;
+}
 .sub-contentArea {
     width: 100%;
     height: auto;
