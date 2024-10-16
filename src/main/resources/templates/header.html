@@ -39,7 +39,7 @@
                         </li>
                     </ul>
                     <a class="navbar-brand" sec:authorize="isAnonymous()" th:href="@{/user/login}">
-                        로그인
+                        LOGIN
                     </a>
                     <a class="navbar-brand" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">
                         <img th:src="@{/img/svg/login-icon.svg}" alt="icon">
