@@ -8,15 +8,20 @@
 
     <h1>Login</h1>
 
-    <form>
+    <form th:action="@{/user/login}" method="post">
+      <div th:if="${param.error}">
+        <div class="alert alert-danger">
+          아이디 또는 비밀번호를 확인해 주세요.
+        </div>
+      </div>
       <div class="input-group flex-nowrap">
-        <span class="input-group-text" id="addon-wrapping">ID</span>
-        <input type="text" class="form-control" placeholder="ID" aria-label="Username"
+        <label for="username" class="input-group-text">ID</label>
+        <input type="text" name="username" id="username" class="form-control" placeholder="ID" aria-label="Username"
           aria-describedby="addon-wrapping">
       </div>
       <div class="input-group flex-nowrap">
-        <span class="input-group-text" id="addon-wrapping">Password</span>
-        <input type="text" class="form-control" placeholder="Password" aria-label="Username"
+        <label for="password" class="input-group-text">비밀번호</label>
+        <input type="password" name="password" id="password" class="form-control" placeholder="Password" aria-label="Username"
           aria-describedby="addon-wrapping">
       </div>
       <div>
@@ -24,9 +29,10 @@
         <span>/</span>
         <a href="#">비밀번호 재설정</a>
         <span>/</span>
-        <a th:href="@{/membership}" >회원가입</a>
+        <a th:href="@{/user/membership}" >회원가입</a>
       </div>
-      <a class="a-btn btn btn-primary btn-login" th:href="@{/}" style="margin:auto !important;;">Login</a>
+      <button type="submit" class="a-btn btn btn-primary btn-login" style="margin:auto !important;;">Login</button>
+<!--      <a class="a-btn btn btn-primary btn-login" th:href="@{/}" style="margin:auto !important;;">Login</a>-->
     </form>
   </div>
 </div>

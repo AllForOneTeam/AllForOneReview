@@ -11,9 +11,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public SiteUser create(String userId, String nickname, String password, String email) {
+    public SiteUser create(String username, String nickname, String password, String email) {
         SiteUser user = SiteUser.builder()
-                        .userId(userId)
+                        .username(username)
                         .nickname(nickname)
                         .password(passwordEncoder.encode(password))
                         .email(email)
@@ -22,8 +22,8 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public boolean existsByUserId(String userId) {
-        return userRepository.existsByUserId(userId);
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 
     public boolean existsByEmail(String email) {

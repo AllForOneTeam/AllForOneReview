@@ -39,8 +39,8 @@ public class UserController {
             return "membership";
         }
 
-        // userId 중복 확인
-        if (userService.existsByUserId(userCreateForm.getUserId())) {
+        // username 중복 확인
+        if (userService.existsByUsername(userCreateForm.getUsername())) {
             bindingResult.reject("signupFailed", "이미 등록된 사용자 ID 입니다.");
             return "membership";
         }
@@ -59,7 +59,7 @@ public class UserController {
 
         try {
             // 유저 생성
-            this.userService.create(userCreateForm.getUserId(), userCreateForm.getNickname(), userCreateForm.getPassword1(), userCreateForm.getEmail());
+            this.userService.create(userCreateForm.getUsername(), userCreateForm.getNickname(), userCreateForm.getPassword1(), userCreateForm.getEmail());
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자 입니다.");
