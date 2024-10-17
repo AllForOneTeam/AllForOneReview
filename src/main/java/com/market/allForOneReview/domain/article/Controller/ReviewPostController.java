@@ -27,6 +27,8 @@ public class ReviewPostController {
         List<ReviewPost> reviews = reviewPostService.getAllReviewsByCategory(category);  // 서비스에서 모든 리뷰 가져오기
         model.addAttribute("reviews", reviews);
         model.addAttribute("currentCategory", category);
+        System.out.println(reviews.get(0).getCategory().getSubCategory());
+        System.out.println(category);
         return "sub";
     }
 
