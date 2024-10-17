@@ -32,7 +32,7 @@ public class NoticePost extends BaseEntity {
     @ToString.Exclude
     private Board board;
 
-    private int views;
+    private Integer views;
 
     @OneToMany(mappedBy = "noticePost", cascade = CascadeType.REMOVE)
     private List<NoticeComment> comments;

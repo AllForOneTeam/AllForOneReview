@@ -25,6 +25,7 @@
     margin: 0 auto;
 }
 
+
 .tabBox {
     width: 100%;
     display: flex;
@@ -63,8 +64,7 @@
 
 .sub-contentList_itemBox:hover {
     box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
-    width: 101%;
-    height: 265px;
+
     transition: 0.3s;
     cursor: pointer;
 }
@@ -83,6 +83,7 @@
 .sub-contentList_textBox>img {
     width: 50px;
 }
+
 .sub-contentList_text {
     flex: 1;
     height: 100%;
@@ -90,12 +91,18 @@
     flex-direction: column;
     padding-left: 12px;
 }
+
+.sub-TitleText{
+    font-size:2rem;
+}
+
 .sub-contentText {
     height: 100px; /* 고정 높이 설정 */
     overflow: hidden; /* 넘치는 내용 숨기기 */
     text-overflow: ellipsis; /* 넘치는 내용에 ... 표시하기 */
     display: -webkit-box; /* Flexbox 사용 */
-    -webkit-line-clamp: 4; /* 최대 줄 수 설정 (예: 4줄) */
+    font-size:24px;
+    -webkit-line-clamp: 2; /* 최대 줄 수 설정 (예: 2줄) */
     -webkit-box-orient: vertical; /* 세로 방향 정렬 설정 */
     white-space: normal; /* 일반 줄바꿈 */
 }
