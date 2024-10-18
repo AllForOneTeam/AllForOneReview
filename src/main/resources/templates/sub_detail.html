@@ -77,40 +77,40 @@
         <img alt="img" th:src="@{/img/png/ex-img.png}">
       </div>
 
-      <div class="SD-commentTitle"><h5 class="card-title">댓글 목록</h5><small
-              th:text="|${#lists.size(review.answerList)}개의 답변이 있습니다.|"></small></div>
-      <div class="SD-commentBody">
-        <ul>
-          <li th:each="answer : ${review.answerList}">
-            <!-- 댓글 1 -->
-            <div class="mb-3">
-              <div class="d-flex justify-content-between">
-                <div class="SD-commentTextBox">
-                  <strong>사용자1</strong>
-                  <p th:text="${answer.content}"></p>
-                  <small class="text-muted" th:text="${#temporals.format(answer.createDate, 'yyyy.MM.dd HH:mm')}"></small> <!-- 등록된 날짜 -->
-                </div>
-                <!-- 댓글 아이콘 -->
-                <div class="SD-commentButtonBox">
-                  <button><img alt="svg" th:src="@{/img/svg/ic_baseline-create.svg}"></button>
-                  <button><img alt="svg" th:src="@{/img/svg/material-symbols_delete.svg}"></button>
-                  <button><img alt="svg" th:src="@{/img/svg/tabler_flag-filled.svg}"></button>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
+<!--      <div class="SD-commentTitle"><h5 class="card-title">댓글 목록</h5><small-->
+<!--              th:text="|${#lists.size(review.answerList)}개의 답변이 있습니다.|"></small></div>-->
+<!--      <div class="SD-commentBody">-->
+<!--        <ul>-->
+<!--          <li th:each="answer : ${review.answerList}">-->
+<!--            &lt;!&ndash; 댓글 1 &ndash;&gt;-->
+<!--            <div class="mb-3">-->
+<!--              <div class="d-flex justify-content-between">-->
+<!--                <div class="SD-commentTextBox">-->
+<!--                  <strong>사용자1</strong>-->
+<!--                  <p th:text="${answer.content}"></p>-->
+<!--                  <small class="text-muted" th:text="${#temporals.format(answer.createDate, 'yyyy.MM.dd HH:mm')}"></small> &lt;!&ndash; 등록된 날짜 &ndash;&gt;-->
+<!--                </div>-->
+<!--                &lt;!&ndash; 댓글 아이콘 &ndash;&gt;-->
+<!--                <div class="SD-commentButtonBox">-->
+<!--                  <button><img alt="svg" th:src="@{/img/svg/ic_baseline-create.svg}"></button>-->
+<!--                  <button><img alt="svg" th:src="@{/img/svg/material-symbols_delete.svg}"></button>-->
+<!--                  <button><img alt="svg" th:src="@{/img/svg/tabler_flag-filled.svg}"></button>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
 
-      <h5 class="card-title">댓글 작성</h5>
-      <form class="SD-form" method="post" th:action="@{|/answer/create/${review.id}|}" th:object="${answerForm}">
-        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
-                <div class="mb-3">
-                    <textarea class="form-control" id="content" name="content" placeholder="댓글을 입력하세요."
-                              rows="15" th:field="*{content}"></textarea>
-                </div>
-        <input class="btn btn-primary" type="submit" value="댓글등록">
-      </form>
+<!--      <h5 class="card-title">댓글 작성</h5>-->
+<!--      <form class="SD-form" method="post" th:action="@{|/answer/create/${review.id}|}" th:object="${answerForm}">-->
+<!--        <div th:replace="~{form_errors :: formErrorsFragment}"></div>-->
+<!--                <div class="mb-3">-->
+<!--                    <textarea class="form-control" id="content" name="content" placeholder="댓글을 입력하세요."-->
+<!--                              rows="15" th:field="*{content}"></textarea>-->
+<!--                </div>-->
+<!--        <input class="btn btn-primary" type="submit" value="댓글등록">-->
+<!--      </form>-->
 
       <!--      <div class="SD-commentBox">-->
       <!--        <div class="container mt-5">-->
