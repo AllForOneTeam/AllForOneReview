@@ -16,3 +16,14 @@ spring:
       org.hibernate.orm.jdbc.bind: TRACE
       org.hibernate.orm.jdbc.extract: TRACE
       org.springframework.transaction.interceptor: TRACE
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dudghksdyd12@gmail.com
+    password: NEED_TO_INPUT_ON_SECRET
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
