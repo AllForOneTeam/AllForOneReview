@@ -17,5 +17,5 @@ public class Image {
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private ReviewPost post;
+    private Review post;
 }

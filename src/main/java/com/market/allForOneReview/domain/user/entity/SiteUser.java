@@ -1,7 +1,7 @@
 package com.market.allForOneReview.domain.user.entity;
 
 import com.market.allForOneReview.domain.article.entity.NoticePost;
-import com.market.allForOneReview.domain.article.entity.ReviewPost;
+import com.market.allForOneReview.domain.article.entity.Review;
 import com.market.allForOneReview.global.jpa.BaseEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -36,7 +36,7 @@ public class SiteUser extends BaseEntity {
     private int authority;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<ReviewPost> reviewPosts;
+    private List<Review> reviewPosts;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<NoticePost> noticePosts;
