@@ -29,8 +29,6 @@ public class Review extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "username")
     private SiteUser user;
-
-
 }
 
 
