@@ -7,14 +7,16 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ReviewPostForm {
-    @NotEmpty(message = "제목은 필수 항목입니다.")
-    @Size(max = 100, message = "제목은 100자를 초과할 수 없습니다.")
+public class ReviewForm {
+
+    @NotEmpty(message="제목은 필수항목입니다.")
+    @Size(max=200)
     private String title;
 
-    @NotEmpty(message = "이야기를 적어주세요.")
+    @NotEmpty(message="줄거리는 필수항목입니다.")
     private String contentStory;
 
-    @NotEmpty(message = "내용은 필수 항목입니다.")
+    @NotEmpty(message="내용은 필수항목입니다.")
     private String content;
+
 }

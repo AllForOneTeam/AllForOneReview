@@ -15,95 +15,99 @@
 
   <!-- 주요 내용 -->
   <div class="C-contentArea">
-    <div class="C-contentBox">
-      <img  th:src="@{/img/png/create-title.png}" alt="img">
+    <form enctype="multipart/form-data" method="post" th:action="@{/review/create}">
+      <div class="C-contentBox">
+        <img alt="img" th:src="@{/img/png/create-title.png}">
 
-      <div class="C-inputBox">
-        <div class="C-imgBox"></div>
+        <div class="C-inputBox">
+          <div class="C-dataBox">
+            <div class="C-dataItem C-dataItemGroup">
 
-        <div class="C-dataBox">
-          <div class="C-dataItem C-dataItemGroup">
+              <div class="C-dataItem_type">
+                <p>Type Option</p>
+                <div class="mb-3">
+                  <select class="form-select" id="typeSelect" name="type" required>
+                    <option selected>Choose</option>
+                    <option value="1">Option 1</option>
+                    <option value="2">Option 2</option>
+                    <option value="3">Option 3</option>
+                  </select>
+                </div>
+                <small>장르를 선택해주세요.</small>
+              </div>
 
-            <div class="C-dataItem_type">
-              <p>Type Option</p>
+              <div class="C-dataItem_image">
+                <div class="mb-3">
+                  <label class="form-label" for="imageUpload">이미지 업로드</label>
+                  <input accept="image/*" class="form-control" id="imageUpload" name="image" type="file">
+                  <div class="form-text"><small>JPG, PNG 파일만 업로드 가능합니다.</small></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="C-dataItem">
               <div class="mb-3">
-                <select class="form-select" id="typeSelect">
-                  <option selected>Choose...</option>
-                  <option value="1">Option 1</option>
-                  <option value="2">Option 2</option>
-                  <option value="3">Option 3</option>
-                </select>
+                <label class="form-label" for="title">Title</label>
+                <input class="form-control" id="title" name="title" placeholder="제목을 입력해주세요." required type="text">
               </div>
-              <small>장르를 선택해주세요.</small>
             </div>
 
-            <div class="C-dataItem_image">
+            <div class="C-dataItem">
               <div class="mb-3">
-                <label for="imageUpload" class="form-label">이미지 업로드</label>
-                <input class="form-control" type="file" id="imageUpload" accept="image/*">
-                <div class="form-text"><small>JPG, PNG 파일만 업로드 가능합니다.</small></div>
+                <label class="form-label" for="contentStory">Content Story</labe>
+                <input class="form-control" id="contentStory" name="contentStory" placeholder="줄거리를 입력해주세요."
+                       required type="text">
               </div>
             </div>
-          </div>
 
-          <div class="C-dataItem">
-            <div class="mb-3">
-              <label for="formGroupExampleInput" class="form-label">Title</label>
-              <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Title">
-            </div>
-          </div>
-
-          <div class="C-dataItem">
-            <div class="mb-3">
-              <label for="formGroupExampleInput" class="form-label">Content Story</label>
-              <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Content Story">
-            </div>
-          </div>
-
-          <div class="C-dataItem">
-            <div class="mb-3">
-              <label for="formGroupExampleInput" class="form-label">Hashtag</label>
-              <input type="text" class="form-control" id="formGroupExampleInput" placeholder="Hashtag">
-            </div>
-          </div>
-
-          <div class="C-dataItem container mt-5">
-
-            <div class="d-flex align-items-center C-starBox">
-              <!-- 별점 영역 -->
-              <div class="star-rating me-3">
-                <i class="bi bi-star" data-value="1"></i>
-                <i class="bi bi-star" data-value="2"></i>
-                <i class="bi bi-star" data-value="3"></i>
-                <i class="bi bi-star" data-value="4"></i>
-                <i class="bi bi-star" data-value="5"></i>
+            <div class="C-dataItem">
+              <div class="mb-3">
+                <label class="form-label" for="hashtag">Hashtag</label>
+                <input class="form-control" id="hashtag" name="hashtag" placeholder="Hashtag" type="text">
               </div>
-              <!-- 숫자 표시 -->
-              <span><strong id="ratingValue">0</strong> / 5</span>
             </div>
-          </div>
 
+            <div class="C-dataItem container mt-5">
+              <div class="d-flex align-items-center C-starBox">
+                <!-- 별점 영역 -->
+                <div class="star-rating me-3">
+                  <i class="bi bi-star" data-value="1"></i>
+                  <i class="bi bi-star" data-value="2"></i>
+                  <i class="bi bi-star" data-value="3"></i>
+                  <i class="bi bi-star" data-value="4"></i>
+                  <i class="bi bi-star" data-value="5"></i>
+                </div>
+                <!-- 숫자 표시 -->
+                <span><strong id="ratingValue">0</strong> / 5</span>
+                <input id="rating" name="rating" type="hidden" value="0"> <!-- 별점을 hidden input으로 추가 -->
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="C-bodyTextBox">
+          <button>
+            <img alt="icon" th:src="@{/img/svg/mdi_camera-outline.svg}"></button>
+          <textarea id="content" name="content" required></textarea>
+        </div>
+
+        <div class="C-textBoxButton">
+          <a class="a-btn btn btn-secondary">임시저장</a>
+          <input class="a-btn btn btn-primary" type="submit" value="등록"> <!-- 폼 제출을 위한 input으로 변경 -->
         </div>
       </div>
-
-      <div class="C-bodyTextBox">
-        <button>
-          <img  th:src="@{/img/svg/mdi_camera-outline.svg}" alt="icon"></button>
-        <textarea></textarea>
-      </div>
-
-
-      <div class="C-textBoxButton">
-        <a class="a-btn btn btn-secondary">임시저장</a>
-        <a class="a-btn btn btn-primary" th:href="@{/review/sub}">등록</a>
-      </div>
-    </div>
+    </form>
   </div>
 </div>
+
+
+</html>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
       const stars = document.querySelectorAll('.star-rating i');
       const ratingValue = document.getElementById('ratingValue');
+      const ratingInput = document.getElementById('rating'); // hidden input을 추가하여 별점을 저장
 
       // 각 별에 대한 클릭 이벤트 처리
       stars.forEach(star => {
@@ -117,6 +121,7 @@
       function updateRating(value) {
           // 숫자 업데이트
           ratingValue.innerText = value;
+          ratingInput.value = value; // hidden input에 별점 저장
 
           // 별점 업데이트
           stars.forEach(star => {
@@ -130,6 +135,3 @@
       }
   });
 </script>
-
-</html>
-
