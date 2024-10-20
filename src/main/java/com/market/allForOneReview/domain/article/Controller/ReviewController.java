@@ -2,6 +2,7 @@ package com.market.allForOneReview.domain.article.Controller;
 
 import com.market.allForOneReview.domain.answer.AnswerForm;
 import com.market.allForOneReview.domain.article.Service.ReviewService;
+import com.market.allForOneReview.domain.article.entity.Category;
 import com.market.allForOneReview.domain.article.entity.Review;
 import com.market.allForOneReview.domain.article.entity.ReviewForm;
 import jakarta.validation.Valid;
@@ -19,9 +20,17 @@ public class ReviewController {
     private final ReviewService reviewService;
 
     @GetMapping("/sub")
-    public String review(Model model, @RequestParam(value = "page", defaultValue = "0") int page) {
-        Page<Review> paging = this.reviewService.getList(page);
+    public String showReviews(
+            @RequestParam(value="category", defaultValue="drama") String category,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            Model model) {
+
+        Page<Review> paging = reviewService.getReviewsByCategoryAndPage(category, page);
         model.addAttribute("paging", paging);
+        model.addAttribute("currentCategory", category);
+        model.addAttribute("reviews", paging.getContent());
+
+
         return "sub";
     }
 
@@ -33,7 +42,7 @@ public class ReviewController {
     }
 
     @GetMapping("/create")
-    public String reviewCreate() {
+    public String reviewCreate(ReviewForm reviewForm) {
         return "create";
     }
 
@@ -42,7 +51,7 @@ public class ReviewController {
         if (bindingResult.hasErrors()) {
             return "create";
         }
-        this.reviewService.create(reviewForm.getTitle(), reviewForm.getContentStory(), reviewForm.getContent());
+        this.reviewService.create(reviewForm.getTitle(), reviewForm.getContentStory(), reviewForm.getContent(), reviewForm.getCategory(), reviewForm.getSubCategory());
         return "redirect:/review/sub";
     }
 

@@ -13,9 +13,32 @@
     <span>DRAMA</span>
   </div>
 
+
     <!-- 타이틀 이미지 -->
     <section class="container-fluid text-center banner"></section>
 
+
+  <form th:action="@{/review/sub/search}" method="get" class="search-form">
+    <div class="input-group">
+      <!-- 드롭다운 메뉴 -->
+      <div class="input-group-prepend">
+        <select name="filter" class="form-control" id="filterSelect">
+          <option value="all">전체</option>
+          <option value="tag">태그</option>
+          <option value="title">제목</option>
+          <option value="author">작성자</option>
+        </select>
+      </div>
+      <!-- 검색어 입력 -->
+      <input type="text" name="query" class="form-control" placeholder="Search in site">
+      <!-- 검색 버튼 -->
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="submit" th:text="검색">
+          <i class="fas fa-search"></i>
+        </button>
+      </div>
+    </div>
+  </form>
     <!-- 주요 내용 -->
     <div class="sub-contentArea">
       <section class="subArea">
@@ -24,258 +47,83 @@
           <div class="tabBox">
             <ul class="nav nav-tabs" id="myTab" role="tablist">
               <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#romance" type="button"
-                  role="tab" aria-controls="romance" aria-selected="true">로맨스</button>
+                <button class="nav-link active" id="all-tab" onclick="showTabContent('all')" type="button">전체</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#action" type="button"
-                  role="tab" aria-controls="action" aria-selected="false">액션</button>
+                <button class="nav-link " id="romance-tab" onclick="showTabContent('romance')" type="button">로맨스</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-target="#sf" data-bs-toggle="tab" id="sf-tab" type="button"
-                  role="tab" aria-controls="sf" aria-selected="false">SF</button>
+                <button class="nav-link" id="action-tab" onclick="showTabContent('action')" type="button">액션</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-target="#thriller" data-bs-toggle="tab" id="thriller-tab" type="button"
-                  role="tab" aria-controls="thriller" aria-selected="false">스릴러</button>
+                <button class="nav-link" id="sf-tab" onclick="showTabContent('sf')" type="button">SF</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-target="#horror" data-bs-toggle="tab" id="horror-tab" type="button"
-                  role="tab" aria-controls="horror" aria-selected="false">공포</button>
+                <button class="nav-link" id="horror-tab" onclick="showTabContent('horror')" type="button">Horror</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-target="#family" data-bs-toggle="tab" id="family-tab" type="button"
-                  role="tab" aria-controls="family" aria-selected="false">가족</button>
+                <button class="nav-link" id="comedy-tab" onclick="showTabContent('comedy')" type="button">Comedy</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" data-bs-target="#all" data-bs-toggle="tab" id="all-tab" type="button"
-                  role="tab" aria-controls="all" aria-selected="false">기타</button>
+                <button class="nav-link" id="others-tab" onclick="showTabContent('others')" type="button">기타</button>
               </li>
             </ul>
 
             <p>전체 <strong>251</strong>(1/210)</p>
 
           </div>
-
           <!-- 탭 내용 -->
           <div class="tab-content" id="myTabContent">
-            <div class="tab-pane fade show active" id="romance" role="tabpanel" aria-labelledby="romance-tab">
-              <div class="sub-tab_contentBox" th:each="review, loop : ${paging}">
-                <div class="sub-contentList_itemBox">
-                  <img th:src="@{/img/png/ex-img.png}" alt="img">
-                  <div class="sub-contentList_textBox">
-                    <img th:src="@{/img/svg/token-branded_lovely.svg}" alt="svg">
-                    <div class="sub-contentList_text">
-                      <p>nickname-Admin01</p>
-                      <p><strong><a th:href="@{|/review/detail/${review.id}|}" th:text="${review.title}"></a></strong>
-                      </p>
-                      <p class="sub-contentText" th:text="${review.contentStory}"></p>
-                      <!--                      <p class="sub-contentText" th:text="${review.content}"></p>-->
-                      <div class="sub-content_hashtagBox">
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                      </div>
+            <div id="all-content" class="sub-tab_contentBox">
+              <!-- 전체 탭 내용 -->
+              <div class="sub-contentList_itemBox" th:each="review : ${reviews}" th:data-id="${review.id}" th:data-subcategory="${review.category.subCategory}" style="cursor: pointer;">
+                <img th:src="@{/img/png/ex-img.png}" alt="img" data-id="${review.id}">
+                <div class="sub-contentList_textBox" data-id="${review.id}">
+                  <img th:src="@{/img/svg/token-branded_lovely.svg}" alt="svg" data-id="${review.id}">
+                  <div class="sub-contentList_text" data-id="${review.id}">
+                    <p th:text="${review.user}"></p>
+                    <p th:text="${review.title}" data-id="${review.id}" class="sub-TitleText">Title</p>
+                    <p class="sub-contentText" th:text="${review.contentStory}" data-id="${review.id}"></p>
+                    <div class="sub-content_hashtagBox" data-id="${review.id}">
+                      <div class="hashtagItem"><span>#hashtag</span></div>
                     </div>
                   </div>
-                  <div class="sub-contentList_timeBox">
-                    <p th:text="${#temporals.format(review.createDate, 'yyyy.MM.dd')}"></p>
-
-                  </div>
+                </div>
+                <div class="sub-contentList_timeBox" data-id="${review.id}">
+                  <span th:text="${#temporals.format(review.createDate, 'yyyy.MM.dd')}"></span>
                 </div>
               </div>
+
 
             </div>
 
-            <div class="tab-pane fade" id="action" role="tabpanel" aria-labelledby="action-tab">
-
-              <div class="sub-tab_contentBox">
-                <div class="sub-contentList_itemBox">
-                  <img th:src="@{/img/png/ex-img.png}" alt="img">
-                  <div class="sub-contentList_textBox">
-                    <img th:src="@{/img/svg/game-icons_extraction-orb.svg}"  alt="svg">
-                    <div class="sub-contentList_text">
-                      <p>nickname-Admin01</p>
-                      <p><strong>Title</strong> <span>|</span> Content Story</p>
-                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
-                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
-                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
-                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
-                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
-                      <div class="sub-content_hashtagBox">
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="sub-contentList_timeBox">
-                    <span>2024.10.10</span>
-                  </div>
-                </div>
-              </div>
-
+            <!-- 각 탭 내용에 대한 ID 추가 -->
+            <div id="romance-content" class="sub-tab_contentBox" style="display: none;">
+              <p>로맨스 탭 내용입니다.</p>
             </div>
-
-            <div class="tab-pane fade" id="sf" role="tabpanel" aria-labelledby="sf-tab">
-
-              <div class="sub-tab_contentBox">
-                <div class="sub-contentList_itemBox">
-                  <img th:src="@{/img/png/ex-img.png}" alt="img">
-                  <div class="sub-contentList_textBox">
-                    <img th:src="@{/img/svg/simple-icons_sfml.svg}" alt="svg">
-                    <div class="sub-contentList_text">
-                      <p>nickname-Admin01</p>
-                      <p><strong>Title</strong> <span>|</span> Content Story</p>
-                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
-                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
-                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
-                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
-                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
-                      <div class="sub-content_hashtagBox">
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="sub-contentList_timeBox">
-                    <span>2024.10.10</span>
-                  </div>
-                </div>
-              </div>
+            <div id="action-content" class="sub-tab_contentBox" style="display: none;">
+              <!-- 액션 탭 내용 -->
+              <p>액션 탭 내용입니다.</p>
             </div>
-
-            <div class="tab-pane fade" id="thriller" role="tabpanel" aria-labelledby="thriller-tab">
-
-              <div class="sub-tab_contentBox">
-                <div class="sub-contentList_itemBox" >
-                  <img th:src="@{/img/png/ex-img.png}" alt="img">
-                  <div class="sub-contentList_textBox">
-                    <img th:src="@{/img/svg/covid_covid19-virus-warning-3.svg}" alt="svg">
-                    <div class="sub-contentList_text">
-                      <p>nickname-Admin01</p>
-                      <p><strong>Title</strong> <span>|</span> Content Story</p>
-                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
-                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
-                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
-                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
-                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
-                      <div class="sub-content_hashtagBox">
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="sub-contentList_timeBox">
-                    <span>2024.10.10</span>
-                  </div>
-                </div>
-              </div>
+            <div id="sf-content" class="sub-tab_contentBox" style="display: none;">
+              <!-- SF 탭 내용 -->
+              <p>SF 탭 내용입니다.</p>
             </div>
-
-            <div class="tab-pane fade" id="horror" role="tabpanel" aria-labelledby="horror-tab">
-
-              <div class="sub-tab_contentBox">
-                <div class="sub-contentList_itemBox">
-                  <img th:src="@{/img/png/ex-img.png}" alt="img">
-                  <div class="sub-contentList_textBox">
-                    <img th:src="@{/img/svg/mynaui_funny-ghost.svg}" alt="svg">
-                    <div class="sub-contentList_text">
-                      <p>nickname-Admin01</p>
-                      <p><strong>Title</strong> <span>|</span> Content Story</p>
-                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
-                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
-                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
-                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
-                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
-                      <div class="sub-content_hashtagBox">
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="sub-contentList_timeBox">
-                    <span>2024.10.10</span>
-                  </div>
-                </div>
-              </div>
+            <div id="horror-content" class="sub-tab_contentBox" style="display: none;">
+              <!-- Horror 탭 내용 -->
+              <p>Horror 탭 내용입니다.</p>
             </div>
-
-            <div class="tab-pane fade" id="family" role="tabpanel" aria-labelledby="family-tab">
-
-              <div class="sub-tab_contentBox">
-                <div class="sub-contentList_itemBox">
-                  <img th:src="@{/img/png/ex-img.png}" alt="img">
-                  <div class="sub-contentList_textBox">
-                    <img th:src="@{/img/svg/material-symbols_family-star.svg}" alt="svg">
-                    <div class="sub-contentList_text">
-                      <p>nickname-Admin01</p>
-                      <p><strong>Title</strong> <span>|</span> Content Story</p>
-                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
-                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
-                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
-                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
-                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
-                      <div class="sub-content_hashtagBox">
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="sub-contentList_timeBox">
-                    <span>2024.10.10</span>
-                  </div>
-                </div>
-              </div>
+            <div id="comedy-content" class="sub-tab_contentBox" style="display: none;">
+              <!-- Comedy 탭 내용 -->
+              <p>Comedy 탭 내용입니다.</p>
             </div>
-
-            <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
-
-              <div class="sub-tab_contentBox">
-                <div class="sub-contentList_itemBox">
-                  <img th:src="@{/img/png/ex-img.png}" alt="img">
-                  <div class="sub-contentList_textBox">
-                    <img th:src="@{/img/svg/tabler_xbox-a-filled.svg}" alt="svg">
-                    <div class="sub-contentList_text">
-                      <p>nickname-Admin01</p>
-                      <p><strong>Title</strong> <span>|</span> Content Story</p>
-                      <p class="sub-contentText">Figma ipsum component variant main layer. Export duplicate text thumbnail
-                        move ellipse. Frame auto follower move slice polygon edit. Flatten project font draft plugin share
-                        editor select pencil ipsum. Content figjam text clip comment invite share line rotate. Selection
-                        mask vector effect underline team link undo draft. Asset italic group slice effect. Underline
-                        invite stroke export connection overflow arrow. Plugin strikethrough horizon...</p>
-                      <div class="sub-content_hashtagBox">
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="sub-contentList_timeBox">
-                    <span>2024.10.10</span>
-                  </div>
-                </div>
-              </div>
+            <div id="others-content" class="sub-tab_contentBox" style="display: none;">
+              <!-- 기타 탭 내용 -->
+              <p>기타 탭 내용입니다.</p>
             </div>
           </div>
+
+
 
           <div class="sub-createBTN">
             <a class="a-btn btn btn-primary " th:href="@{/review/create}">글 등록</a>
@@ -285,7 +133,6 @@
       </section>
     </div>
 
-  <!-- 페이징처리 시작 -->
   <div th:if="${!paging.isEmpty()}">
     <ul class="pagination justify-content-center">
       <li class="page-item" th:classappend="${!paging.hasPrevious} ? 'disabled'">
@@ -307,7 +154,86 @@
       </li>
     </ul>
   </div>
-  <!-- 페이징처리 끝 -->
-
 </div>
+
 </html>
+
+
+<script>
+  function showTabContent(subCategory) {
+    console.log('showTabContent 함수 호출됨, 선택한 카테고리:', subCategory);
+
+    // 모든 탭 콘텐츠를 숨김
+    document.querySelectorAll('.sub-tab_contentBox').forEach(function(contentBox) {
+        contentBox.style.display = 'none';
+    });
+
+    // 모든 리뷰 데이터를 담고 있는 콘텐츠 박스를 보여줌
+    var allContentBox = document.getElementById('all-content');
+    if (allContentBox) {
+        allContentBox.style.display = 'block';
+    } else {
+        console.error("전체 콘텐츠 박스를 찾을 수 없습니다: all-content");
+    }
+
+    // 리뷰 아이템 필터링
+    document.querySelectorAll('.sub-contentList_itemBox').forEach(function(item) {
+        if (item.getAttribute('data-subcategory') === subCategory || subCategory === 'all') {
+            item.style.display = 'flex';
+            console.log('매칭 성공: ', item);
+        } else {
+            item.style.display = 'none';
+            console.log('매칭 실패: ', item);
+        }
+    });
+
+    // 모든 탭의 'active' 클래스 제거
+    document.querySelectorAll('.nav-link').forEach(function(tab) {
+        tab.classList.remove('active');
+    });
+
+    // 현재 클릭된 탭에 'active' 클래스 추가
+    var selectedTab = document.getElementById(subCategory + '-tab');
+    if (selectedTab) {
+        selectedTab.classList.add('active');
+        console.log('선택된 탭에 active 클래스 추가:', selectedTab);
+    } else {
+        console.error("탭을 찾을 수 없습니다: " + subCategory + '-tab');
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+      // 첫 페이지 로드 시 "전체" 탭 클릭 시뮬레이션
+      showTabContent('all');
+
+      // 각 리뷰 아이템에 대한 클릭 이벤트 추가
+      document.querySelectorAll('.sub-contentList_itemBox').forEach(function(item) {
+          item.addEventListener('click', function() {
+              const reviewId = item.getAttribute('data-id');
+              if (reviewId) {
+                  window.location.href = `/review/detail/${reviewId}`;
+              } else {
+                  console.error("리뷰 ID를 찾을 수 없습니다.");
+              }
+          });
+      });
+  });
+
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.sub-contentList_itemBox').forEach(function(item) {
+      item.addEventListener('click', function() {
+        const reviewId = item.getAttribute('data-id');
+        if (reviewId) {
+          window.location.href = `/review/detail/${reviewId}`;
+        } else {
+          console.error("리뷰 ID를 찾을 수 없습니다.");
+        }
+      });
+    });
+  });
+
+</script>
+

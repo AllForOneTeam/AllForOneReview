@@ -15,7 +15,9 @@
 
   <!-- 주요 내용 -->
   <div class="C-contentArea">
-    <form enctype="multipart/form-data" method="post" th:action="@{/review/create}">
+    <form enctype="multipart/form-data" method="post" th:action="@{/review/create}" th:object="${reviewForm}">
+      <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
       <div class="C-contentBox">
         <img alt="img" th:src="@{/img/png/create-title.png}">
 
@@ -23,18 +25,26 @@
           <div class="C-dataBox">
             <div class="C-dataItem C-dataItemGroup">
 
+
+
               <div class="C-dataItem_type">
-                <p>Type Option</p>
+                <p>Category</p>
                 <div class="mb-3">
-                  <select class="form-select" id="typeSelect" name="type" required>
-                    <option selected>Choose</option>
-                    <option value="1">Option 1</option>
-                    <option value="2">Option 2</option>
-                    <option value="3">Option 3</option>
+                  <select class="form-select" th:field="*{subCategory}"  required>
+                    <option value="" selected disabled>Choose</option>
+                    <option value="romance">로맨스</option>
+                    <option value="action">액션</option>
+                    <option value="sf">SF</option>
+                    <option value="horror">호러</option>
+                    <option value="comedy">코미디</option>
+                    <option value="other">기타</option>
                   </select>
                 </div>
                 <small>장르를 선택해주세요.</small>
               </div>
+
+
+
 
               <div class="C-dataItem_image">
                 <div class="mb-3">
@@ -47,6 +57,22 @@
 
             <div class="C-dataItem">
               <div class="mb-3">
+                <select class="form-select" id="category" name="category" required>
+                  <option value="" selected disabled>Choose</option>
+                  <option value="drama">드라마</option>
+                  <option value="movie">영화</option>
+                  <option value="novel">소설</option>
+                  <option value="clothes">의류</option>
+                  <option value="electronics">가전제품</option>
+                  <option value="restaurant">맛집</option>
+                  <option value="plays">놀거리</option>
+                </select>
+              </div>
+              <small>장르를 선택해주세요.</small>
+            </div>
+
+            <div class="C-dataItem">
+              <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
                 <input class="form-control" id="title" name="title" placeholder="제목을 입력해주세요." required type="text">
               </div>
@@ -54,9 +80,8 @@
 
             <div class="C-dataItem">
               <div class="mb-3">
-                <label class="form-label" for="contentStory">Content Story</labe>
-                <input class="form-control" id="contentStory" name="contentStory" placeholder="줄거리를 입력해주세요."
-                       required type="text">
+                <label class="form-label" for="contentStory">Content Story</label>
+                <input class="form-control" id="contentStory" name="contentStory" placeholder="줄거리를 입력해주세요." required type="text">
               </div>
             </div>
 
