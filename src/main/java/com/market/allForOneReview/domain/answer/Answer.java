@@ -1,6 +1,7 @@
 package com.market.allForOneReview.domain.answer;
 
 import com.market.allForOneReview.domain.article.entity.Review;
+import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.global.jpa.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,4 +19,7 @@ public class Answer extends BaseEntity {
 
     @ManyToOne
     private Review review;
+
+    @ManyToOne
+    private SiteUser author;
 }
