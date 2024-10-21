@@ -49,7 +49,6 @@ public class Review extends BaseEntity {
     private Integer vote = 0;
 
     @ManyToOne
-    @JoinColumn(name = "username")
     private SiteUser user;
 }
 

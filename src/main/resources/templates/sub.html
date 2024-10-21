@@ -19,6 +19,8 @@
 
 
   <form th:action="@{/review/sub/search}" method="get" class="search-form">
+    <input type="hidden" name="subCategory" id="subCategoryInput" value="all">
+
     <div class="input-group">
       <!-- 드롭다운 메뉴 -->
       <div class="input-group-prepend">
@@ -26,7 +28,7 @@
           <option value="all">전체</option>
           <option value="tag">태그</option>
           <option value="title">제목</option>
-          <option value="author">작성자</option>
+<!--          <option value="author">작성자</option>-->
         </select>
       </div>
       <!-- 검색어 입력 -->
@@ -101,6 +103,15 @@
             <div id="romance-content" class="sub-tab_contentBox" style="display: none;">
               <p>로맨스 탭 내용입니다.</p>
             </div>
+            <div id="search-content" class="sub-tab_contentBox" style="display: none;">
+              <div th:each="review : ${paging.content}">
+                <!-- 검색 결과를 표시하는 템플릿 코드 추가 -->
+                <div th:data-id="${review.id}" style="cursor: pointer;">
+                  <p th:text="${review.title}"></p>
+                  <p th:text="${review.contentStory}"></p>
+                </div>
+              </div>
+            </div>
             <div id="action-content" class="sub-tab_contentBox" style="display: none;">
               <!-- 액션 탭 내용 -->
               <p>액션 탭 내용입니다.</p>
@@ -161,48 +172,77 @@
 
 <script>
   function showTabContent(subCategory) {
-    console.log('showTabContent 함수 호출됨, 선택한 카테고리:', subCategory);
+      console.log('showTabContent 함수 호출됨, 선택한 카테고리:', subCategory);
 
-    // 모든 탭 콘텐츠를 숨김
-    document.querySelectorAll('.sub-tab_contentBox').forEach(function(contentBox) {
-        contentBox.style.display = 'none';
-    });
+      // 모든 탭 콘텐츠를 숨김
+      document.querySelectorAll('.sub-tab_contentBox').forEach(function(contentBox) {
+          contentBox.style.display = 'none';
+      });
 
-    // 모든 리뷰 데이터를 담고 있는 콘텐츠 박스를 보여줌
-    var allContentBox = document.getElementById('all-content');
-    if (allContentBox) {
-        allContentBox.style.display = 'block';
-    } else {
-        console.error("전체 콘텐츠 박스를 찾을 수 없습니다: all-content");
-    }
+      if (subCategory === 'search') {
+          // 검색 결과 탭 활성화
+          var searchContentBox = document.getElementById('search-content');
+          if (searchContentBox) {
+              searchContentBox.style.display = 'flex';
+              console.log('검색 결과 탭 활성화');
+          } else {
+              console.error("검색 결과 콘텐츠 박스를 찾을 수 없습니다: search-content");
+          }
+      } else {
+          // 일반 탭 로직
+          var allContentBox = document.getElementById('all-content');
+          if (allContentBox) {
+              allContentBox.style.display = 'block';
+          } else {
+              console.error("전체 콘텐츠 박스를 찾을 수 없습니다: all-content");
+          }
 
-    // 리뷰 아이템 필터링
-    document.querySelectorAll('.sub-contentList_itemBox').forEach(function(item) {
-        if (item.getAttribute('data-subcategory') === subCategory || subCategory === 'all') {
-            item.style.display = 'flex';
-            console.log('매칭 성공: ', item);
-        } else {
-            item.style.display = 'none';
-            console.log('매칭 실패: ', item);
-        }
-    });
+          // 리뷰 아이템 필터링
+          document.querySelectorAll('.sub-contentList_itemBox').forEach(function(item) {
+              if (item.getAttribute('data-subcategory') === subCategory || subCategory === 'all') {
+                  item.style.display = 'flex';
+                  console.log('매칭 성공: ', item);
+              } else {
+                  item.style.display = 'none';
+                  console.log('매칭 실패: ', item);
+              }
+          });
+      }
 
-    // 모든 탭의 'active' 클래스 제거
-    document.querySelectorAll('.nav-link').forEach(function(tab) {
-        tab.classList.remove('active');
-    });
+      // 모든 탭의 'active' 클래스 제거
+      document.querySelectorAll('.nav-link').forEach(function(tab) {
+          tab.classList.remove('active');
+      });
 
-    // 현재 클릭된 탭에 'active' 클래스 추가
-    var selectedTab = document.getElementById(subCategory + '-tab');
-    if (selectedTab) {
-        selectedTab.classList.add('active');
-        console.log('선택된 탭에 active 클래스 추가:', selectedTab);
-    } else {
-        console.error("탭을 찾을 수 없습니다: " + subCategory + '-tab');
-    }
+      // 현재 클릭된 탭에 'active' 클래스 추가
+      var selectedTab = document.getElementById(subCategory + '-tab');
+      if (selectedTab) {
+          selectedTab.classList.add('active');
+          console.log('선택된 탭에 active 클래스 추가:', selectedTab);
+      } else if (subCategory === 'search') {
+          // 검색일 경우 별도 처리
+          console.log('검색 결과에 대해 활성화되는 탭이 없습니다.');
+      } else {
+          console.error("탭을 찾을 수 없습니다: " + subCategory + '-tab');
+      }
+
+      // 서브카테고리 값을 hidden input에 설정
+      document.getElementById('subCategoryInput').value = subCategory;
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // 각 탭 클릭 시 subCategoryInput 값을 업데이트
+      document.querySelectorAll('.nav-link').forEach(function(tab) {
+          tab.addEventListener('click', function() {
+              const subCategory = tab.getAttribute('id').replace('-tab', '');
+              document.getElementById('subCategoryInput').value = subCategory;
+
+              // 탭에 맞는 컨텐츠를 보여줍니다.
+              showTabContent(subCategory);
+          });
+      });
+
       // 첫 페이지 로드 시 "전체" 탭 클릭 시뮬레이션
       showTabContent('all');
 
@@ -217,7 +257,26 @@
               }
           });
       });
-  });
+
+
+    // 검색 후 전체 탭 활성화
+    const filterElement = document.querySelector('select[name="filter"]');
+    if (filterElement) {
+        const filter = filterElement.value;
+
+        if (filter) {
+            document.querySelectorAll('.nav-link').forEach(function(tab) {
+                tab.classList.remove('active');
+            });
+            const allTab = document.getElementById('all-tab');
+            if (allTab) {
+                allTab.classList.add('active');
+            }
+        }
+    }
+});
+
+
 
 </script>
 

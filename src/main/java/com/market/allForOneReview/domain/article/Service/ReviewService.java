@@ -58,4 +58,33 @@ public class ReviewService {
         return reviewRepository.findByCategory_Category(categoryName, pageable);
     }
 
+    public Page<Review> searchReviews(String filter, String query, String category, String subCategory, int page) {
+        PageRequest pageRequest = PageRequest.of(page, 10);
+
+        // 서브카테고리가 "all"인 경우, 전체 서브카테고리를 대상으로 검색
+        if ("all".equalsIgnoreCase(subCategory)) {
+            switch (filter) {
+                case "title":
+                    return reviewRepository.findByCategory_CategoryAndTitleContainingIgnoreCase(category, query, pageRequest);
+//                case "author":
+//                    return reviewRepository.findByCategory_CategoryAndUser_UsernameContainingIgnoreCase(category, query, pageRequest);
+                default:
+                    return reviewRepository.findByCategory_CategoryAndAllFieldsContainingIgnoreCase(category, query, pageRequest);
+            }
+        } else {
+            // 특정 서브카테고리를 검색하는 경우
+            switch (filter) {
+                case "title":
+                    return reviewRepository.findByCategory_CategoryAndCategory_SubCategoryAndTitleContainingIgnoreCase(category, subCategory, query, pageRequest);
+//                case "author":
+//                    return reviewRepository.findByCategory_CategoryAndCategory_SubCategoryAndUser_UsernameContainingIgnoreCase(category, subCategory, query, pageRequest);
+                default:
+                    return reviewRepository.findByCategory_CategoryAndCategory_SubCategoryAndAllFieldsContainingIgnoreCase(category, subCategory, query, pageRequest);
+            }
+        }
+    }
+
+
+
+
 }

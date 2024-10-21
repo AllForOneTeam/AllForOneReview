@@ -7,12 +7,18 @@ import com.market.allForOneReview.domain.article.entity.Review;
 import com.market.allForOneReview.domain.article.entity.ReviewForm;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/review")
@@ -33,6 +39,30 @@ public class ReviewController {
 
         return "sub";
     }
+
+
+
+    @GetMapping("/sub/search")
+    public String searchReviews(@RequestParam("filter") String filter,
+                                @RequestParam("query") String query,
+                                @RequestParam(value="category", defaultValue="drama") String category,
+                                @RequestParam(value = "subCategory", defaultValue = "all") String subCategory,
+                                @RequestParam(value = "page", defaultValue = "0") int page,
+                                Model model) {
+        Page<Review> paging = reviewService.searchReviews(filter, query, "drama", subCategory, page);
+        model.addAttribute("paging", paging);
+        model.addAttribute("currentCategory", category);
+        model.addAttribute("currentSubCategory", subCategory);
+        model.addAttribute("filter", filter);
+        model.addAttribute("query", query);
+        model.addAttribute("reviews", paging.getContent());
+
+
+        return "sub";
+    }
+
+
+
 
     @GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Long id, AnswerForm answerForm) {
