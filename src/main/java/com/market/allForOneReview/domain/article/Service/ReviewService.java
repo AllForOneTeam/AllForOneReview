@@ -3,6 +3,7 @@ package com.market.allForOneReview.domain.article.Service;
 import com.market.allForOneReview.DataNotFoundException;
 import com.market.allForOneReview.domain.article.Repository.ReviewRepository;
 import com.market.allForOneReview.domain.article.entity.Review;
+import com.market.allForOneReview.domain.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -35,12 +36,13 @@ public class ReviewService {
     }
 
     //    게시글 저장
-    public void create(String title, String contentStory, String content) {
+    public void create(String title, String contentStory, String content, SiteUser user) {
         Review r = new Review();
         r.setTitle(title);
         r.setContentStory(contentStory);
         r.setContent(content);
         r.setCreateDate(LocalDateTime.now());
+        r.setAuthor(user);
         this.reviewRepository.save(r);
     }
 

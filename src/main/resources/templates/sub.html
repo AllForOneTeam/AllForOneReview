@@ -66,7 +66,7 @@
                   <div class="sub-contentList_textBox">
                     <img th:src="@{/img/svg/token-branded_lovely.svg}" alt="svg">
                     <div class="sub-contentList_text">
-                      <p>nickname-Admin01</p>
+                      <p th:if="${review.author != null}" th:text="${review.author.username}"></p>
                       <p><strong><a th:href="@{|/review/detail/${review.id}|}" th:text="${review.title}"></a></strong>
                       </p>
                       <p class="sub-contentText" th:text="${review.contentStory}"></p>
@@ -311,3 +311,4 @@
 
 </div>
 </html>
+
