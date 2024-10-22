@@ -1,9 +1,12 @@
 package com.market.allForOneReview.domain.user;
 
+import com.market.allForOneReview.DataNotFoundException;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -32,5 +35,14 @@ public class UserService {
 
     public boolean existsByNickname(String nickname) {
         return userRepository.existsByNickname(nickname);
+    }
+
+    public SiteUser getUser(String username) {
+        Optional<SiteUser> siteUser = this.userRepository.findByUsername(username);
+        if (siteUser.isPresent()) {
+            return siteUser.get();
+        } else {
+            throw new DataNotFoundException(("siteuser not found"));
+        }
     }
 }

@@ -76,6 +76,7 @@
           </div>
           <!-- 탭 내용 -->
           <div class="tab-content" id="myTabContent">
+
             <div id="all-content" class="sub-tab_contentBox">
               <!-- 전체 탭 내용 -->
               <div class="sub-contentList_itemBox" th:each="review : ${reviews}" th:data-id="${review.id}" th:data-subcategory="${review.category.subCategory}" style="cursor: pointer;">
@@ -88,6 +89,25 @@
                     <p class="sub-contentText" th:text="${review.contentStory}" data-id="${review.id}"></p>
                     <div class="sub-content_hashtagBox" data-id="${review.id}">
                       <div class="hashtagItem"><span>#hashtag</span></div>
+<!--             <div class="tab-pane fade show active" id="romance" role="tabpanel" aria-labelledby="romance-tab">
+              <div class="sub-tab_contentBox" th:each="review, loop : ${paging}">
+                <div class="sub-contentList_itemBox">
+                  <img th:src="@{/img/png/ex-img.png}" alt="img">
+                  <div class="sub-contentList_textBox">
+                    <img th:src="@{/img/svg/token-branded_lovely.svg}" alt="svg">
+                    <div class="sub-contentList_text">
+                      <p th:if="${review.author != null}" th:text="${review.author.username}"></p>
+                      <p><strong><a th:href="@{|/review/detail/${review.id}|}" th:text="${review.title}"></a></strong>
+                      </p>
+                      <p class="sub-contentText" th:text="${review.contentStory}"></p>
+                      <!--                      <p class="sub-contentText" th:text="${review.content}"></p>-->
+                      <div class="sub-content_hashtagBox">
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                        <div class="hashtagItem"><span>#hashtag</span></div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -168,8 +188,6 @@
 </div>
 
 </html>
-
-
 <script>
   function showTabContent(subCategory) {
       console.log('showTabContent 함수 호출됨, 선택한 카테고리:', subCategory);
@@ -295,4 +313,3 @@
   });
 
 </script>
-

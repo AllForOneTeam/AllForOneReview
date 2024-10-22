@@ -50,6 +50,12 @@ public class Review extends BaseEntity {
 
     @ManyToOne
     private SiteUser user;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private List<Answer> answerList;
+
+    @ManyToOne
+    private SiteUser author;
 }
 
 

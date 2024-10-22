@@ -5,6 +5,7 @@ import com.market.allForOneReview.domain.article.Repository.CategoryRepository;
 import com.market.allForOneReview.domain.article.Repository.ReviewRepository;
 import com.market.allForOneReview.domain.article.entity.Category;
 import com.market.allForOneReview.domain.article.entity.Review;
+import com.market.allForOneReview.domain.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -41,7 +42,6 @@ public class ReviewService {
     public void create(String title, String contentStory, String content, String category, String subCategory) {
 
         Optional<Category> category1 = this.categoryRepository.findByCategoryAndSubCategory(category,subCategory);
-
 
         Review r = new Review();
         r.setTitle(title);
