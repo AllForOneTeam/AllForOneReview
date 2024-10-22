@@ -39,7 +39,7 @@ public class ReviewService {
 
     //    게시글 저장
     private final CategoryRepository categoryRepository;
-    public void create(String title, String contentStory, String content, String category, String subCategory) {
+    public void create(String title, String contentStory, String content, String category, String subCategory, SiteUser user) {
 
         Optional<Category> category1 = this.categoryRepository.findByCategoryAndSubCategory(category,subCategory);
 
@@ -49,6 +49,7 @@ public class ReviewService {
         r.setContent(content);
         r.setCreateDate(LocalDateTime.now());
         r.setCategory(category1.get());
+        r.setAuthor(user);
         this.reviewRepository.save(r);
     }
 
@@ -83,8 +84,4 @@ public class ReviewService {
             }
         }
     }
-
-
-
-
 }
