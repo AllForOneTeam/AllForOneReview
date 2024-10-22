@@ -1,4 +1,4 @@
-package com.market.allForOneReview.domain.article.entity;
+package com.market.allForOneReview.domain.notice;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -46,7 +46,7 @@
       <!-- 탭 콘텐츠 -->
       <div class="tab-content" id="myTabContent">
         <!-- Tab 1 콘텐츠 -->
-        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
+        <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab" th:each="notice:${notices}">
           <table class="table table-bordered">
             <tbody>
               <tr class="clickable-row" data-href="notice_detail.html?id=1">
@@ -120,7 +120,6 @@
           </table>
         </div>
       </div>
-
     </div>
   </div>
 
