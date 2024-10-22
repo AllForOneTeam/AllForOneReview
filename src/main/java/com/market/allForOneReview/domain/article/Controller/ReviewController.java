@@ -10,7 +10,6 @@ import com.market.allForOneReview.domain.user.entity.SiteUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -18,12 +17,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/review")
-public class ReviewController {
+public class  ReviewController {
     private final ReviewService reviewService;
     private final UserService userService;
 
@@ -37,12 +37,8 @@ public class ReviewController {
         model.addAttribute("paging", paging);
         model.addAttribute("currentCategory", category);
         model.addAttribute("reviews", paging.getContent());
-
-
         return "sub";
     }
-
-
 
     @GetMapping("/sub/search")
     public String searchReviews(@RequestParam("filter") String filter,
@@ -58,13 +54,8 @@ public class ReviewController {
         model.addAttribute("filter", filter);
         model.addAttribute("query", query);
         model.addAttribute("reviews", paging.getContent());
-
-
         return "sub";
     }
-
-
-
 
     @GetMapping(value = "/detail/{id}")
     public String detail(Model model, @PathVariable("id") Long id, AnswerForm answerForm) {
@@ -85,10 +76,8 @@ public class ReviewController {
         if (bindingResult.hasErrors()) {
             return "create";
         }
-        this.reviewService.create(reviewForm.getTitle(), reviewForm.getContentStory(), reviewForm.getContent(), reviewForm.getCategory(), reviewForm.getSubCategory());
-
-        //SiteUser siteUser = this.userService.getUser(principal.getName());
-        //this.reviewService.create(reviewForm.getTitle(), reviewForm.getContentStory(), reviewForm.getContent(), siteUser);
+        SiteUser siteUser = this.userService.getUser(principal.getName());
+        this.reviewService.create(reviewForm.getTitle(), reviewForm.getContentStory(), reviewForm.getContent(), reviewForm.getCategory(), reviewForm.getSubCategory(), siteUser);
 
         return "redirect:/review/sub";
     }
