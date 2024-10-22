@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 public class Review extends BaseEntity {
 
-    @Column(length = 200)
+    @Column(length = 100)
     private String title;
 
     @Column(columnDefinition = "TEXT")
@@ -29,8 +29,26 @@ public class Review extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
+
+    @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
+    private List<Answer> answers;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
+    private List<Image> images;
+
+    @Column
+    private Integer views;
+
+    @ElementCollection
+    private List<String> tags; // 태그를 리스트로 저장
+
+    @Column
+    private Integer vote = 0;
+
     @ManyToOne
-    @JoinColumn(name = "username")
     private SiteUser user;
 
     @OneToMany(mappedBy = "review", cascade = CascadeType.REMOVE)
