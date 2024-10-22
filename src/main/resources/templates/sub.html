@@ -14,8 +14,8 @@
   </div>
 
 
-    <!-- 타이틀 이미지 -->
-    <section class="container-fluid text-center banner"></section>
+  <!-- 타이틀 이미지 -->
+  <section class="container-fluid text-center banner"></section>
 
 
   <form th:action="@{/review/sub/search}" method="get" class="search-form">
@@ -28,7 +28,7 @@
           <option value="all">전체</option>
           <option value="tag">태그</option>
           <option value="title">제목</option>
-<!--          <option value="author">작성자</option>-->
+          <!--          <option value="author">작성자</option>-->
         </select>
       </div>
       <!-- 검색어 입력 -->
@@ -41,116 +41,108 @@
       </div>
     </div>
   </form>
-    <!-- 주요 내용 -->
-    <div class="sub-contentArea">
-      <section class="subArea">
-        <div class="container mt-5">
-          <!-- 탭 목록 -->
-          <div class="tabBox">
-            <ul class="nav nav-tabs" id="myTab" role="tablist">
-              <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="all-tab" onclick="showTabContent('all')" type="button">전체</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link " id="romance-tab" onclick="showTabContent('romance')" type="button">로맨스</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="action-tab" onclick="showTabContent('action')" type="button">액션</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="sf-tab" onclick="showTabContent('sf')" type="button">SF</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="horror-tab" onclick="showTabContent('horror')" type="button">Horror</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="comedy-tab" onclick="showTabContent('comedy')" type="button">Comedy</button>
-              </li>
-              <li class="nav-item" role="presentation">
-                <button class="nav-link" id="others-tab" onclick="showTabContent('others')" type="button">기타</button>
-              </li>
-            </ul>
+  <!-- 주요 내용 -->
+  <div class="sub-contentArea">
+    <section class="subArea">
+      <!-- 탭 목록 -->
+      <div class="tabBox">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="all-tab" onclick="showTabContent('all')" type="button">전체</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link " id="romance-tab" onclick="showTabContent('romance')" type="button">로맨스</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="action-tab" onclick="showTabContent('action')" type="button">액션</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="sf-tab" onclick="showTabContent('sf')" type="button">SF</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="horror-tab" onclick="showTabContent('horror')" type="button">Horror</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="comedy-tab" onclick="showTabContent('comedy')" type="button">Comedy</button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="others-tab" onclick="showTabContent('others')" type="button">기타</button>
+          </li>
+        </ul>
 
-            <p>전체 <strong>251</strong>(1/210)</p>
+        <p>전체 <strong>251</strong>(1/210)</p>
 
-          </div>
-          <!-- 탭 내용 -->
-          <div class="tab-content" id="myTabContent">
+      </div>
+      <div class="container mt-5 sub-bodyContent">
+        <!-- 탭 내용 -->
+        <div class="tab-content" id="myTabContent">
 
-            <div id="all-content" class="sub-tab_contentBox">
-              <!-- 전체 탭 내용 -->
-              <div class="sub-contentList_itemBox" th:each="review : ${reviews}" th:data-id="${review.id}" th:data-subcategory="${review.category.subCategory}" style="cursor: pointer;">
-                <img th:src="@{/img/png/ex-img.png}" alt="img" data-id="${review.id}">
-                <div class="sub-contentList_textBox" data-id="${review.id}">
-                  <img th:src="@{/img/svg/token-branded_lovely.svg}" alt="svg" data-id="${review.id}">
-                  <div class="sub-contentList_text" data-id="${review.id}">
+          <div id="all-content" class="sub-tab_contentBox">
+            <!-- 전체 탭 내용 -->
+            <div class="sub-contentList_itemBox" th:each="review : ${reviews}" th:data-id="${review.id}" th:data-subcategory="${review.category.subCategory}" style="cursor: pointer;">
+              <img th:src="@{/img/png/ex-img.png}" alt="img" data-id="${review.id}">
+              <div class="sub-contentList_textBox" data-id="${review.id}">
+                <img th:src="@{/img/svg/token-branded_lovely.svg}" alt="svg" data-id="${review.id}">
+                <div class="sub-contentList_text" data-id="${review.id}">
+                  <div class="sub-contentListItem" data-id="${review.id}">
                     <p th:if="${review.author != null}" th:text="${review.author.username}"></p>
-                    <p th:text="${review.title}" data-id="${review.id}" class="sub-TitleText">Title</p>
-                    <p class="sub-contentText" th:text="${review.contentStory}" data-id="${review.id}"></p>
-                    <div class="sub-content_hashtagBox" data-id="${review.id}">
+                    <span th:text="${#temporals.format(review.createDate, 'yyyy.MM.dd')}"></span>
+                  </div>
+                  <p th:text="${review.title}" data-id="${review.id}" class="sub-TitleText">Title</p>
+                  <p class="sub-contentText" th:text="${review.contentStory}" data-id="${review.id}"></p>
+                  <div class="sub-content_hashtagBox" data-id="${review.id}">
+                    <div class="sub-content_hashtagBox">
                       <div class="hashtagItem"><span>#hashtag</span></div>
-                      <div class="sub-content_hashtagBox">
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                        <div class="hashtagItem"><span>#hashtag</span></div>
-                      </div>
+                      <div class="hashtagItem"><span>#hashtag</span></div>
+                      <div class="hashtagItem"><span>#hashtag</span></div>
+                      <div class="hashtagItem"><span>#hashtag</span></div>
+                      <div class="hashtagItem"><span>#hashtag</span></div>
+                      <div class="hashtagItem"><span>#hashtag</span></div>
                     </div>
                   </div>
                 </div>
-                <div class="sub-contentList_timeBox" data-id="${review.id}">
-                  <span th:text="${#temporals.format(review.createDate, 'yyyy.MM.dd')}"></span>
-                </div>
-              </div>
-
-
-            </div>
-
-            <!-- 각 탭 내용에 대한 ID 추가 -->
-            <div id="romance-content" class="sub-tab_contentBox" style="display: none;">
-              <p>로맨스 탭 내용입니다.</p>
-            </div>
-            <div id="search-content" class="sub-tab_contentBox" style="display: none;">
-              <div th:each="review : ${paging.content}">
-                <!-- 검색 결과를 표시하는 템플릿 코드 추가 -->
-                <div th:data-id="${review.id}" style="cursor: pointer;">
-                  <p th:text="${review.title}"></p>
-                  <p th:text="${review.contentStory}"></p>
-                </div>
               </div>
             </div>
-            <div id="action-content" class="sub-tab_contentBox" style="display: none;">
-              <!-- 액션 탭 내용 -->
-              <p>액션 탭 내용입니다.</p>
-            </div>
-            <div id="sf-content" class="sub-tab_contentBox" style="display: none;">
-              <!-- SF 탭 내용 -->
-              <p>SF 탭 내용입니다.</p>
-            </div>
-            <div id="horror-content" class="sub-tab_contentBox" style="display: none;">
-              <!-- Horror 탭 내용 -->
-              <p>Horror 탭 내용입니다.</p>
-            </div>
-            <div id="comedy-content" class="sub-tab_contentBox" style="display: none;">
-              <!-- Comedy 탭 내용 -->
-              <p>Comedy 탭 내용입니다.</p>
-            </div>
-            <div id="others-content" class="sub-tab_contentBox" style="display: none;">
-              <!-- 기타 탭 내용 -->
-              <p>기타 탭 내용입니다.</p>
-            </div>
+
+
           </div>
 
-
-
-          <div class="sub-createBTN">
-            <a class="a-btn btn btn-primary " th:href="@{/review/create}">글 등록</a>
+          <!-- 각 탭 내용에 대한 ID 추가 -->
+          <div id="romance-content" class="sub-tab_contentBox" style="display: none;">
+          </div>
+          <div id="search-content" class="sub-tab_contentBox" style="display: none;">
+            <div th:each="review : ${paging.content}">
+              <!-- 검색 결과를 표시하는 템플릿 코드 추가 -->
+              <div th:data-id="${review.id}" style="cursor: pointer;">
+                <p th:text="${review.title}"></p>
+                <p th:text="${review.contentStory}"></p>
+              </div>
+            </div>
+          </div>
+          <div id="action-content" class="sub-tab_contentBox" style="display: none;">
+            <!-- 액션 탭 내용 -->
+          </div>
+          <div id="sf-content" class="sub-tab_contentBox" style="display: none;">
+            <!-- SF 탭 내용 -->
+          </div>
+          <div id="horror-content" class="sub-tab_contentBox" style="display: none;">
+            <!-- Horror 탭 내용 -->
+          </div>
+          <div id="comedy-content" class="sub-tab_contentBox" style="display: none;">
+            <!-- Comedy 탭 내용 -->
+          </div>
+          <div id="others-content" class="sub-tab_contentBox" style="display: none;">
+            <!-- 기타 탭 내용 -->
           </div>
         </div>
 
-      </section>
-    </div>
+        <div class="sub-createBTN">
+          <a class="a-btn btn btn-primary " th:href="@{/review/create}">글 등록</a>
+        </div>
+      </div>
+
+    </section>
+  </div>
 
   <div th:if="${!paging.isEmpty()}">
     <ul class="pagination justify-content-center">
