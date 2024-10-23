@@ -22,43 +22,43 @@ public class UserController {
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "member/login";
     }
 
     @GetMapping("/membership")
     public String signup(UserCreateForm userCreateForm) {
-        return "membership";
+        return "member/membership";
     }
 
     @PostMapping("/membership")
     public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, Model model) throws MessagingException {
         // 폼 검증에 에러가 있으면 바로 회원가입 페이지로 돌아감
         if (bindingResult.hasErrors()) {
-            return "membership";
+            return "member/membership";
         }
 
         // 패스워드 일치 여부 검증
         if (!userCreateForm.getPassword1().equals(userCreateForm.getPassword2())) {
             bindingResult.rejectValue("password2", "passwordInCorrect", "2개의 패스워드가 일치하지 않습니다.");
-            return "membership";
+            return "member/membership";
         }
 
         // username 중복 확인
         if (userService.existsByUsername(userCreateForm.getUsername())) {
             bindingResult.reject("signupFailed", "이미 등록된 사용자 ID 입니다.");
-            return "membership";
+            return "member/membership";
         }
 
-//        // email 중복 확인
-//        if (userService.existsByEmail(userCreateForm.getEmail())) {
-//            bindingResult.reject("signupFailed", "이미 등록된 이메일 입니다.");
-//            return "membership";
-//        }
+        // email 중복 확인
+        if (userService.existsByEmail(userCreateForm.getEmail())) {
+            bindingResult.reject("signupFailed", "이미 등록된 이메일 입니다.");
+            return "member/membership";
+        }
 
         // 닉네임 중복 확인
         if (userService.existsByNickname(userCreateForm.getNickname())) {
             bindingResult.reject("signupFailed", "중복된 닉네임 입니다.");
-            return "membership";
+            return "member/membership";
         }
 
         try {
@@ -67,11 +67,11 @@ public class UserController {
         } catch (DataIntegrityViolationException e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", "이미 등록된 사용자 입니다.");
-            return "membership";
+            return "member/membership";
         } catch (Exception e) {
             e.printStackTrace();
             bindingResult.reject("signupFailed", e.getMessage());
-            return "membership";
+            return "member/membership";
         }
 
         // 인증 코드 생성 및 이메일 전송
@@ -80,6 +80,6 @@ public class UserController {
         model.addAttribute("email", userCreateForm.getEmail());
 
         // 인증 페이지로 리다이렉트
-        return "auth"; // auth.html 파일로 이동
+        return "member/auth"; // auth.html 파일로 이동
     }
 }

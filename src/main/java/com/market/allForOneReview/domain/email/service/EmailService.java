@@ -1,6 +1,5 @@
 package com.market.allForOneReview.domain.email.service;
 
-import com.market.allForOneReview.domain.auth.service.AuthService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -10,16 +9,25 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
 
-    private final JavaMailSender javaMailSender;
-    private final AuthService authService;
+    private final JavaMailSender mailSender;
+
+    // @Value 어노테이션 경로 수정
+    @Value("${spring.auth.code.expiration-millis}")
+    private long authCodeExpirationMillis;
+
     @Value("${spring.mail.username}")  // mail.username 값을 주입받음
     private String senderEmail;
+
+    // 인증 코드를 메모리에 저장할 Map (key: 이메일, value: 인증 코드)
+    private final Map<String, String> authCodeStore = new HashMap<>();
 
     // 랜덤으로 숫자 생성
     public String createNumber() {
@@ -40,7 +48,7 @@ public class EmailService {
 
     // 메일 생성
     public MimeMessage createMail(String recipientEmail, String number) throws MessagingException {
-        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessage message = mailSender.createMimeMessage();
 
         message.setFrom(senderEmail);  // mail.username에서 주입된 값 사용
         message.setRecipients(MimeMessage.RecipientType.TO, recipientEmail);
@@ -62,14 +70,25 @@ public class EmailService {
         MimeMessage message = createMail(recipientEmail, number); // 메일 생성
 
         try {
-            javaMailSender.send(message); // 메일 발송
-            // 생성된 인증번호를 Redis에 저장
-            authService.saveAuthCode(recipientEmail, number);
+            mailSender.send(message); // 메일 발송
+            // 생성된 인증번호를 메모리에 저장
+            saveAuthCode(recipientEmail, number);
         } catch (MailException e) {
             e.printStackTrace();
             throw new MailSendException("메일 발송 중 오류가 발생했습니다.");
         }
 
         return number; // 생성된 인증번호 반환
+    }
+
+    // 인증 코드를 메모리에 저장
+    public void saveAuthCode(String email, String code) {
+        authCodeStore.put(email, code); // 메모리에 저장
+    }
+
+    // 인증 코드를 확인하는 메서드
+    public boolean verifyAuthCode(String email, String code) {
+        String storedCode = authCodeStore.get(email);
+        return storedCode != null && storedCode.equals(code); // 저장된 코드와 비교
     }
 }

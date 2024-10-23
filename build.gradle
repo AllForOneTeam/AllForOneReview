@@ -39,8 +39,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	implementation 'io.lettuce:lettuce-core'
 }
 
 
@@ -48,3 +46,6 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+tasks.withType(JavaCompile) {
+	options.compilerArgs += ['-parameters']
+}

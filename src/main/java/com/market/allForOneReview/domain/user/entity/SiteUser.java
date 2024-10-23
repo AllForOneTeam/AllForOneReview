@@ -10,12 +10,14 @@ import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Entity
 @Getter
+@Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,4 +42,9 @@ public class SiteUser extends BaseEntity {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<NoticePost> noticePosts;
+
+    private String verificationCode; // 인증 코드 저장
+
+    private boolean verified = false;  // 이메일 인증 여부
+    private boolean enabled = false;   // 계정 활성화 여부
 }
