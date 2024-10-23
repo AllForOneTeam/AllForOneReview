@@ -38,41 +38,40 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
-    public String verifyEmail(@RequestParam String email,
-                              @RequestParam String authNumber,
+    public String verifyEmail(@RequestParam(name = "email") String email,
+                              @RequestParam(name = "authNumber") String authNumber,
                               Model model, RedirectAttributes redirectAttributes) {
         try {
-            // 사용자 확인
             SiteUser user = userService.findByEmail(email);
-            try {
-                user = userService.findByEmail(email);
-            } catch (UsernameNotFoundException e) {
-                model.addAttribute("error", "등록되지 않은 이메일입니다.");
-                return "member/auth";
-            }
 
             // 인증번호 검증
             boolean isVerified = authService.verifyEmail(email, authNumber);
 
             if (isVerified) {
                 log.info("Email verification successful for: {}", email);
-                // 인증 성공 시 사용자 상태 업데이트
                 user.setVerified(true);
-                user.setEnabled(true);  // 계정 활성화
+                user.setEnabled(true);
                 userService.save(user);
 
-                // 성공 메시지를 리다이렉트 시 전달
+                // 디버깅을 위한 로그 추가
+                log.info("User status updated - verified: {}, enabled: {}",
+                        user.isVerified(), user.isEnabled());
+
                 redirectAttributes.addFlashAttribute("message",
                         "이메일 인증이 완료되었습니다. 로그인해주세요.");
-                return "redirect:/login";
+                return "redirect:/user/login";
             } else {
-                log.warn("Email verification failed for: {}", email);
+                log.warn("Email verification failed for: {} with auth number: {}",
+                        email, authNumber);
                 model.addAttribute("error", "인증번호가 일치하지 않거나 만료되었습니다.");
                 return "member/auth";
             }
-
+        } catch (UsernameNotFoundException e) {
+            log.error("User not found for email: {}", email);
+            model.addAttribute("error", "등록되지 않은 이메일입니다.");
+            return "member/auth";
         } catch (Exception e) {
-            log.error("Error during email verification", e);
+            log.error("Error during email verification: ", e);
             model.addAttribute("error", "인증 처리 중 오류가 발생했습니다.");
             return "member/auth";
         }
@@ -84,14 +83,23 @@ public class AuthController {
         try {
             // 사용자 존재 여부 확인
             SiteUser user = userService.findByEmail(email);
-            if (user == null) {
-                return ResponseEntity.badRequest().body("등록되지 않은 이메일입니다.");
-            }
 
+            // 인증 코드 생성 및 이메일 발송
             authService.sendAuthCode(email);
+
+            // 생성된 인증 코드를 데이터베이스에도 저장
+            String storedAuthCode = authService.getStoredAuthCode(email);
+            userService.setVerificationCode(email, storedAuthCode);
+
+            log.info("Auth code sent and saved for user: {}", email);
             return ResponseEntity.ok("인증 코드가 발송되었습니다.");
+
+        } catch (UsernameNotFoundException e) {
+            log.warn("Attempt to send auth code to non-existent email: {}", email);
+            return ResponseEntity.badRequest().body("등록되지 않은 이메일입니다.");
+
         } catch (Exception e) {
-            log.error("Failed to send auth code", e);
+            log.error("Failed to send auth code to {}: {}", email, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("인증 코드 발송에 실패했습니다.");
         }

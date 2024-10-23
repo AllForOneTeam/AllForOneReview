@@ -43,34 +43,65 @@ public class AuthService {
         public boolean isExpired() {
             return LocalDateTime.now().isAfter(expiryTime);
         }
+
+        // getter 추가
+        public String getCode() {
+            return code;
+        }
+
+        public LocalDateTime getExpiryTime() {
+            return expiryTime;
+        }
     }
 
     private final Map<String, AuthInfo> authCodeStore = new ConcurrentHashMap<>();
 
-    // 인증 코드 생성 및 이메일 발송
     @Transactional
     public void sendAuthCode(String email) {
-        String authCode = generateAuthCode();
-        saveAuthCode(email, authCode);
-        sendEmail(email, authCode);
+        try {
+            String authCode = generateAuthCode();
+            saveAuthCode(email, authCode);
+            sendEmail(email, authCode);
+            log.info("Auth code generation and sending completed for email: {}", email);
+        } catch (Exception e) {
+            log.error("Failed to process auth code for email: {}", email, e);
+            throw new RuntimeException("인증 코드 처리 중 오류가 발생했습니다.", e);
+        }
     }
 
     private String generateAuthCode() {
         Random random = new Random();
-        return String.format("%06d", random.nextInt(1000000));
+        String authCode = String.format("%06d", random.nextInt(1000000));
+        log.debug("Generated auth code: {}", authCode);
+        return authCode;
     }
 
     private void saveAuthCode(String email, String authCode) {
-        log.info("Saving auth code for email: {}", email);
-        String key = AUTH_CODE_PREFIX + email;
-        authCodeStore.put(key, new AuthInfo(authCode, email, authCodeExpirationMillis));
+        try {
+            String key = AUTH_CODE_PREFIX + email;
+            AuthInfo previousAuth = authCodeStore.get(key);
+            if (previousAuth != null) {
+                log.info("Removing previous auth code for email: {}", email);
+                authCodeStore.remove(key);
+            }
+
+            authCodeStore.put(key, new AuthInfo(authCode, email, authCodeExpirationMillis));
+            log.info("Auth code saved successfully for email: {}", email);
+        } catch (Exception e) {
+            log.error("Failed to save auth code for email: {}", email, e);
+            throw new RuntimeException("인증 코드 저장 중 오류가 발생했습니다.", e);
+        }
     }
 
     private void sendEmail(String email, String authCode) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
         message.setSubject("이메일 인증 코드");
-        message.setText("인증 코드: " + authCode + "\n\n이 코드는 5분 동안 유효합니다.");
+        message.setText(String.format(
+                "인증 코드: %s\n\n이 코드는 %d분 동안 유효합니다.",
+                authCode,
+                authCodeExpirationMillis / (60 * 1000)
+        ));
 
         try {
             mailSender.send(message);
@@ -82,34 +113,72 @@ public class AuthService {
     }
 
     public boolean verifyEmail(String email, String authCode) {
-        log.info("Verifying email: {}", email);
-        String key = AUTH_CODE_PREFIX + email;
-        AuthInfo authInfo = authCodeStore.get(key);
+        try {
+            String key = AUTH_CODE_PREFIX + email;
+            AuthInfo authInfo = authCodeStore.get(key);
 
-        if (authInfo == null) {
-            log.warn("No auth code found for email: {}", email);
+            if (authInfo == null) {
+                log.warn("No auth code found for email: {}", email);
+                return false;
+            }
+
+            log.debug("Stored auth code: {}, Provided auth code: {}, Expiry time: {}",
+                    authInfo.getCode(), authCode, authInfo.getExpiryTime());
+
+            if (authInfo.isExpired()) {
+                log.warn("Auth code expired for email: {}", email);
+                authCodeStore.remove(key);
+                return false;
+            }
+
+            boolean isValid = authInfo.isValid(authCode);
+            if (isValid) {
+                log.info("Auth code verified successfully for email: {}", email);
+                authCodeStore.remove(key);
+            } else {
+                log.warn("Invalid auth code provided for email: {}", email);
+            }
+
+            return isValid;
+
+        } catch (Exception e) {
+            log.error("Error during email verification for: {}", email, e);
             return false;
         }
-
-        if (authInfo.isExpired()) {
-            log.warn("Auth code expired for email: {}", email);
-            authCodeStore.remove(key);
-            return false;
-        }
-
-        boolean isValid = authInfo.isValid(authCode);
-        if (isValid) {
-            log.info("Auth code verified successfully for email: {}", email);
-            authCodeStore.remove(key);
-        } else {
-            log.warn("Invalid auth code provided for email: {}", email);
-        }
-
-        return isValid;
     }
 
-    // 만료된 인증 코드 정리
+    // 주기적으로 실행되어야 하는 만료된 코드 정리 메소드
     public void cleanupExpiredCodes() {
-        authCodeStore.entrySet().removeIf(entry -> entry.getValue().isExpired());
+        try {
+            int beforeSize = authCodeStore.size();
+            authCodeStore.entrySet().removeIf(entry -> {
+                boolean expired = entry.getValue().isExpired();
+                if (expired) {
+                    log.debug("Removing expired auth code for email: {}",
+                            entry.getValue().email);
+                }
+                return expired;
+            });
+            int afterSize = authCodeStore.size();
+
+            if (beforeSize != afterSize) {
+                log.info("Cleaned up {} expired auth codes", beforeSize - afterSize);
+            }
+        } catch (Exception e) {
+            log.error("Error during cleanup of expired auth codes", e);
+        }
+    }
+
+    // 디버깅용 메소드
+    public boolean hasStoredAuthCode(String email) {
+        String key = AUTH_CODE_PREFIX + email;
+        return authCodeStore.containsKey(key);
+    }
+
+    // 저장된 인증 코드를 반환하는 메소드 추가
+    public String getStoredAuthCode(String email) {
+        String key = AUTH_CODE_PREFIX + email;
+        AuthInfo authInfo = authCodeStore.get(key);
+        return authInfo != null ? authInfo.getCode() : null;
     }
 }
