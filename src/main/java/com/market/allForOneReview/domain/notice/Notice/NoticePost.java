@@ -23,7 +23,6 @@ public class NoticePost extends BaseEntity {
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-
     private SiteUser user;
 
     @ManyToOne(fetch = FetchType.LAZY)

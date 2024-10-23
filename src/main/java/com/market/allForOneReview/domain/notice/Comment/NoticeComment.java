@@ -20,7 +20,7 @@ public class NoticeComment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private SiteUser siteUser;
+    private SiteUser author;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notice_post_id", nullable = false)
