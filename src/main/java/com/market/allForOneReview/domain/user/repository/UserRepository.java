@@ -1,4 +1,4 @@
-package com.market.allForOneReview.domain.user;
+package com.market.allForOneReview.domain.user.repository;
 
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,26 +1,41 @@
 package com.market.allForOneReview.domain.email.controller;
 
-import com.market.allForOneReview.domain.email.EmailDTO;
-import com.market.allForOneReview.domain.email.service.EmailService;
+import com.market.allForOneReview.domain.auth.service.AuthService;
+import com.market.allForOneReview.domain.email.dto.EmailRequest;
+import com.market.allForOneReview.domain.email.dto.EmailVerificationRequest;
 import jakarta.mail.MessagingException;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.UnsupportedEncodingException;
-
+@Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/email")
 public class EmailController {
+    private final AuthService authService;  // EmailService 대신 AuthService 사용
 
-    private final EmailService mailService;
+    @PostMapping("/send-verification")
+    public ResponseEntity<Void> sendVerificationEmail(
+            @Valid @RequestBody EmailRequest request) {
+        try {
+            authService.sendAuthCode(request.getEmail());
+            return ResponseEntity.ok().build();
+        } catch (MessagingException e) {
+            log.error("Failed to send verification email", e);
+            return ResponseEntity.internalServerError().build();
+        }
+    }
 
-    @ResponseBody
-    @PostMapping("/emailCheck") // 이 부분은 각자 바꿔주시면 됩니다.
-    public String emailCheck(@RequestBody EmailDTO mailDTO) throws MessagingException, UnsupportedEncodingException {
-        String authCode = mailService.sendSimpleMessage(mailDTO.getEmail());
-        return authCode; // Response body에 값을 반환
+    @PostMapping("/verify")
+    public ResponseEntity<Boolean> verifyEmail(
+            @Valid @RequestBody EmailVerificationRequest request) {
+        boolean isValid = authService.verifyEmail(
+                request.getEmail(),
+                request.getCode()
+        );
+        return ResponseEntity.ok(isValid);
     }
 }

@@ -1,12 +1,15 @@
-package com.market.allForOneReview.domain.user;
+package com.market.allForOneReview.domain.user.service;
 
+import com.market.allForOneReview.domain.user.entity.PasswordResetToken;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
+import com.market.allForOneReview.domain.user.repository.PasswordResetTokenRepository;
+import com.market.allForOneReview.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -14,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final PasswordResetTokenRepository passwordResetTokenRepository;
 
     @Transactional
     public SiteUser create(String username, String nickname, String password, String email) {
@@ -151,5 +155,54 @@ public class UserService {
         boolean matches = passwordEncoder.matches(password, user.getPassword());
         log.debug("Password check result for user {}: {}", username, matches);
         return matches;
+    }
+
+    // 이메일로 아이디 찾기
+    public String findIdByEmail(String email) {
+        log.debug("Finding user ID by email: {}", email);
+        SiteUser user = findByEmail(email);
+        log.info("User ID found for email: {}", email);
+        return user.getUsername();
+    }
+
+    @Transactional
+    public void updatePassword(String email, String newPassword) {
+        log.debug("Updating password for user with email: {}", email);
+        SiteUser user = findByEmail(email);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        log.info("Password updated successfully for user: {}", email);
+    }
+
+    @Transactional
+    public void savePasswordResetToken(SiteUser user, String token) {
+        log.debug("Saving password reset token for user: {}", user.getEmail());
+        // 기존 토큰 삭제
+        passwordResetTokenRepository.deleteByUser(user);
+
+        // 새 토큰 저장
+        PasswordResetToken passwordResetToken = new PasswordResetToken(token, user);
+        passwordResetTokenRepository.save(passwordResetToken);
+        log.info("Password reset token saved for user: {}", user.getEmail());
+    }
+
+    @Transactional
+    public void resetPassword(String token, String newPassword) {
+        PasswordResetToken resetToken = passwordResetTokenRepository.findByToken(token)
+                .orElseThrow(() -> new IllegalArgumentException("유효하지 않은 토큰입니다."));
+
+        if (resetToken.isExpired()) {
+            passwordResetTokenRepository.delete(resetToken);
+            throw new IllegalArgumentException("만료된 토큰입니다.");
+        }
+
+        SiteUser user = resetToken.getUser();
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        // 사용된 토큰 삭제
+        passwordResetTokenRepository.delete(resetToken);
+
+        log.info("Password reset successful for user: {}", user.getUsername());
     }
 }

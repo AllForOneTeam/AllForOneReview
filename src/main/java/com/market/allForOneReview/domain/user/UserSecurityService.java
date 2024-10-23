@@ -1,6 +1,7 @@
 package com.market.allForOneReview.domain.user;
 
 import com.market.allForOneReview.domain.user.entity.SiteUser;
+import com.market.allForOneReview.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.DisabledException;

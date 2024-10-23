@@ -1,7 +1,7 @@
 package com.market.allForOneReview.domain.auth.controller;
 
 import com.market.allForOneReview.domain.auth.service.AuthService;
-import com.market.allForOneReview.domain.user.UserService;
+import com.market.allForOneReview.domain.user.service.UserService;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

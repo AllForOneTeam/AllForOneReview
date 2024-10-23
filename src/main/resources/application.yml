@@ -34,7 +34,7 @@ spring:
 
   auth:
     code:
-      expiration-millis: 300000  # 5분
+      expiration-minutes: 5  # 5분
 
 logging:
   level:

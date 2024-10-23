@@ -1,7 +1,9 @@
-package com.market.allForOneReview.domain.user;
+package com.market.allForOneReview.domain.user.controller;
 
 import com.market.allForOneReview.domain.auth.service.AuthService;
+import com.market.allForOneReview.domain.user.UserCreateForm;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
+import com.market.allForOneReview.domain.user.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,9 +12,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -94,5 +94,63 @@ public class UserController {
         }
 
         return "member/auth";
+    }
+
+    // 아이디/비밀번호 찾기 페이지 보여주기
+    @GetMapping("/find-account")
+    public String findAccount() {
+        return "member/find_account";
+    }
+
+    @PostMapping("/reset-password")
+    public String resetPassword(@RequestParam String username,
+                                @RequestParam String email,
+                                Model model) {
+        try {
+            // 사용자 정보 확인
+            SiteUser user = userService.findByUsername(username);
+            if (!user.getEmail().equals(email)) {
+                throw new IllegalArgumentException("이메일 주소가 일치하지 않습니다.");
+            }
+
+            // 비밀번호 재설정 이메일 발송
+            authService.sendPasswordResetEmail(email);
+
+            model.addAttribute("success", "비밀번호 재설정 링크가 이메일로 발송되었습니다.");
+            return "member/find_account";
+        } catch (Exception e) {
+            log.error("Failed to process password reset request", e);
+            model.addAttribute("error", "비밀번호 재설정 이메일 발송에 실패했습니다.");
+            return "member/find_account";
+        }
+    }
+
+    @GetMapping("/reset-password/{token}")
+    public String showResetPasswordForm(@PathVariable String token, Model model) {
+        if (authService.isValidPasswordResetToken(token)) {
+            model.addAttribute("token", token);
+            return "member/reset_password";
+        }
+        return "redirect:/user/find-account?error=invalid_token";
+    }
+
+    @PostMapping("/reset-password/{token}")
+    public String processResetPassword(@PathVariable String token,
+                                       @RequestParam String newPassword,
+                                       @RequestParam String confirmPassword,
+                                       Model model) {
+        try {
+            if (!newPassword.equals(confirmPassword)) {
+                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            }
+
+            userService.resetPassword(token, newPassword);
+            return "redirect:/user/login?reset=success";
+        } catch (Exception e) {
+            log.error("Failed to reset password", e);
+            model.addAttribute("error", e.getMessage());
+            model.addAttribute("token", token);
+            return "member/reset_password";
+        }
     }
 }
