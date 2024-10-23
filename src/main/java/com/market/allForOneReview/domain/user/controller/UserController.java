@@ -43,7 +43,12 @@ public class UserController {
     }
 
     @PostMapping("/membership")
-    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, Model model, HttpSession session) throws MessagingException {
+    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, Model model,
+                         HttpSession session) throws MessagingException {
+        if (!userCreateForm.isAgreement()) {
+            bindingResult.rejectValue("agreement", "required", "이용약관에 동의해주세요.");
+            return "member/membership";
+        }
         if (bindingResult.hasErrors()) {
             return "member/membership";
         }

@@ -5,37 +5,38 @@
 <div layout:fragment="content">
   <!-- 주요 내용 -->
   <div class="membershipBox">
-
     <h1>Membership</h1>
-
     <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-root-margin="0px 0px -40%"
-      data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2" tabindex="0">
+         data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2" tabindex="0">
 
-      <div class="textBox">
-        <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-          make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-          typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-          sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
-          PageMaker including versions of Lorem Ipsum.
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
-          make a type specimen book. It has survived not only five centuries, but also the leap into electronic
-          typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
-          sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
-          PageMaker including versions of Lorem Ipsum.
-        </p>
-        <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-          <label class="form-check-label" for="flexCheckDefault">
-            동의
-          </label>
-        </div>
-      </div>
-
-      <form th:action="@{/user/membership}" th:object="${userCreateForm}" method="post">
+      <form th:action="@{/user/membership}" th:object="${userCreateForm}" method="post" id="signupForm">
         <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+
+        <div class="textBox mb-4">
+          <p>
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+            standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+            make a type specimen book. It has survived not only five centuries, but also the leap into electronic
+            typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+            sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
+            PageMaker including versions of Lorem Ipsum.
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+            standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+            make a type specimen book. It has survived not only five centuries, but also the leap into electronic
+            typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+            sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
+            PageMaker including versions of Lorem Ipsum.
+          </p>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" th:field="*{agreement}" id="agreement">
+            <label class="form-check-label" for="agreement">
+              동의
+            </label>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('agreement')}" th:errors="*{agreement}">
+            </div>
+          </div>
+        </div>
+
         <div class="mb-3">
           <label for="username" class="form-label">아이디</label>
           <input type="text" th:field="*{username}" class="form-control" placeholder="Id">
@@ -60,5 +61,16 @@
       </form>
     </div>
   </div>
+
+  <!-- JavaScript 추가 -->
+  <script>
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      if (!document.getElementById('agreement').checked) {
+        e.preventDefault();
+        alert('이용약관에 동의해주세요.');
+        return false;
+      }
+    });
+  </script>
 </div>
 </html>

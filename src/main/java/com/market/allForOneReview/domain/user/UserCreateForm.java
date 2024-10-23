@@ -1,5 +1,6 @@
 package com.market.allForOneReview.domain.user;
 
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -28,4 +29,7 @@ public class UserCreateForm {
     @NotEmpty(message = "이메일은 필수입력 사항입니다.")
     @Email
     private String email;
+
+    @AssertTrue(message = "이용약관에 동의해주세요.")
+    private boolean agreement;
 }
