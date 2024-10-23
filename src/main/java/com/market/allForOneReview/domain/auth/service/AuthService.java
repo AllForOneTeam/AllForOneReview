@@ -56,6 +56,10 @@ public class AuthService {
         String key = AUTH_CODE_PREFIX + email;
         AuthInfo authInfo = authCodeStore.get(key);
 
+        // 디버깅을 위한 로그 추가
+        log.debug("Verifying email: {}, Provided code: {}, Stored AuthInfo: {}",
+                email, authCode, authInfo);
+
         if (authInfo == null) {
             log.warn("No auth code found for email: {}", email);
             return false;
@@ -98,6 +102,10 @@ public class AuthService {
 
     public String getStoredAuthCode(String email) {
         AuthInfo authInfo = authCodeStore.get(AUTH_CODE_PREFIX + email);
+        // 디버깅을 위한 로그 추가
+        log.debug("Retrieving stored auth code for email: {}, AuthInfo: {}", email, authInfo);
         return authInfo != null ? authInfo.getCode() : null;
     }
+
+
 }

@@ -2,7 +2,6 @@ package com.market.allForOneReview.domain.auth;
 
 import lombok.Getter;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,7 +13,8 @@ public class AuthInfo {
     public AuthInfo(String code, String email, int expirationMinutes) {
         this.code = code;
         this.email = email;
-        this.expiryTime = LocalDateTime.now().plus(Duration.ofMillis(expirationMinutes));
+        // 밀리초가 아닌 분 단위로 수정
+        this.expiryTime = LocalDateTime.now().plusMinutes(expirationMinutes);
     }
 
     public boolean isValid(String inputCode) {

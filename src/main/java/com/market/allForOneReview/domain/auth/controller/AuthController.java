@@ -1,8 +1,9 @@
 package com.market.allForOneReview.domain.auth.controller;
 
 import com.market.allForOneReview.domain.auth.service.AuthService;
-import com.market.allForOneReview.domain.user.service.UserService;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
+import com.market.allForOneReview.domain.user.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -40,7 +41,13 @@ public class AuthController {
     @PostMapping("/auth")
     public String verifyEmail(@RequestParam(name = "email") String email,
                               @RequestParam(name = "authNumber") String authNumber,
-                              Model model, RedirectAttributes redirectAttributes) {
+                              Model model, RedirectAttributes redirectAttributes, HttpSession session) {
+        // 세션에서 이메일 가져오기
+        String pendingEmail = (String) session.getAttribute("pendingEmail");
+        if (email == null || email.trim().isEmpty()) {
+            email = pendingEmail;
+        }
+
         try {
             SiteUser user = userService.findByEmail(email);
 

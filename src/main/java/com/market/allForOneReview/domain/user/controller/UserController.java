@@ -1,18 +1,25 @@
 package com.market.allForOneReview.domain.user.controller;
 
 import com.market.allForOneReview.domain.auth.service.AuthService;
+import com.market.allForOneReview.domain.email.EmailDTO;
 import com.market.allForOneReview.domain.user.UserCreateForm;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.domain.user.service.UserService;
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/membership")
-    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, Model model) throws MessagingException {
+    public String signup(@Valid UserCreateForm userCreateForm, BindingResult bindingResult, Model model, HttpSession session) throws MessagingException {
         if (bindingResult.hasErrors()) {
             return "member/membership";
         }
@@ -78,10 +85,15 @@ public class UserController {
             // 4. 데이터베이스에 인증 코드 저장
             userService.setVerificationCode(user.getEmail(), storedAuthCode);
 
+            // 5. 세션에 이메일 저장 추가
+            session.setAttribute("pendingEmail", user.getEmail());
+
+            // 6. 인증 페이지로 필요한 정보 전달
+            model.addAttribute("email", user.getEmail());
+
             log.info("User created and verification code sent to: {}", user.getEmail());
 
-            // 5. 인증 페이지로 필요한 정보 전달
-            model.addAttribute("email", user.getEmail());
+            return "member/auth";
 
         } catch (DataIntegrityViolationException e) {
             log.error("회원가입 중 데이터 무결성 위반 오류 발생", e);
@@ -92,14 +104,29 @@ public class UserController {
             bindingResult.reject("signupFailed", e.getMessage());
             return "member/membership";
         }
-
-        return "member/auth";
     }
 
     // 아이디/비밀번호 찾기 페이지 보여주기
     @GetMapping("/find-account")
     public String findAccount() {
         return "member/find_account";
+    }
+
+    @PostMapping("/find-id")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> findId(@RequestBody EmailDTO emailDto) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            String username = userService.findIdByEmail(emailDto.getEmail());
+            response.put("success", true);
+            response.put("username", username);
+            return ResponseEntity.ok(response);
+        } catch (UsernameNotFoundException e) {
+            response.put("success", false);
+            response.put("message", "해당 이메일로 등록된 계정이 없습니다.");
+            return ResponseEntity.ok(response);
+        }
     }
 
     @PostMapping("/reset-password")

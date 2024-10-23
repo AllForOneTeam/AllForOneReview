@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}">
 <head>
+  <title>계정 찾기</title>
   <link rel="stylesheet" th:href="@{/css/pages/login.css}">
+  <!-- CSRF 토큰을 위한 meta 태그 추가 -->
+  <meta name="_csrf" th:content="${_csrf.token}"/>
+  <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
 <div layout:fragment="content">
   <div class="loginBox">
@@ -21,7 +25,7 @@
     <div class="tab-content" id="accountTabContent">
       <!-- 아이디 찾기 탭 -->
       <div class="tab-pane fade show active" id="find-id-content" role="tabpanel" aria-labelledby="find-id-tab">
-        <form th:action="@{/user/find-id}" method="post">
+        <form id="findIdForm" onsubmit="return false;">
           <div th:if="${param.error}" class="alert alert-danger">
             입력하신 정보와 일치하는 계정이 없습니다.
           </div>
@@ -30,18 +34,13 @@
             <input type="email" name="email" id="email-for-id" class="form-control"
                    placeholder="가입시 등록한 이메일" required>
           </div>
-          <div class="input-group flex-nowrap">
-            <label for="nickname-for-id" class="input-group-text">닉네임</label>
-            <input type="text" name="nickname" id="nickname-for-id" class="form-control"
-                   placeholder="가입시 등록한 닉네임" required>
-          </div>
-          <button type="submit" class="a-btn btn btn-primary btn-login">아이디 찾기</button>
+          <button type="button" onclick="findId()" class="a-btn btn btn-primary btn-login">아이디 찾기</button>
         </form>
       </div>
 
       <!-- 비밀번호 재설정 탭 -->
       <div class="tab-pane fade" id="reset-pw-content" role="tabpanel" aria-labelledby="reset-pw-tab">
-        <form th:action="@{/user/reset-password}" method="post">
+        <form id="resetPwForm" onsubmit="return false;">
           <div th:if="${param.error}" class="alert alert-danger">
             입력하신 정보와 일치하는 계정이 없습니다.
           </div>
@@ -55,7 +54,7 @@
             <input type="email" name="email" id="email-for-pw" class="form-control"
                    placeholder="가입시 등록한 이메일" required>
           </div>
-          <button type="submit" class="a-btn btn btn-primary btn-login">비밀번호 재설정 이메일 받기</button>
+          <button type="button" onclick="resetPassword()" class="a-btn btn btn-primary btn-login">비밀번호 재설정 이메일 받기</button>
         </form>
       </div>
     </div>
@@ -67,5 +66,97 @@
       <a th:href="@{/user/membership}">회원가입</a>
     </div>
   </div>
+
+  <!-- 아이디 찾기 결과 모달 -->
+  <div class="modal fade" id="findIdModal" tabindex="-1" aria-labelledby="findIdModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="findIdModalLabel">아이디 찾기 결과</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>회원님의 아이디는 <strong id="foundUsername"></strong> 입니다.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          <a href="/user/login" class="btn btn-primary">로그인하기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript -->
+  <script th:inline="javascript">
+    function findId() {
+        const email = document.querySelector('#email-for-id').value;
+        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+        if (!email) {
+            alert('이메일을 입력해주세요.');
+            return;
+        }
+
+        fetch('/user/find-id', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response:', data);  // 디버깅용
+            if (data.success) {
+                document.querySelector('#foundUsername').textContent = data.username;
+                new bootstrap.Modal(document.querySelector('#findIdModal')).show();
+            } else {
+                alert('입력하신 이메일로 등록된 계정을 찾을 수 없습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('오류가 발생했습니다. 다시 시도해주세요.');
+        });
+    }
+
+    function resetPassword() {
+        const username = document.querySelector('#username-for-pw').value;
+        const email = document.querySelector('#email-for-pw').value;
+        const csrfToken = document.querySelector('meta[name="_csrf"]').content;
+        const csrfHeader = document.querySelector('meta[name="_csrf_header"]').content;
+
+        if (!username || !email) {
+            alert('모든 필드를 입력해주세요.');
+            return;
+        }
+
+        fetch('/user/reset-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                [csrfHeader]: csrfToken
+            },
+            body: JSON.stringify({
+                username: username,
+                email: email
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('비밀번호 재설정 이메일이 발송되었습니다.');
+            } else {
+                alert(data.message || '입력하신 정보와 일치하는 계정이 없습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('오류가 발생했습니다. 다시 시도해주세요.');
+        });
+    }
+  </script>
 </div>
 </html>
