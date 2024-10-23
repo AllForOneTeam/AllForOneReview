@@ -2,12 +2,15 @@ package com.market.allForOneReview.domain.auth.service;
 
 import com.market.allForOneReview.domain.auth.AuthInfo;
 import com.market.allForOneReview.domain.email.service.EmailService;
+import com.market.allForOneReview.domain.user.entity.PasswordResetToken;
+import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.domain.user.repository.PasswordResetTokenRepository;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,17 +44,6 @@ public class AuthService {
         log.info("Auth code sent to email: {}", email);
     }
 
-    @Transactional
-    public void sendPasswordResetEmail(String email) throws MessagingException {
-        String resetToken = UUID.randomUUID().toString();
-        int resetExpirationMinutes = 30; // 비밀번호 재설정 링크 30분 유효
-
-        emailService.sendPasswordResetEmail(email, resetToken);
-
-        // 토큰 저장 로직은 사용자 서비스에서 처리
-        log.info("Password reset email sent to: {}", email);
-    }
-
     public boolean verifyEmail(String email, String authCode) {
         String key = AUTH_CODE_PREFIX + email;
         AuthInfo authInfo = authCodeStore.get(key);
@@ -80,6 +72,28 @@ public class AuthService {
         }
 
         return isValid;
+    }
+
+    @Transactional
+    public void sendPasswordResetEmail(String email) throws MessagingException {
+        // 1. 사용자 찾기
+        SiteUser user = passwordResetTokenRepository.findUserByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
+
+        // 2. 새 토큰 생성
+        String resetToken = UUID.randomUUID().toString();
+
+        // 3. 기존 토큰이 있다면 삭제
+        passwordResetTokenRepository.deleteByUser(user);
+
+        // 4. 새 토큰 생성 및 저장
+        PasswordResetToken passwordResetToken = new PasswordResetToken(resetToken, user);
+        passwordResetTokenRepository.save(passwordResetToken);
+
+        // 5. 이메일 발송
+        emailService.sendPasswordResetEmail(email, resetToken);
+
+        log.info("Password reset token created and email sent to: {}", email);
     }
 
     @Transactional(readOnly = true)

@@ -3,6 +3,7 @@ package com.market.allForOneReview.domain.user.controller;
 import com.market.allForOneReview.domain.auth.service.AuthService;
 import com.market.allForOneReview.domain.email.EmailDTO;
 import com.market.allForOneReview.domain.user.UserCreateForm;
+import com.market.allForOneReview.domain.user.dto.PasswordResetRequest;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.domain.user.service.UserService;
 import jakarta.mail.MessagingException;
@@ -11,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
@@ -130,10 +132,13 @@ public class UserController {
     }
 
     @PostMapping("/reset-password")
-    public String resetPassword(@RequestParam String username,
-                                @RequestParam String email,
-                                Model model) {
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> resetPassword(@RequestBody Map<String, String> request) {
+        Map<String, Object> response = new HashMap<>();
         try {
+            String username = request.get("username");
+            String email = request.get("email");
+
             // 사용자 정보 확인
             SiteUser user = userService.findByUsername(username);
             if (!user.getEmail().equals(email)) {
@@ -143,41 +148,64 @@ public class UserController {
             // 비밀번호 재설정 이메일 발송
             authService.sendPasswordResetEmail(email);
 
-            model.addAttribute("success", "비밀번호 재설정 링크가 이메일로 발송되었습니다.");
-            return "member/find_account";
+            response.put("success", true);
+            response.put("message", "비밀번호 재설정 링크가 이메일로 발송되었습니다.");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             log.error("Failed to process password reset request", e);
-            model.addAttribute("error", "비밀번호 재설정 이메일 발송에 실패했습니다.");
-            return "member/find_account";
+            response.put("success", false);
+            response.put("message", "비밀번호 재설정 이메일 발송에 실패했습니다.");
+            return ResponseEntity.ok(response);
         }
     }
 
     @GetMapping("/reset-password/{token}")
-    public String showResetPasswordForm(@PathVariable String token, Model model) {
+    public String showResetPasswordForm(@PathVariable("token") String token, Model model) {
+        log.debug("Showing reset password form for token: {}", token);
+
         if (authService.isValidPasswordResetToken(token)) {
             model.addAttribute("token", token);
-            return "member/reset_password";
+            return "member/reset_password";  // 이 경로가 정확해야 함
         }
+
         return "redirect:/user/find-account?error=invalid_token";
     }
 
+    // 비밀번호 재설정 처리
     @PostMapping("/reset-password/{token}")
-    public String processResetPassword(@PathVariable String token,
-                                       @RequestParam String newPassword,
-                                       @RequestParam String confirmPassword,
-                                       Model model) {
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> processResetPassword(
+            @PathVariable("token") String token,
+            @RequestBody PasswordResetRequest request) {
+
+        Map<String, Object> response = new HashMap<>();
+
         try {
-            if (!newPassword.equals(confirmPassword)) {
+            log.debug("Processing password reset for token: {}", token);
+
+            if (!request.getNewPassword().equals(request.getConfirmPassword())) {
                 throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
             }
 
-            userService.resetPassword(token, newPassword);
-            return "redirect:/user/login?reset=success";
+            userService.resetPassword(token, request.getNewPassword());
+
+            response.put("success", true);
+            response.put("message", "비밀번호가 성공적으로 변경되었습니다.");
+
+            return ResponseEntity.ok(response);
+
+        } catch (IllegalArgumentException e) {
+            log.warn("Password reset failed: {}", e.getMessage());
+            response.put("success", false);
+            response.put("message", e.getMessage());
+            return ResponseEntity.ok(response);
+
         } catch (Exception e) {
-            log.error("Failed to reset password", e);
-            model.addAttribute("error", e.getMessage());
-            model.addAttribute("token", token);
-            return "member/reset_password";
+            log.error("Error during password reset", e);
+            response.put("success", false);
+            response.put("message", "비밀번호 재설정 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(response);
         }
     }
 }

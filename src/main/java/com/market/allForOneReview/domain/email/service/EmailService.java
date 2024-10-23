@@ -93,7 +93,8 @@ public class EmailService {
         helper.setTo(recipientEmail);
         helper.setSubject("[AllForReview] 비밀번호 재설정");
 
-        String resetLink = "http://yourdomain.com/user/reset-password/" + resetToken;
+        // URL 경로 수정
+        String resetLink = "http://localhost:8080/user/reset-password/" + resetToken;  // 개발환경용
         String body = """
                 <div style="margin: 20px; padding: 20px; border: 1px solid #ddd; border-radius: 5px;">
                     <h2 style="color: #333;">비밀번호 재설정</h2>
