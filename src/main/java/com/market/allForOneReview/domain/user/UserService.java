@@ -2,23 +2,16 @@ package com.market.allForOneReview.domain.user;
 
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;  // 로깅을 위해 추가
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.util.Collections;
-
-@Slf4j  // 로깅 추가
+@Slf4j
 @RequiredArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
@@ -84,30 +77,6 @@ public class UserService implements UserDetailsService {
                     log.warn("User not found with username: {}", username);
                     return new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + username);
                 });
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.debug("Loading user details for username: {}", username);
-        SiteUser user = findByUsername(username);
-
-        if (!user.isVerified()) {
-            log.warn("User {} is not verified", username);
-            throw new DisabledException("이메일 인증이 완료되지 않았습니다.");
-        }
-
-        if (!user.isEnabled()) {
-            log.warn("User {} is not enabled", username);
-            throw new DisabledException("계정이 비활성화 상태입니다.");
-        }
-
-        String role = user.getAuthority() == 2 ? "ADMIN" : "USER";
-        log.info("User {} successfully loaded with role {}", username, role);
-        return User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .authorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role)))
-                .build();
     }
 
     @Transactional
