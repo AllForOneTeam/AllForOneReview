@@ -37,9 +37,7 @@ public class AuthService {
         AuthInfo authInfo = new AuthInfo(authCode, email, authCodeExpirationMinutes);
         authCodeStore.put(key, authInfo);
 
-        // 분 단위로 변환하여 전달
-        int expirationMinutes = authCodeExpirationMinutes / (60 * 1000);
-        emailService.sendVerificationEmail(email, authCode, expirationMinutes);
+        emailService.sendVerificationEmail(email, authCode, authCodeExpirationMinutes);
         log.info("Auth code sent to email: {}", email);
     }
 
