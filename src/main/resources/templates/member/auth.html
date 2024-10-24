@@ -17,12 +17,9 @@
                                class="form-control"
                                id="authNumber"
                                name="authNumber"
+                               th:value="${authNumber}"
                                placeholder="인증번호를 입력해주세요"
                                required/>
-                    </div>
-                    <div th:if="${param.error}"
-                         class="alert alert-danger text-center mb-3">
-                        인증번호가 일치하지 않습니다.
                     </div>
                     <button type="submit"
                             class="btn btn-primary w-100">
@@ -35,8 +32,11 @@
 </div>
 <th:block layout:fragment="script">
     <script th:if="${message}">
-        window.onload = function() {
-            alert([[${message}]]);
+        alert([[${message}]]);
+        // 성공시에만 로그인 페이지로 이동
+        var redirectUrl = [[${redirectUrl}]];
+        if (redirectUrl) {
+            window.location.href = redirectUrl;
         }
     </script>
 </th:block>
