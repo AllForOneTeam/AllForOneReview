@@ -55,7 +55,9 @@ public class ReviewService {
 
     //    페이징
     public Page<Review> getReviewsByCategoryAndPage(String categoryName, int page) {
-        Pageable pageable = PageRequest.of(page, 10); // 10개씩 페이징 처리
+        List<Sort.Order> sorts = new ArrayList<>();
+        sorts.add(Sort.Order.desc("createDate"));
+        Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 10개씩 페이징 처리
         return reviewRepository.findByCategory_Category(categoryName, pageable);
     }
 
@@ -83,5 +85,17 @@ public class ReviewService {
                     return reviewRepository.findByCategory_CategoryAndCategory_SubCategoryAndAllFieldsContainingIgnoreCase(category, subCategory, query, pageRequest);
             }
         }
+    }
+
+    public void modify(Review review, String title, String contentStory, String content) {
+        review.setTitle(title);
+        review.setContentStory(contentStory);
+        review.setContent(content);
+        review.setModifiedDate(LocalDateTime.now());
+        this.reviewRepository.save(review);
+    }
+
+    public void delete(Review review) {
+        this.reviewRepository.delete(review);
     }
 }

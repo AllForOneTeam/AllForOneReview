@@ -21,7 +21,7 @@
         <div class="SD-title_textBox">
           <img alt="svg" th:src="@{/img/svg/token-branded_lovely.svg}">
           <div class="SD-titleText">
-            <p class="SD-nickname" th:if="${review.author != null}" th:text="${review.author.username}"><span
+            <p class="SD-nickname" th:if="${review.author != null}" th:text="${review.author.nickname}"><span
                     th:text="${#temporals.format(review.createDate, 'yyyy.MM.dd')}"></span></p>
             <p class="SD-title" th:text="${review.title}"></p>
             <p class="SD-story" th:text="${review.contentStory}"></p>
@@ -64,8 +64,14 @@
             </div>
 
             <div class="SD-textBoxButton">
-              <button class="btn btn-primary" type="button">수정</button>
-              <button class="btn btn-danger" type="button">삭제</button>
+              <a th:href="@{|/review/modify/${review.id}|}" class="btn-modify btn btn-sm btn-outline-secondary"
+                 sec:authorize="isAuthenticated()"
+                 th:if="${review.author != null and #authentication.getPrincipal().getUsername() == review.author.username}"
+                 th:text="수정"></a>
+              <a href="javascript:void(0);" th:data-uri="@{|/review/delete/${review.id}|}"
+                 class="btn-delete delete btn btn-sm btn-outline-secondary" sec:authorize="isAuthenticated()"
+                 th:if="${review.author != null and #authentication.getPrincipal().getUsername() == review.author.username}"
+                 th:text="삭제"></a>
             </div>
 
           </div>
@@ -83,19 +89,29 @@
       <div class="SD-commentBody">
         <ul>
           <li th:each="answer : ${review.answerList}">
+            <a th:id="|answer_${answer.id}|"></a>
             <!-- 댓글 1 -->
             <div class="mb-3">
               <div class="d-flex justify-content-between">
                 <div class="SD-commentTextBox">
-                  <strong th:if="${answer.author != null}" th:text="${answer.author.username}">></strong>
+                  <strong th:if="${answer.author != null}" th:text="${answer.author.nickname}">></strong>
                   <p th:text="${answer.content}"></p>
                   <small class="text-muted" th:text="${#temporals.format(answer.createDate, 'yyyy.MM.dd HH:mm')}"></small>
                 </div>
                 <!-- 댓글 아이콘 -->
                 <div class="SD-commentButtonBox">
-                  <button><img alt="svg" th:src="@{/img/svg/ic_baseline-create.svg}"></button>
-                  <button><img alt="svg" th:src="@{/img/svg/material-symbols_delete.svg}"></button>
-                  <button><img alt="svg" th:src="@{/img/svg/tabler_flag-filled.svg}"></button>
+                  <a th:href="@{|/answer/modify/${answer.id}|}" class="btn_delete"
+                     sec:authorize="isAuthenticated()"
+                     th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                     ><img alt="svg" th:src="@{/img/svg/ic_baseline-create.svg}"></a>
+                  <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}"
+                     class="btn_delete delete" sec:authorize="isAuthenticated()"
+                     th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                     ><img alt="svg" th:src="@{/img/svg/material-symbols_delete.svg}"></a>
+                  <a href="javascript:void(0);" th:data-uri="@{|/answer/delete/${answer.id}|}"
+                     class="btn_delete" sec:authorize="isAuthenticated()"
+                     th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                  ><img alt="svg" th:src="@{/img/svg/tabler_flag-filled.svg}"></a>
                 </div>
               </div>
             </div>
@@ -124,3 +140,14 @@
 
 </div>
 </html>
+
+<script layout:fragment="script" type='text/javascript'>
+  const delete_elements = document.getElementsByClassName("delete");
+  Array.from(delete_elements).forEach(function(element) {
+      element.addEventListener('click', function() {
+          if(confirm("정말로 삭제하시겠습니까?")) {
+              location.href = this.dataset.uri;
+          };
+      });
+  });
+</script>

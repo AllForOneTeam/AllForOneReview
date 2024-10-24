@@ -85,8 +85,15 @@
                 <img th:src="@{/img/svg/token-branded_lovely.svg}" alt="svg" data-id="${review.id}">
                 <div class="sub-contentList_text" data-id="${review.id}">
                   <div class="sub-contentListItem" data-id="${review.id}">
-                    <p th:if="${review.author != null}" th:text="${review.author.username}"></p>
-                    <span th:text="${#temporals.format(review.createDate, 'yyyy.MM.dd')}"></span>
+                    <div class="sub-nameAnswer">
+                      <p th:if="${review.author != null}" th:text="${review.author.nickname}"></p>
+                      <span class="text-danger small ms-2"
+                            th:if="${#lists.size(review.answerList) > 0}"
+                            th:text="${#lists.size(review.answerList)}">
+                    </span>
+
+                    </div>
+                    <span th:text="${#temporals.format(review.createDate, 'yyyy-MM-dd HH:mm')}"></span>
                   </div>
                   <p th:text="${review.title}" data-id="${review.id}" class="sub-TitleText">Title</p>
                   <p class="sub-contentText" th:text="${review.contentStory}" data-id="${review.id}"></p>

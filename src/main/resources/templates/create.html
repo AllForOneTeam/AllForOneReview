@@ -15,7 +15,7 @@
 
   <!-- 주요 내용 -->
   <div class="C-contentArea">
-    <form enctype="multipart/form-data" method="post" th:action="@{/review/create}" th:object="${reviewForm}">
+    <form enctype="multipart/form-data" method="post"  th:object="${reviewForm}">
       <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
       <div class="C-contentBox">
@@ -74,14 +74,14 @@
             <div class="C-dataItem">
               <div class="mb-3">
                 <label class="form-label" for="title">Title</label>
-                <input class="form-control" id="title" name="title" placeholder="제목을 입력해주세요." required type="text">
+                <input class="form-control" id="title" name="title" placeholder="제목을 입력해주세요." required type="text" th:field="*{title}">
               </div>
             </div>
 
             <div class="C-dataItem">
               <div class="mb-3">
                 <label class="form-label" for="contentStory">Content Story</label>
-                <input class="form-control" id="contentStory" name="contentStory" placeholder="줄거리를 입력해주세요." required type="text">
+                <input class="form-control" id="contentStory" name="contentStory" placeholder="줄거리를 입력해주세요." required type="text"  th:field="*{contentStory}">
               </div>
             </div>
 
@@ -114,7 +114,7 @@
         <div class="C-bodyTextBox">
           <button>
             <img alt="icon" th:src="@{/img/svg/mdi_camera-outline.svg}"></button>
-          <textarea id="content" name="content" required></textarea>
+          <textarea id="content" name="content" required  th:field="*{content}"></textarea>
         </div>
 
         <div class="C-textBoxButton">
