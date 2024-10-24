@@ -1,18 +1,46 @@
 spring:
   profiles:
-    active: dev  # 기본적으로는 application-dev.yml 이 로딩된다는 의미
-    include: secret # active 되는 설정파일 (application-dev.yml) 다음에 application-secret.yml 이 로딩된다는 의미
+    active: dev
+    include: secret
+
   jpa:
     properties:
       hibernate:
-        default_batch_fetch_size: 100 # Lazy 로딩이 될 때 한번에 DB에서 가져오는 데이터의 수
-        show_sql: true # SQL 로그를 보기 좋게 포맷팅
-        format_sql: true # SQL 로그에 하이라이트
-        use_sql_comments: true # SQL 로그에 코멘트
-  logging:
-    level:
-      # SQL에 사용된 실제 파라미터, SQL의 결과도 출력
-      org.hibernate.SQL: DEBUG
-      org.hibernate.orm.jdbc.bind: TRACE
-      org.hibernate.orm.jdbc.extract: TRACE
-      org.springframework.transaction.interceptor: TRACE
+        default_batch_fetch_size: 100
+        show_sql: true
+        format_sql: true
+        use_sql_comments: true
+    hibernate:
+      ddl-auto: update
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: dudghksdyd12@gmail.com
+    password: NEED_TO_INPUT_ON_SECRET
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+          ssl:
+            trust: smtp.gmail.com
+            protocols: TLSv1.2
+
+  auth:
+    code:
+      expiration-minutes: 5  # 5분
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.hibernate.orm.jdbc.extract: TRACE
+    org.springframework.transaction.interceptor: TRACE
+    com.market.allForOneReview: DEBUG
+    org.springframework.mail: DEBUG

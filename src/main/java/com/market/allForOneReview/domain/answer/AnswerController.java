@@ -2,7 +2,7 @@ package com.market.allForOneReview.domain.answer;
 
 import com.market.allForOneReview.domain.article.Service.ReviewService;
 import com.market.allForOneReview.domain.article.entity.Review;
-import com.market.allForOneReview.domain.user.UserService;
+import com.market.allForOneReview.domain.user.service.UserService;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class AnswerController {
     @PostMapping("/create/{id}")
     public String createAnswer(Model model, @PathVariable("id") Long id, @Valid AnswerForm answerForm, BindingResult bindingResult, Principal principal) {
         Review review = this.reviewService.getReview(id);
-        SiteUser siteUser = this.userService.getUser(principal.getName());
+        SiteUser siteUser = this.userService.findByUsername(principal.getName());
         if (bindingResult.hasErrors()) {
             model.addAttribute("review", review);
             return "sub_detail";

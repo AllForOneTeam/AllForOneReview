@@ -1,4 +1,4 @@
-package com.market.allForOneReview.domain.user;
+package com.market.allForOneReview.domain.user.repository;
 
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +11,5 @@ public interface UserRepository extends JpaRepository<SiteUser, Long> {
     boolean existsByNickname(String nickname);
 
     Optional<SiteUser> findByUsername(String username);
+    Optional<SiteUser> findByEmail(String email);
 }
