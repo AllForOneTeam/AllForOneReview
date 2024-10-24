@@ -21,6 +21,7 @@ public class NoticeForm {
     @NotEmpty(message="내용은 필수항목입니다.")
     private String content;
 
+    @NotEmpty(message = "탭을눌러 공지타입을 정해주세요")
     private String boardType;
 
 }
