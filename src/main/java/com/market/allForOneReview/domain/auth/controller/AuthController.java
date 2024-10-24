@@ -29,7 +29,9 @@ public class AuthController {
     public String getAuthPage(@RequestParam(value = "error", required = false) Boolean error,
                               @RequestParam(value = "verified", required = false) Boolean verified,
                               @RequestParam(value = "email", required = false) String email,
-                              Model model) {
+                              @RequestParam(value = "authNumber", required = false) String authNumber,
+                              Model model,
+                              RedirectAttributes redirectAttributes) {  // RedirectAttributes 추가
         if (Boolean.TRUE.equals(error)) {
             model.addAttribute("errorMessage", "인증번호가 일치하지 않거나 만료되었습니다.");
         }
@@ -38,6 +40,27 @@ public class AuthController {
         }
         if (email != null && !email.isEmpty()) {
             model.addAttribute("email", email);
+        }
+        if (authNumber != null && !authNumber.isEmpty()) {
+            model.addAttribute("authNumber", authNumber);
+            // 자동으로 인증 시도
+            try {
+                SiteUser user = userService.findByEmail(email);
+                boolean isVerified = authService.verifyEmail(email, authNumber);
+
+                if (isVerified) {
+                    log.info("Email verification successful for: {}", email);
+                    user.setVerified(true);
+                    user.setEnabled(true);
+                    userService.save(user);
+
+                    redirectAttributes.addFlashAttribute("message", "이메일 인증이 완료되었습니다. 로그인해주세요.");
+                    return "redirect:/user/login";
+                }
+            } catch (Exception e) {
+                log.error("Auto verification failed for email: {} with auth number: {}", email, authNumber);
+                model.addAttribute("error", "인증번호가 일치하지 않거나 만료되었습니다.");
+            }
         }
         return "member/auth";
     }
