@@ -1,5 +1,6 @@
-package com.market.allForOneReview.domain.notice;
+package com.market.allForOneReview.domain.notice.Comment;
 
+import com.market.allForOneReview.domain.notice.Notice.NoticePost;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.global.jpa.BaseEntity;
 import jakarta.persistence.*;
@@ -19,11 +20,9 @@ public class NoticeComment extends BaseEntity {
 
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
     private SiteUser author;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "notice_post_id", nullable = false)
     private NoticePost noticePost;
 
     @Column(name = "content", nullable = false, length = 500)

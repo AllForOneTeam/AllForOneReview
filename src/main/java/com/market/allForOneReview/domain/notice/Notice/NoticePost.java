@@ -1,5 +1,7 @@
-package com.market.allForOneReview.domain.notice;
+package com.market.allForOneReview.domain.notice.Notice;
 
+import com.market.allForOneReview.domain.notice.Board;
+import com.market.allForOneReview.domain.notice.Comment.NoticeComment;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.global.jpa.BaseEntity;
 import jakarta.persistence.*;

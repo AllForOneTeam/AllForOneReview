@@ -1,6 +1,6 @@
 package com.market.allForOneReview.domain.user.entity;
 
-import com.market.allForOneReview.domain.notice.NoticePost;
+import com.market.allForOneReview.domain.notice.Notice.NoticePost;
 import com.market.allForOneReview.domain.article.entity.Review;
 import com.market.allForOneReview.global.jpa.BaseEntity;
 import jakarta.persistence.CascadeType;

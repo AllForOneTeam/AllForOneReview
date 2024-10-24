@@ -16,97 +16,132 @@
   <!-- 주요 내용 -->
   <div class="ND-mainArea">
     <div class="container mt-5">
-      <h1 class="mb-4">공지사항 제목</h1>
+      <h1 class="mb-4" th:text="${notice.title}"></h1>
 
       <div class="d-flex justify-content-between mb-3">
         <div>
           <span class="badge badge-info">작성자: 홍길동</span>
-          <span class="badge badge-secondary">작성일: 2024-10-14</span>
+          <span class="badge badge-secondary" th:text="'작성일 : ' + ${#temporals.format(notice.createDate, 'yyyy.MM.dd')}"></span>
         </div>
         <div>
-          <button class="btn btn-warning btn-sm">수정</button>
-          <button class="btn btn-danger btn-sm">삭제</button>
+          <a th:href="@{|/notice/modify/${notice.id}|}" class="btn btn-warning btn-sm"
+             th:text="수정"></a>
+          <a onclick="return confirm('정말 삭제하시겠습니까 ?')"
+             th:href="@{|/notice/delete/${notice.id}|}"
+             class="btn btn-danger btn-sm"
+             th:text="삭제"></a>
         </div>
       </div>
 
       <hr>
 
       <div class="content">
-        <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. er since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-          출처: https://hellomiao.tistory.com/entry/예제용-텍스트가-필요할-때-LipsumLorem-Ipsum [계속해보겠습니다:티스토리]Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-          출처: https://hellomiao.tistory.com/entry/예제용-텍스트가-필요할-때-LipsumLorem-Ipsum [계속해보겠습니다:티스토리]</p>
+        <p th:text="${notice.content}"></p>
       </div>
 
-      <hr>
-      <div class="container mt-5">
-
-        <!-- 댓글 목록 -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">댓글 목록</h5>
-
+      <div class="SD-commentBody">
+        <ul>
+          <li th:each="comment : ${notice.comments}">
             <!-- 댓글 1 -->
             <div class="mb-3">
               <div class="d-flex justify-content-between">
-                <div class="ND-commentTextBox">
-                  <strong>사용자1</strong>
-                  <p>이것은 첫 번째 댓글입니다!</p>
-                  <small class="text-muted">2024-10-13 12:00</small> <!-- 등록된 날짜 -->
+                <div class="SD-commentTextBox">
+                  <strong th:if="${comment.author != null}" th:text="${comment.author.username}">></strong>
+                  <p th:text="${comment.content}"></p>
+                  <small class="text-muted" th:text="${#temporals.format(comment.createDate, 'yyyy.MM.dd HH:mm')}"></small>
                 </div>
                 <!-- 댓글 아이콘 -->
-                <div class="ND-commentButtonBox">
-                  <button><img  th:src="@{/img/svg/ic_baseline-create.svg}" alt="svg"></button>
-                  <button><img  th:src="@{/img/svg/material-symbols_delete.svg}" alt="svg"></button>
-                  <button><img  th:src="@{/img/svg/tabler_flag-filled.svg}" alt="svg"></button>
+                <div class="SD-commentButtonBox">
+                  <button><img alt="svg" th:src="@{/img/svg/ic_baseline-create.svg}"></button>
+                  <button><img alt="svg" th:src="@{/img/svg/material-symbols_delete.svg}"></button>
+                  <button><img alt="svg" th:src="@{/img/svg/tabler_flag-filled.svg}"></button>
                 </div>
-              </div>
-
-              <!-- 답댓글 목록 -->
-              <div class="ms-4 ND-subCommentBox">
-                <div class="d-flex justify-content-between">
-                  <div class="ND-commentTextBox">
-                    <strong>사용자1-2</strong>
-                    <p>이것은 첫 번째 댓글의 답글입니다!</p>
-                    <small class="text-muted">2024-10-13 12:00</small> <!-- 등록된 날짜 -->
-                  </div>
-                  <!-- 답댓글 아이콘 -->
-                  <div class="ND-commentButtonBox">
-                    <button><img  th:src="@{/img/svg/ic_baseline-create.svg}" alt="svg"></button>
-                    <button><img  th:src="@{/img/svg/material-symbols_delete.svg}" alt="svg"></button>
-                    <button><img  th:src="@{/img/svg/tabler_flag-filled.svg}" alt="svg"></button>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 답댓글 작성 영역 -->
-              <div class="ms-4 mb-3">
-                <form>
-                  <div class="mb-2">
-                    <textarea class="form-control" rows="2" placeholder="답댓글을 입력하세요..."></textarea>
-                  </div>
-                  <button type="submit" class="btn btn-secondary btn-sm">답댓글 등록</button>
-                </form>
               </div>
             </div>
-          </div>
-        </div>
-
-        <!-- 댓글 작성 영역 -->
-        <div class="card mb-4">
-          <div class="card-body">
-            <h5 class="card-title">댓글 작성</h5>
-            <form>
-              <div class="mb-3">
-                <textarea class="form-control" id="comment" rows="3" placeholder="댓글을 입력하세요..."></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">댓글 등록</button>
-            </form>
-          </div>
-        </div>
-
+          </li>
+        </ul>
       </div>
 
-      <hr>
+      <h5 class="card-title">댓글 작성</h5>
+      <form class="SD-form" method="post" th:action="@{|/comment/create/${notice.id != null ? notice.id : 0}|}" th:object="${commentForm}">
+        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+        <div class="mb-3">
+          <textarea sec:authorize="isAnonymous()" disabled th:field="*{content}" class="form-control" rows="10"></textarea>
+          <textarea sec:authorize="isAuthenticated()" th:field="*{content}" class="form-control" rows="10"></textarea>
+        </div>
+        <input class="btn btn-primary" type="submit" value="댓글등록">
+      </form>
+
+<!--      <hr>-->
+<!--      <div class="container mt-5">-->
+
+<!--        &lt;!&ndash; 댓글 목록 &ndash;&gt;-->
+<!--        <div class="card mb-4">-->
+<!--          <div class="card-body">-->
+<!--            <h5 class="card-title">댓글 목록</h5>-->
+
+<!--            &lt;!&ndash; 댓글 1 &ndash;&gt;-->
+<!--            <div class="mb-3">-->
+<!--              <div class="d-flex justify-content-between">-->
+<!--                <div class="ND-commentTextBox">-->
+<!--                  <strong>사용자1</strong>-->
+<!--                  <p>이것은 첫 번째 댓글입니다!</p>-->
+<!--                  <small class="text-muted">2024-10-13 12:00</small> &lt;!&ndash; 등록된 날짜 &ndash;&gt;-->
+<!--                </div>-->
+<!--                &lt;!&ndash; 댓글 아이콘 &ndash;&gt;-->
+<!--                <div class="ND-commentButtonBox">-->
+<!--                  <button><img  th:src="@{/img/svg/ic_baseline-create.svg}" alt="svg"></button>-->
+<!--                  <button><img  th:src="@{/img/svg/material-symbols_delete.svg}" alt="svg"></button>-->
+<!--                  <button><img  th:src="@{/img/svg/tabler_flag-filled.svg}" alt="svg"></button>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; 답댓글 목록 &ndash;&gt;-->
+<!--              <div class="ms-4 ND-subCommentBox">-->
+<!--                <div class="d-flex justify-content-between">-->
+<!--                  <div class="ND-commentTextBox">-->
+<!--                    <strong>사용자1-2</strong>-->
+<!--                    <p>이것은 첫 번째 댓글의 답글입니다!</p>-->
+<!--                    <small class="text-muted">2024-10-13 12:00</small> &lt;!&ndash; 등록된 날짜 &ndash;&gt;-->
+<!--                  </div>-->
+<!--                  &lt;!&ndash; 답댓글 아이콘 &ndash;&gt;-->
+<!--                  <div class="ND-commentButtonBox">-->
+<!--                    <button><img  th:src="@{/img/svg/ic_baseline-create.svg}" alt="svg"></button>-->
+<!--                    <button><img  th:src="@{/img/svg/material-symbols_delete.svg}" alt="svg"></button>-->
+<!--                    <button><img  th:src="@{/img/svg/tabler_flag-filled.svg}" alt="svg"></button>-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+
+<!--              &lt;!&ndash; 답댓글 작성 영역 &ndash;&gt;-->
+<!--              <div class="ms-4 mb-3">-->
+<!--                <form>-->
+<!--                  <div class="mb-2">-->
+<!--                    <textarea class="form-control" rows="2" placeholder="답댓글을 입력하세요..."></textarea>-->
+<!--                  </div>-->
+<!--                  <button type="submit" class="btn btn-secondary btn-sm">답댓글 등록</button>-->
+<!--                </form>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--        &lt;!&ndash; 댓글 작성 영역 &ndash;&gt;-->
+<!--        <div class="card mb-4">-->
+<!--          <div class="card-body">-->
+<!--            <h5 class="card-title">댓글 작성</h5>-->
+<!--            <form>-->
+<!--              <div class="mb-3">-->
+<!--                <textarea class="form-control" id="comment" rows="3" placeholder="댓글을 입력하세요..."></textarea>-->
+<!--              </div>-->
+<!--              <button type="submit" class="btn btn-primary">댓글 등록</button>-->
+<!--            </form>-->
+<!--          </div>-->
+<!--        </div>-->
+
+<!--      </div>-->
+
+<!--      <hr>-->
 
       <div class="d-flex justify-content-between mt-4">
         <a href="#" class="btn btn-outline-secondary">이전 게시물</a>

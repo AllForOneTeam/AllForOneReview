@@ -1,6 +1,6 @@
-package com.market.allForOneReview.domain.notice;
+package com.market.allForOneReview.domain.notice.Repository;
 
-import com.market.allForOneReview.domain.article.entity.Review;
+import com.market.allForOneReview.domain.notice.Notice.NoticePost;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
