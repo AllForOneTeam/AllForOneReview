@@ -2,8 +2,9 @@ package com.market.allForOneReview.domain.notice.Comment;
 
 import com.market.allForOneReview.domain.notice.Notice.NoticePost;
 import com.market.allForOneReview.domain.notice.NoticePostService;
-import com.market.allForOneReview.domain.user.UserService;
+
 import com.market.allForOneReview.domain.user.entity.SiteUser;
+import com.market.allForOneReview.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,7 @@ public class CommentController {
     @PostMapping("/create/{id}")
     public String createComment(Model model, @PathVariable("id") Long id, @Valid CommentForm commentForm, BindingResult bindingResult, Principal principal){
         NoticePost noticePost = this.noticePostService.getNotice(id);
-        SiteUser siteUser = this.userService.getUser(principal.getName());
+        SiteUser siteUser = this.userService.findByUsername(principal.getName());
         if(bindingResult.hasErrors()){
             model.addAttribute("notice", noticePost);
             return "notice_detail";

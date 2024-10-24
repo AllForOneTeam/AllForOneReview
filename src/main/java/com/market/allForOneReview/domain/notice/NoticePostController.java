@@ -3,8 +3,9 @@ package com.market.allForOneReview.domain.notice;
 import com.market.allForOneReview.domain.notice.Comment.CommentForm;
 import com.market.allForOneReview.domain.notice.Notice.NoticeForm;
 import com.market.allForOneReview.domain.notice.Notice.NoticePost;
-import com.market.allForOneReview.domain.user.UserService;
+
 import com.market.allForOneReview.domain.user.entity.SiteUser;
+import com.market.allForOneReview.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
