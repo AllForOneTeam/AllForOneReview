@@ -9,11 +9,13 @@ import com.market.allForOneReview.domain.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 
@@ -76,6 +78,45 @@ public class  ReviewController {
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
         this.reviewService.create(reviewForm.getTitle(), reviewForm.getContentStory(), reviewForm.getContent(), reviewForm.getCategory(), reviewForm.getSubCategory(), siteUser);
 
+        return "redirect:/review/sub";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/modify/{id}")
+    public String reviewModify(ReviewForm reviewForm, @PathVariable("id") Long id, Principal principal) {
+        Review review = this.reviewService.getReview(id);
+        if(!review.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        reviewForm.setTitle(review.getTitle());
+        reviewForm.setContentStory(review.getContentStory());
+        reviewForm.setContent(review.getContent());
+        return "create";
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/modify/{id}")
+    public String reviewModify(@Valid ReviewForm reviewForm, BindingResult bindingResult,
+                                 Principal principal, @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
+            return "create";
+        }
+        Review review = this.reviewService.getReview(id);
+        if (!review.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
+        }
+        this.reviewService.modify(review, reviewForm.getTitle(),reviewForm.getContentStory(), reviewForm.getContent());
+        return String.format("redirect:/review/detail/%s", id);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/delete/{id}")
+    public String reviewDelete(Principal principal, @PathVariable("id") Long id) {
+        Review review = this.reviewService.getReview(id);
+        if (!review.getAuthor().getUsername().equals(principal.getName())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
+        }
+        this.reviewService.delete(review);
         return "redirect:/review/sub";
     }
 

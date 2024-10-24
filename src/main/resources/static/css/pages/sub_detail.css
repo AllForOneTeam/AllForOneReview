@@ -8,7 +8,6 @@
 .SD-contentBox {
   width: 1110px;
   height: auto;
-  min-height: 1000px;
   border: 1px solid #000;
   border-radius: 10px;
   box-shadow: 0 8px 8px rgba(0, 0, 0, 0.1);
@@ -105,11 +104,19 @@
   justify-content: flex-end;
 }
 
-.SD-textBoxButton>button {
+.SD-textBoxButton>a {
   width: 120px;
+  color: #fff;
 }
-.SD-textBoxButton>button:last-child {
+.SD-textBoxButton>a:last-child {
   margin-left: 12px;
+}
+.btn-modify {
+    background-color: blue;
+}
+
+.btn-delete {
+    background-color: red;
 }
 
 .SD-bodyTextBox {
@@ -130,6 +137,7 @@
 .SD-commentButtonBox {
   display: flex;
 }
+.SD-commentButtonBox > a,
 .SD-commentButtonBox > button {
   width: 24px;
   height: 24px;
@@ -141,6 +149,7 @@
   align-items: center;
   margin-left: 8px;
 }
+.SD-commentButtonBox > a:hover,
 .SD-commentButtonBox > button:hover {
   transition: 0.3s;
   background-color: #d4d4d4;
@@ -189,4 +198,8 @@
 }
 .SD-listButtonBox > .SD-nextBTN > p {
   text-align: right;
+}
+
+.SD-form textarea {
+    height: 120px;
 }

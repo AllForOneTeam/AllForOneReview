@@ -39,10 +39,10 @@
                         </li>
                     </ul>
                     <a class="navbar-brand" sec:authorize="isAnonymous()" th:href="@{/user/login}">
-                        LOGIN
+                        <img th:src="@{/img/svg/login-icon.svg}" alt="icon">
                     </a>
                     <a class="navbar-brand" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">
-                        <img th:src="@{/img/svg/login-icon.svg}" alt="icon">
+                        <img th:src="@{/img/svg/login.svg}" alt="icon">
                     </a>
                 </div>
             </div>
