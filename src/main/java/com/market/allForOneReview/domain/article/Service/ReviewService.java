@@ -1,6 +1,6 @@
 package com.market.allForOneReview.domain.article.Service;
 
-import com.market.allForOneReview.DataNotFoundException;
+import com.market.allForOneReview.global.exception.DataNotFoundException;
 import com.market.allForOneReview.domain.article.Repository.CategoryRepository;
 import com.market.allForOneReview.domain.article.Repository.ReviewRepository;
 import com.market.allForOneReview.domain.article.entity.Category;
@@ -17,7 +17,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.zip.DataFormatException;
 
 @RequiredArgsConstructor
 @Service

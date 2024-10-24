@@ -28,12 +28,16 @@ public class AuthController {
     @GetMapping("/auth")
     public String getAuthPage(@RequestParam(value = "error", required = false) Boolean error,
                               @RequestParam(value = "verified", required = false) Boolean verified,
+                              @RequestParam(value = "email", required = false) String email,
                               Model model) {
         if (Boolean.TRUE.equals(error)) {
             model.addAttribute("errorMessage", "인증번호가 일치하지 않거나 만료되었습니다.");
         }
         if (Boolean.TRUE.equals(verified)) {
             model.addAttribute("successMessage", "이메일 인증이 완료되었습니다.");
+        }
+        if (email != null && !email.isEmpty()) {
+            model.addAttribute("email", email);
         }
         return "member/auth";
     }

@@ -1,6 +1,6 @@
 package com.market.allForOneReview.domain.answer;
 
-import com.market.allForOneReview.DataNotFoundException;
+import com.market.allForOneReview.global.exception.DataNotFoundException;
 import com.market.allForOneReview.domain.article.entity.Review;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import lombok.RequiredArgsConstructor;
