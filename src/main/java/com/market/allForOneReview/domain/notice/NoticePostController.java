@@ -77,7 +77,7 @@ public class NoticePostController {
     @PostMapping("/modify/{id}")
     public String noticeModify(@Valid NoticeForm noticeForm, BindingResult bindingResult, @PathVariable("id") Long id){
         if (bindingResult.hasErrors()) {
-            return "notice_form";
+            return "notice_create";
         }
         NoticePost notice = this.noticePostService.getNotice(id);
         this.noticePostService.modify(notice, noticeForm.getTitle(), noticeForm.getContent());

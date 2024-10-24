@@ -17,7 +17,7 @@
 
     <form th:object="${noticeForm}" method="post" class="mt-3">
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-        <input type="hidden" th:field="*{boardType}" />
+        <input type="hidden" th:field="*{boardType}" value="Notice"/>
 
         <div class="alert alert-danger" role="alert" th:if="${#fields.hasAnyErrors()}">
             <div th:each="err : ${#fields.allErrors()}" th:text="${err}" />
