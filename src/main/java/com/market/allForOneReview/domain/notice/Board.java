@@ -1,5 +1,6 @@
-package com.market.allForOneReview.domain.article.entity;
+package com.market.allForOneReview.domain.notice;
 
+import com.market.allForOneReview.domain.notice.Notice.NoticePost;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,4 +20,11 @@ public class Board {
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<NoticePost> posts;
+
+    public Board(){}
+
+    public Board(String boardType) {
+        this.boardType = boardType;
+    }
+
 }

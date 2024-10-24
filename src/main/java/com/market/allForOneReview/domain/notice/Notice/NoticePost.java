@@ -1,5 +1,7 @@
-package com.market.allForOneReview.domain.article.entity;
+package com.market.allForOneReview.domain.notice.Notice;
 
+import com.market.allForOneReview.domain.notice.Board;
+import com.market.allForOneReview.domain.notice.Comment.NoticeComment;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.global.jpa.BaseEntity;
 import jakarta.persistence.*;
@@ -18,18 +20,15 @@ public class NoticePost extends BaseEntity {
 
     @Column
     private String title;
+
     @Column(columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private SiteUser user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "board_id", nullable = false)
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Board board;
 
     private Integer views;
