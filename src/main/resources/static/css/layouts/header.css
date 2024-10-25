@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css?family=Catamaran:900');
+
 /* 헤더 영역 */
 header {
   width: 100%;
@@ -40,11 +42,12 @@ header > nav {
 
 .nav-item>a {
   display: inline-block;
-  width: 180px;
+  width: auto;
   height: 100%;
   text-align: center;
   line-height: 75px; /* 텍스트 수직정렬 */
   padding: 0;
+  margin-right: 12px;
 }
 
 .dropdown-menu {
@@ -65,11 +68,10 @@ header > nav {
 
 .dropdown-item {
   text-align: center; /* 텍스트 가운데 정렬 */
+	font-family: 'Catamaran', sans-serif !important;
 }
 
 .navbar-nav .dropdown-menu {
-  display: none; 
-  opacity: 0; 
   transform: translateY(-5px); /* 초기 위치 설정 */
   transition: opacity 0.3s ease, transform 0.3s ease; /* 서브 메뉴 애니메이션 */
 }
@@ -79,6 +81,18 @@ header > nav {
   opacity: 1; 
   transform: translateY(0); /* 원래 위치로 이동 */
   animation: drop 0.3s ease forwards; /* 폭포처럼 떨어지는 애니메이션 적용 */
+
+}
+
+dropdown-item:active {
+    color: #16181b !important;
+    text-decoration: none;
+    background-color: #fff !important;
+}
+.dropdown-item:focus, .dropdown-item:hover {
+    color: #16181b !important;
+    text-decoration: none;
+    background-color: #fff !important;
 }
 
 /* 애니메이션 정의 */
@@ -100,9 +114,66 @@ header > nav {
 }
 
 .navbar-brand {
-    width: 32px;
+    width: 48px;
     height 32px;
+	font-family: 'Catamaran', sans-serif !important;
+  color: #172A5C;
 }
 .navbar-brand > img {
-    width: 100%;
+    width: 32px;
+}
+
+a {
+	text-decoration:none;
+}
+
+nav {
+	position:absolute;
+	left:50%;
+	top:50%;
+	transform:translate(-50%, -50%);
+}
+nav ul li {
+	margin:10px 0;
+	position:relative;
+}
+
+.nav-link {
+	font-size: 20px;
+	display:block;
+	text-align:center;
+	padding:5px 10px;
+	text-transform:uppercase;
+	position:relative;
+	color:transparent;
+	font-family: 'Catamaran', sans-serif !important;
+	   color: transparent !important;
+}
+nav ul li a:before, nav ul li a:after {
+	content:attr(data-text);
+	color:#262626;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	padding:5px 0;
+	box-sizing:border-box;
+	transition:0.5s;
+}
+
+nav ul li a:before {
+	-webkit-clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+	clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+}
+nav ul li a:after {
+	-webkit-clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0% 100%);
+	clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0% 100%);
+}
+nav ul li a:hover:before {
+	color:#f00;
+	transform:translate(10px, -2px);
+}
+nav ul li a:hover:after {
+	color:#f00;
+	transform:translate(-10px, 2px);
 }
