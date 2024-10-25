@@ -35,4 +35,11 @@
     </form>
   </div>
 </div>
+<th:block layout:fragment="script">
+  <script th:if="${message}">
+    window.onload = function() {
+        alert([[${message}]]);
+    }
+  </script>
+</th:block>
 </html>

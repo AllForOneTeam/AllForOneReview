@@ -57,7 +57,10 @@
           <label for="email" class="form-label">email</label>
           <input type="email" th:field="*{email}" class="form-control" placeholder="email">
         </div>
-        <button type="submit" class="a-btn btn-primary btn-login">회원가입</button>
+        <button type="submit" id="signupButton" class="btn btn-primary" onclick="handleSignup(event)">
+          <span id="buttonText">회원가입</span>
+          <span id="loadingSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+        </button>
       </form>
     </div>
   </div>
@@ -71,6 +74,96 @@
         return false;
       }
     });
+    let isSubmitting = false;
+
+    function handleSignup(event) {
+        if (isSubmitting) {
+            event.preventDefault();
+            return;
+        }
+
+        const button = document.getElementById('signupButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        // 폼 유효성 검사
+        const form = document.querySelector('form');
+        if (!form.checkValidity()) {
+            return;
+        }
+
+        // 버튼 비활성화 및 로딩 표시
+        isSubmitting = true;
+        button.disabled = true;
+        buttonText.textContent = '처리중...';
+        loadingSpinner.classList.remove('d-none');
+
+        // 폼 제출
+        form.submit();
+    }
+
+    // 페이지 로드 시 상태 초기화
+    window.onload = function() {
+        isSubmitting = false;
+        const button = document.getElementById('signupButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        button.disabled = false;
+        buttonText.textContent = '회원가입';
+        loadingSpinner.classList.add('d-none');
+    }
+
+    // 브라우저 뒤로가기 시 상태 초기화
+    window.onpageshow = function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    };
+
+    // 폼 제출 전 확인
+    function handleSignup(event) {
+        if (isSubmitting) {
+            event.preventDefault();
+            return;
+        }
+
+        // 사용자 확인
+        if (!confirm('회원가입을 진행하시겠습니까?')) {
+            event.preventDefault();
+            return;
+        }
+
+        const button = document.getElementById('signupButton');
+        const buttonText = document.getElementById('buttonText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        // 폼 유효성 검사
+        const form = document.querySelector('form');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        // 버튼 비활성화 및 로딩 표시
+        isSubmitting = true;
+        button.disabled = true;
+        buttonText.textContent = '처리중...';
+        loadingSpinner.classList.remove('d-none');
+
+        // 5초 후에도 응답이 없으면 상태 초기화
+        setTimeout(() => {
+            if (isSubmitting) {
+                isSubmitting = false;
+                button.disabled = false;
+                buttonText.textContent = '회원가입';
+                loadingSpinner.classList.add('d-none');
+                alert('처리 시간이 초과되었습니다. 다시 시도해주세요.');
+            }
+        }, 5000);
+
+        form.submit();
+    }
   </script>
 </div>
 </html>

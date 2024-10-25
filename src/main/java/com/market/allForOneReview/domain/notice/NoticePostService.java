@@ -1,10 +1,9 @@
 package com.market.allForOneReview.domain.notice;
 
-import com.market.allForOneReview.DataNotFoundException;
-import com.market.allForOneReview.domain.article.entity.Review;
 import com.market.allForOneReview.domain.notice.Notice.NoticePost;
 import com.market.allForOneReview.domain.notice.Repository.BoardRepository;
 import com.market.allForOneReview.domain.notice.Repository.NoticePostRepository;
+import com.market.allForOneReview.global.exception.DataNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

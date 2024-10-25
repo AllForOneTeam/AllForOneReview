@@ -1,9 +1,13 @@
 package com.market.allForOneReview.domain.user;
 
+import com.market.allForOneReview.domain.auth.service.AuthService;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.domain.user.repository.UserRepository;
+import com.market.allForOneReview.global.exception.EmailNotVerifiedException;
+import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +26,7 @@ import java.util.List;
 public class UserSecurityService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final AuthService authService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,7 +41,14 @@ public class UserSecurityService implements UserDetailsService {
         // 이메일 인증 확인
         if (!siteUser.isVerified()) {
             log.warn("User {} is not verified", username);
-            throw new DisabledException("이메일 인증이 완료되지 않았습니다.");
+            try {
+                // 인증 메일 재발송
+                authService.sendAuthCode(siteUser.getEmail());
+                throw new EmailNotVerifiedException("이메일 인증이 필요합니다.", siteUser.getEmail());
+            } catch (MessagingException e) {
+                log.error("Failed to send verification email", e);
+                throw new AuthenticationServiceException("인증 메일 발송 중 오류가 발생했습니다.");
+            }
         }
 
         // 계정 활성화 상태 확인
