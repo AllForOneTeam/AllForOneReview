@@ -31,9 +31,9 @@
     border-radius: 25px !important;
     border: none;
     background-color: #D9D9D9;
-    line-height: 20px;
+    line-height: 30px;
     font-weight: bold;
-    color: #fff;
+    color: #fff !important;
 }
 
 .N-titleBox .nav-link.active {
@@ -119,5 +119,4 @@ tbody > tr > td > p {
     width: 100%;
     display: flex;
     justify-content: start;
-    border-bottom: 3px solid #3C92DC;
 }

@@ -40,12 +40,9 @@
       </div>
 
       <!-- 탭 콘텐츠 -->
-      <div class="tab-content" id="myTabContent">
+      <div class="tab-content" id="myTabContent" style="border-top: 3px solid #3C92DC !important;">
         <!-- Tab 1 콘텐츠 -->
         <div class="tab-pane fade show active" id="tab1" role="tabpanel" aria-labelledby="tab1-tab">
-          <div class="sub-createBTN">
-            <a class="a-btn btn btn-primary " th:href="@{/notice/create}" th:text="'공지사항 등록'"></a>
-          </div>
           <table class="table table-bordered">
             <tbody>
             <tr class="clickable-row" th:data-href="@{|/notice/detail/${notice.id}|}" th:each="notice:${notices}">
@@ -61,6 +58,11 @@
             </tr>
             </tbody>
           </table>
+
+
+          <div class="sub-createBTN">
+            <a class="a-btn btn btn-primary " th:href="@{/notice/create}" th:text="'공지사항 등록'"></a>
+          </div>
         </div>
 
         <!-- Tab 2 콘텐츠 -->

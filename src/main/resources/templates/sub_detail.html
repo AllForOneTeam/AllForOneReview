@@ -58,9 +58,11 @@
                 <img alt="svg" th:src="@{/img/svg/weui_eyes-on-filled.svg}">
                 20
               </span>
-              <span>
+              <a href="javascript:void(0);" class="recommend"
+                               th:data-uri="@{|/review/vote/${review.id}|}">
                 <img alt="svg" th:src="@{/img/svg/icon-park-outline_good-two.svg}">
-                20</span>
+                <span th:text="${#lists.size(review.voter)}"></span>
+            </a>
             </div>
 
             <div class="SD-textBoxButton">
@@ -150,4 +152,13 @@
           };
       });
   });
+
+  const recommend_elements = document.getElementsByClassName("recommend");
+Array.from(recommend_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 추천하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
 </script>

@@ -133,4 +133,18 @@ public class  ReviewController {
         return "redirect:/review/sub";
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @GetMapping("/vote/{id}")
+    public String reviewVote(Principal principal, @PathVariable("id") Long id) {
+        Review review = this.reviewService.getReview(id);
+        SiteUser siteUser = this.userService.findByUsername(principal.getName());
+        this.reviewService.vote(review, siteUser);
+        return String.format("redirect:/review/detail/%s", id);
+    }
+
+
+    @GetMapping("/index")
+    public String moviePage() {
+        return "sub_index";
+    }
 }

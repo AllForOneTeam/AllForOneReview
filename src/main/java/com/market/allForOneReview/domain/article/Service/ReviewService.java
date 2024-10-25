@@ -97,4 +97,9 @@ public class ReviewService {
     public void delete(Review review) {
         this.reviewRepository.delete(review);
     }
+
+    public void vote(Review review, SiteUser siteUser) {
+        review.getVoter().add(siteUser);
+        this.reviewRepository.save(review);
+    }
 }

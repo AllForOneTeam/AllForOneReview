@@ -90,13 +90,17 @@
 .SD-viewBox {
   line-height: 32px;
 }
-.SD-viewBox > span > img {
+.SD-viewBox > span > img,
+.SD-viewBox > a > img {
   width: 32px;
   margin-right: 8px;
 }
-.SD-viewBox > span {
+.SD-viewBox > span,
+ .SD-viewBox > a > span{
   font-size: 18px;
   margin-right: 24px;
+  font-weight: bold;
+  color : #000;
 }
 
 .SD-textBoxButton {
