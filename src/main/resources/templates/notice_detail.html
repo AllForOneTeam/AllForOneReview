@@ -52,9 +52,19 @@
                 </div>
                 <!-- 댓글 아이콘 -->
                 <div class="SD-commentButtonBox">
-                  <button><img alt="svg" th:src="@{/img/svg/ic_baseline-create.svg}"></button>
-                  <button><img alt="svg" th:src="@{/img/svg/material-symbols_delete.svg}"></button>
-                  <button><img alt="svg" th:src="@{/img/svg/tabler_flag-filled.svg}"></button>
+
+                  <a th:href="@{|/comment/modify/${comment.id}|}" class="btn_delete"
+                     sec:authorize="isAuthenticated()"
+                     th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
+                  ><img alt="svg" th:src="@{/img/svg/ic_baseline-create.svg}"></a>
+                  <a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.id}|}"
+                     class="btn_delete delete" sec:authorize="isAuthenticated()"
+                     th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
+                  ><img alt="svg" th:src="@{/img/svg/material-symbols_delete.svg}"></a>
+                  <a href="javascript:void(0);" th:data-uri="@{|/comment/delete/${comment.id}|}"
+                     class="btn_delete" sec:authorize="isAuthenticated()"
+                     th:if="${comment.author != null and #authentication.getPrincipal().getUsername() == comment.author.username}"
+                  ><img alt="svg" th:src="@{/img/svg/tabler_flag-filled.svg}"></a>
                 </div>
               </div>
             </div>
@@ -152,3 +162,23 @@
   </div>
 </div>
 </html>
+
+<script layout:fragment="script" type='text/javascript'>
+  const delete_elements = document.getElementsByClassName("delete");
+  Array.from(delete_elements).forEach(function(element) {
+      element.addEventListener('click', function() {
+          if(confirm("정말로 삭제하시겠습니까?")) {
+              location.href = this.dataset.uri;
+          };
+      });
+  });
+
+  const recommend_elements = document.getElementsByClassName("recommend");
+Array.from(recommend_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 추천하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+</script>

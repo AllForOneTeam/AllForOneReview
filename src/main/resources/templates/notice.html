@@ -71,7 +71,7 @@
             <tbody>
             <!-- FAQ 콘텐츠가 여기에 로드됩니다 -->
             <tr class="clickable-row" th:data-href="@{|/notice/detail/${faq.id}|}" th:each="faq:${faqs}">
-              <td th:text="${faq.id}"></td>
+              <td style="width: 60px;"></td>
               <td>
                 <a th:text="${faq.title}"></a>
                 <br>
