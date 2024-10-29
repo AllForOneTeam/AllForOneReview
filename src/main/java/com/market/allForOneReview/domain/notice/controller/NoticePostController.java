@@ -59,7 +59,7 @@ public class NoticePostController {
     @PostMapping("/create")
     public String create(@Valid NoticeForm noticeForm, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
-            return"notice_create";
+            return "notice/notice_create";
         }
 //        SiteUser siteUser = this.userService.getUser(principal.getName());
         this.noticePostService.create(noticeForm.getTitle(), noticeForm.getContent(), noticeForm.getBoardType());
