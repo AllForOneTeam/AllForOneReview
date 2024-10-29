@@ -1,6 +1,6 @@
 package com.market.allForOneReview.domain.auth.service;
 
-import com.market.allForOneReview.domain.auth.AuthInfo;
+import com.market.allForOneReview.domain.auth.dto.AuthInfo;
 import com.market.allForOneReview.domain.email.service.EmailService;
 import com.market.allForOneReview.domain.user.entity.PasswordResetToken;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
