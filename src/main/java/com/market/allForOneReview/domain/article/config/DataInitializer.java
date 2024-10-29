@@ -3,9 +3,8 @@ package com.market.allForOneReview.domain.article.config;
 
 import com.market.allForOneReview.domain.article.Repository.CategoryRepository;
 import com.market.allForOneReview.domain.article.entity.Category;
-import com.market.allForOneReview.domain.notice.Board;
+import com.market.allForOneReview.domain.notice.entity.Board;
 import com.market.allForOneReview.domain.notice.Repository.BoardRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

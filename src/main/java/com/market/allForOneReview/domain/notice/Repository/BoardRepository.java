@@ -1,7 +1,7 @@
 package com.market.allForOneReview.domain.notice.Repository;
 
 
-import com.market.allForOneReview.domain.notice.Board;
+import com.market.allForOneReview.domain.notice.entity.Board;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

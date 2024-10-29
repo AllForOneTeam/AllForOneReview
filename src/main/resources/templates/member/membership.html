@@ -1,4 +1,4 @@
-<html layout:decorate="~{layout}">
+<html layout:decorate="~{layout/layout}">
 <head>
   <link rel="stylesheet" th:href="@{/css/pages/membership.css}">
 </head>
@@ -10,7 +10,7 @@
          data-bs-smooth-scroll="true" class="scrollspy-example bg-body-tertiary p-3 rounded-2" tabindex="0">
 
       <form th:action="@{/user/membership}" th:object="${userCreateForm}" method="post" id="signupForm">
-        <div th:replace="~{form_errors :: formErrorsFragment}"></div>
+        <div th:replace="~{components/form_errors :: formErrorsFragment}"></div>
 
         <div class="textBox mb-4">
           <p>
