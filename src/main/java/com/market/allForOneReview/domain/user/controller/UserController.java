@@ -2,8 +2,10 @@ package com.market.allForOneReview.domain.user.controller;
 
 import com.market.allForOneReview.domain.auth.service.AuthService;
 import com.market.allForOneReview.domain.email.dto.EmailDTO;
-import com.market.allForOneReview.domain.user.dto.UserCreateForm;
 import com.market.allForOneReview.domain.user.dto.PasswordResetRequest;
+import com.market.allForOneReview.domain.user.dto.ProfileResponse;
+import com.market.allForOneReview.domain.user.dto.ProfileUpdateForm;
+import com.market.allForOneReview.domain.user.dto.UserCreateForm;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.domain.user.service.UserService;
 import jakarta.mail.MessagingException;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -212,5 +215,32 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(response);
         }
+    }
+
+    @GetMapping("/profile")
+    public String profilePage(Model model) {
+        ProfileResponse profile = userService.getProfile();
+
+        model.addAttribute("profile", profile);
+        model.addAttribute("profileForm", new ProfileUpdateForm());
+
+        // 추가 데이터 로딩
+//        model.addAttribute("followingList", userService.getFollowingList());
+//        model.addAttribute("myPosts", userService.getUserPosts());
+//        model.addAttribute("myComments", userService.getUserComments());
+
+        return "member/profile_page";
+    }
+
+    @PostMapping("/profile/update")
+    public String updateProfile(@ModelAttribute ProfileUpdateForm form,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            userService.updateProfile(form);
+            redirectAttributes.addFlashAttribute("successMessage", "프로필이 업데이트되었습니다.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        }
+        return "redirect:/profile";
     }
 }

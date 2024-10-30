@@ -1,0 +1,146 @@
+<html layout:decorate="~{layout/layout}">
+<head>
+  <link rel="stylesheet" th:href="@{/css/pages/profile_page.css}">
+</head>
+<div layout:fragment="content">
+  <div class="container py-4">
+    <!-- 프로필 수정 카드 -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h4 class="card-title mb-0">프로필 관리</h4>
+      </div>
+      <div class="card-body">
+        <form th:action="@{/profile/update}" method="POST" enctype="multipart/form-data"
+              th:object="${profileForm}">
+
+          <!-- 프로필 이미지 섹션 -->
+          <div class="text-center mb-4">
+            <div class="profile-image-container">
+              <img th:src="${profileImage != null ? profileImage : '/images/default-profile.jpg'}"
+                   id="profile-preview"
+                   class="profile-image"
+                   alt="프로필 이미지">
+              <label for="profile-image" class="image-upload-label">
+                <i class="bi bi-camera-fill"></i>
+              </label>
+            </div>
+            <input type="file"
+                   id="profile-image"
+                   name="profileImage"
+                   accept="image/*"
+                   class="d-none"
+                   onchange="previewImage(this)">
+          </div>
+
+          <!-- 닉네임 입력 -->
+          <div class="mb-3">
+            <label for="nickname" class="form-label">닉네임</label>
+            <input type="text"
+                   class="form-control"
+                   id="nickname"
+                   name="nickname"
+                   th:value="${profile.nickname}"
+                   required>
+          </div>
+
+          <!-- 알림 메시지 -->
+          <div th:if="${successMessage}" class="alert alert-success" role="alert">
+            <span th:text="${successMessage}">프로필이 업데이트되었습니다.</span>
+          </div>
+          <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+            <span th:text="${errorMessage}">오류가 발생했습니다.</span>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">프로필 업데이트</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- 활동 내역 탭 -->
+    <ul class="nav nav-tabs" id="profileTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active d-flex align-items-center"
+                data-bs-toggle="tab"
+                data-bs-target="#following"
+                type="button">
+          <i class="bi bi-people-fill me-2"></i>팔로잉
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link d-flex align-items-center"
+                data-bs-toggle="tab"
+                data-bs-target="#posts"
+                type="button">
+          <i class="bi bi-file-text-fill me-2"></i>내 글
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link d-flex align-items-center"
+                data-bs-toggle="tab"
+                data-bs-target="#comments"
+                type="button">
+          <i class="bi bi-chat-fill me-2"></i>내 댓글
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="profileTabsContent">
+      <!-- 팔로잉 탭 -->
+      <div class="tab-pane fade show active" id="following">
+        <div class="card">
+          <div class="list-group list-group-flush">
+            <div th:each="user : ${followingList}" class="list-group-item d-flex justify-content-between align-items-center">
+              <div class="d-flex align-items-center">
+                <i class="bi bi-person-circle fs-4 me-3"></i>
+                <span th:text="${user.name}">사용자 이름</span>
+              </div>
+              <button class="btn btn-outline-primary btn-sm">팔로잉</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 내 글 탭 -->
+      <div class="tab-pane fade" id="posts">
+        <div class="card">
+          <div class="list-group list-group-flush">
+            <div th:each="post : ${myPosts}" class="list-group-item">
+              <h6 class="mb-1" th:text="${post.title}">게시글 제목</h6>
+              <small class="text-muted" th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd')}">
+                작성일
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 내 댓글 탭 -->
+      <div class="tab-pane fade" id="comments">
+        <div class="card">
+          <div class="list-group list-group-flush">
+            <div th:each="comment : ${myComments}" class="list-group-item">
+              <p class="mb-1" th:text="${comment.content}">댓글 내용</p>
+              <small class="text-muted">
+                <span th:text="${comment.postTitle}">게시글 제목</span> -
+                <span th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd')}">작성일</span>
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 이미지 프리뷰 스크립트 -->
+<script>
+  function previewImage(input) {
+      if (input.files && input.files[0]) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+              document.getElementById('profile-preview').src = e.target.result;
+          };
+          reader.readAsDataURL(input.files[0]);
+      }
+  }
+</script>
+</html>

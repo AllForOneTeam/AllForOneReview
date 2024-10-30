@@ -1,11 +1,14 @@
 package com.market.allForOneReview.domain.user.service;
 
+import com.market.allForOneReview.domain.user.dto.ProfileResponse;
+import com.market.allForOneReview.domain.user.dto.ProfileUpdateForm;
 import com.market.allForOneReview.domain.user.entity.PasswordResetToken;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.domain.user.repository.PasswordResetTokenRepository;
 import com.market.allForOneReview.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final PasswordResetTokenRepository passwordResetTokenRepository;
+    private final FileStorageService fileStorageService;
 
     @Transactional
     public SiteUser create(String username, String nickname, String password, String email) {
@@ -204,5 +208,65 @@ public class UserService {
         passwordResetTokenRepository.delete(resetToken);
 
         log.info("Password reset successful for user: {}", user.getUsername());
+    }
+
+    public SiteUser getCurrentUser() {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new IllegalStateException("로그인 사용자를 찾을 수 없습니다."));
+    }
+
+    @Transactional
+    public ProfileResponse updateProfile(ProfileUpdateForm form) {
+        SiteUser user = getCurrentUser();
+
+        if (form.getNickname() != null && !form.getNickname().isBlank()) {
+            if (!user.getNickname().equals(form.getNickname()) &&
+                    userRepository.existsByNickname(form.getNickname())) {
+                throw new IllegalArgumentException("이미 사용 중인 닉네임입니다.");
+            }
+            user.setNickname(form.getNickname());
+        }
+
+        if (form.getProfileImage() != null && !form.getProfileImage().isEmpty()) {
+            String imageUrl = fileStorageService.storeFile(form.getProfileImage());
+            user.setProfileImageUrl(imageUrl);
+        }
+
+        SiteUser savedUser = userRepository.save(user);
+
+        return ProfileResponse.builder()
+                .nickname(savedUser.getNickname())
+                .profileImageUrl(savedUser.getProfileImageUrl())
+                .followingCount(getFollowingCount(savedUser))
+                .postCount(getPostCount(savedUser))
+                .commentCount(getCommentCount(savedUser))
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public ProfileResponse getProfile() {
+        SiteUser user = getCurrentUser();
+
+        return ProfileResponse.builder()
+                .nickname(user.getNickname())
+                .profileImageUrl(user.getProfileImageUrl())
+                .followingCount(getFollowingCount(user))
+                .postCount(getPostCount(user))
+                .commentCount(getCommentCount(user))
+                .build();
+    }
+
+    // 팔로잉, 게시글, 댓글 수 조회 메서드들...
+    private int getFollowingCount(SiteUser user) {
+        return 0; // 구현 필요
+    }
+
+    private int getPostCount(SiteUser user) {
+        return 0; // 구현 필요
+    }
+
+    private int getCommentCount(SiteUser user) {
+        return 0; // 구현 필요
     }
 }

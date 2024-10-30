@@ -1,0 +1,29 @@
+.profile-image-container {
+        position: relative;
+        width: 128px;
+        height: 128px;
+        margin: 0 auto;
+    }
+    .profile-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+    .image-upload-label {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        background-color: #0d6efd;
+        color: white;
+        padding: 8px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+    .image-upload-label:hover {
+        background-color: #0b5ed7;
+    }
+    .tab-content {
+        padding-top: 20px;
+    }
