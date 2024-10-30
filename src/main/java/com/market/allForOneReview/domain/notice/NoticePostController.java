@@ -6,6 +6,8 @@ import com.market.allForOneReview.domain.notice.Notice.NoticePost;
 
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.domain.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -47,8 +49,8 @@ public class NoticePostController {
 
 
     @GetMapping("/detail/{id}")
-    public String detail(Model model, @PathVariable("id")Long id, CommentForm commentForm) {
-        NoticePost noticePost = this.noticePostService.getNotice(id);
+    public String detail(Model model, @PathVariable("id")Long id, CommentForm commentForm, HttpServletRequest request, HttpServletResponse response) {
+        NoticePost noticePost = this.noticePostService.getNotice(id,request, response);
         model.addAttribute("notice", noticePost);
         return "notice_detail";
     }
@@ -59,34 +61,34 @@ public class NoticePostController {
     }
 
     @PostMapping("/create")
-    public String create(@Valid NoticeForm noticeForm, BindingResult bindingResult){
+    public String create(@Valid NoticeForm noticeForm, BindingResult bindingResult, Principal principal){
         if(bindingResult.hasErrors()){
             return"notice_create";
         }
-//        SiteUser siteUser = this.userService.getUser(principal.getName());
-        this.noticePostService.create(noticeForm.getTitle(), noticeForm.getContent(), noticeForm.getBoardType());
+        SiteUser siteUser = this.userService.findByUsername(principal.getName());
+        this.noticePostService.create(noticeForm.getTitle(), noticeForm.getContent(), noticeForm.getBoardType(),siteUser);
         return "redirect:/notice";
     }
     @GetMapping("/modify/{id}")
-    public String noticeModify(NoticeForm noticeForm, @PathVariable("id")Long id){
-        NoticePost notice = this.noticePostService.getNotice(id);
+    public String noticeModify(NoticeForm noticeForm, @PathVariable("id")Long id,HttpServletRequest request, HttpServletResponse response){
+        NoticePost notice = this.noticePostService.getNotice(id,request,response);
         noticeForm.setTitle(notice.getTitle());
         noticeForm.setContent(notice.getContent());
         return "notice_create";
     }
     @PostMapping("/modify/{id}")
-    public String noticeModify(@Valid NoticeForm noticeForm, BindingResult bindingResult, @PathVariable("id") Long id){
+    public String noticeModify(@Valid NoticeForm noticeForm, BindingResult bindingResult, @PathVariable("id") Long id,HttpServletRequest request, HttpServletResponse response){
         if (bindingResult.hasErrors()) {
             return "notice_create";
         }
-        NoticePost notice = this.noticePostService.getNotice(id);
+        NoticePost notice = this.noticePostService.getNotice(id, request, response);
         this.noticePostService.modify(notice, noticeForm.getTitle(), noticeForm.getContent());
         return String.format("redirect:/notice/detail/%s",id);
     }
 
     @GetMapping("/delete/{id}")
-    public String noticeDelete(@PathVariable("id")Long id){
-        NoticePost notice = this.noticePostService.getNotice(id);
+    public String noticeDelete(@PathVariable("id")Long id,HttpServletRequest request, HttpServletResponse response){
+        NoticePost notice = this.noticePostService.getNotice(id,request,response);
         this.noticePostService.delete(notice);
         return "redirect:/notice";
     }

@@ -25,8 +25,12 @@
         </div>
         <div>
           <a th:href="@{|/notice/modify/${notice.id}|}" class="btn btn-warning btn-sm"
+             sec:authorize="isAuthenticated()"
+             th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.username}"
              th:text="수정"></a>
           <a onclick="return confirm('정말 삭제하시겠습니까 ?')"
+             sec:authorize="isAuthenticated()"
+             th:if="${notice.author != null and #authentication.getPrincipal().getUsername() == notice.author.username}"
              th:href="@{|/notice/delete/${notice.id}|}"
              class="btn btn-danger btn-sm"
              th:text="삭제"></a>
@@ -68,6 +72,22 @@
                 </div>
               </div>
             </div>
+<!--            &lt;!&ndash; 답글 폼 &ndash;&gt;-->
+<!--            <form class="SD-form" method="post" th:action="@{|/comment/reply/${comment.id}|}" th:object="${replyForm}">-->
+<!--              <div class="mb-3">-->
+<!--                <textarea th:field="*{content}" class="form-control" rows="3" placeholder="답글을 입력하세요"></textarea>-->
+<!--              </div>-->
+<!--              <input class="btn btn-secondary" type="submit" value="답글 등록">-->
+<!--            </form>-->
+
+<!--            &lt;!&ndash; 답글 목록 &ndash;&gt;-->
+<!--            <ul th:each="reply : ${comment.replies}">-->
+<!--              <li>-->
+<!--                <strong th:text="${reply.author.username}"></strong>:-->
+<!--                <p th:text="${reply.content}"></p>-->
+<!--                <small class="text-muted" th:text="${#temporals.format(reply.createDate, 'yyyy.MM.dd HH:mm')}"></small>-->
+<!--              </li>-->
+<!--            </ul>-->
           </li>
         </ul>
       </div>
@@ -82,76 +102,6 @@
         <input class="btn btn-primary" type="submit" value="댓글등록">
       </form>
 
-<!--      <hr>-->
-<!--      <div class="container mt-5">-->
-
-<!--        &lt;!&ndash; 댓글 목록 &ndash;&gt;-->
-<!--        <div class="card mb-4">-->
-<!--          <div class="card-body">-->
-<!--            <h5 class="card-title">댓글 목록</h5>-->
-
-<!--            &lt;!&ndash; 댓글 1 &ndash;&gt;-->
-<!--            <div class="mb-3">-->
-<!--              <div class="d-flex justify-content-between">-->
-<!--                <div class="ND-commentTextBox">-->
-<!--                  <strong>사용자1</strong>-->
-<!--                  <p>이것은 첫 번째 댓글입니다!</p>-->
-<!--                  <small class="text-muted">2024-10-13 12:00</small> &lt;!&ndash; 등록된 날짜 &ndash;&gt;-->
-<!--                </div>-->
-<!--                &lt;!&ndash; 댓글 아이콘 &ndash;&gt;-->
-<!--                <div class="ND-commentButtonBox">-->
-<!--                  <button><img  th:src="@{/img/svg/ic_baseline-create.svg}" alt="svg"></button>-->
-<!--                  <button><img  th:src="@{/img/svg/material-symbols_delete.svg}" alt="svg"></button>-->
-<!--                  <button><img  th:src="@{/img/svg/tabler_flag-filled.svg}" alt="svg"></button>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              &lt;!&ndash; 답댓글 목록 &ndash;&gt;-->
-<!--              <div class="ms-4 ND-subCommentBox">-->
-<!--                <div class="d-flex justify-content-between">-->
-<!--                  <div class="ND-commentTextBox">-->
-<!--                    <strong>사용자1-2</strong>-->
-<!--                    <p>이것은 첫 번째 댓글의 답글입니다!</p>-->
-<!--                    <small class="text-muted">2024-10-13 12:00</small> &lt;!&ndash; 등록된 날짜 &ndash;&gt;-->
-<!--                  </div>-->
-<!--                  &lt;!&ndash; 답댓글 아이콘 &ndash;&gt;-->
-<!--                  <div class="ND-commentButtonBox">-->
-<!--                    <button><img  th:src="@{/img/svg/ic_baseline-create.svg}" alt="svg"></button>-->
-<!--                    <button><img  th:src="@{/img/svg/material-symbols_delete.svg}" alt="svg"></button>-->
-<!--                    <button><img  th:src="@{/img/svg/tabler_flag-filled.svg}" alt="svg"></button>-->
-<!--                  </div>-->
-<!--                </div>-->
-<!--              </div>-->
-
-<!--              &lt;!&ndash; 답댓글 작성 영역 &ndash;&gt;-->
-<!--              <div class="ms-4 mb-3">-->
-<!--                <form>-->
-<!--                  <div class="mb-2">-->
-<!--                    <textarea class="form-control" rows="2" placeholder="답댓글을 입력하세요..."></textarea>-->
-<!--                  </div>-->
-<!--                  <button type="submit" class="btn btn-secondary btn-sm">답댓글 등록</button>-->
-<!--                </form>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--        &lt;!&ndash; 댓글 작성 영역 &ndash;&gt;-->
-<!--        <div class="card mb-4">-->
-<!--          <div class="card-body">-->
-<!--            <h5 class="card-title">댓글 작성</h5>-->
-<!--            <form>-->
-<!--              <div class="mb-3">-->
-<!--                <textarea class="form-control" id="comment" rows="3" placeholder="댓글을 입력하세요..."></textarea>-->
-<!--              </div>-->
-<!--              <button type="submit" class="btn btn-primary">댓글 등록</button>-->
-<!--            </form>-->
-<!--          </div>-->
-<!--        </div>-->
-
-<!--      </div>-->
-
-<!--      <hr>-->
 
       <div class="d-flex justify-content-between mt-4">
         <a href="#" class="btn btn-outline-secondary">이전 게시물</a>

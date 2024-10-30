@@ -53,7 +53,7 @@
                 <small class="text-muted" th:text="${#temporals.format(notice.createDate, 'yyyy.MM.dd')}+'| 관리자'"></small>
               </td>
               <td>
-                <i class="bi bi-eye"></i> 120
+                <i class="bi bi-eye" th:text="${notice.views}"></i>
               </td>
             </tr>
             </tbody>
@@ -61,8 +61,11 @@
 
 
           <div class="sub-createBTN">
-            <a class="a-btn btn btn-primary " th:href="@{/notice/create}" th:text="'공지사항 등록'"></a>
+            <a sec:authorize="isAuthenticated()"
+               th:if="${#authentication.isAuthenticated()}"
+               class="a-btn btn btn-primary" th:href="@{/notice/create}" th:text="'공지사항 등록'"></a>
           </div>
+
         </div>
 
         <!-- Tab 2 콘텐츠 -->
@@ -78,7 +81,7 @@
                 <small class="text-muted" th:text="${#temporals.format(faq.createDate, 'yyyy.MM.dd')}+'| 관리자'"></small>
               </td>
               <td>
-                <i class="bi bi-eye"></i> 120
+                <i class="bi bi-eye" th:text="${faq.views}"></i>
               </td>
             </tr>
             </tbody>

@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
+
 @Entity
 @Getter
 @SuperBuilder
@@ -28,4 +30,10 @@ public class NoticeComment extends BaseEntity {
     @Column(name = "content", nullable = false, length = 500)
     private String content;
 
+    @ManyToOne
+    @JoinColumn  // 부모 댓글을 참조
+    private NoticeComment parentComment;
+
+    @OneToMany(mappedBy = "parentComment")
+    private List<NoticeComment> replies;
 }

@@ -10,6 +10,8 @@ import com.market.allForOneReview.domain.notice.NoticePostService;
 
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.domain.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,8 +35,8 @@ public class CommentController {
 
     @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
-    public String createComment(Model model, @PathVariable("id") Long id, @Valid CommentForm commentForm, BindingResult bindingResult, Principal principal){
-        NoticePost noticePost = this.noticePostService.getNotice(id);
+    public String createComment(Model model, @PathVariable("id") Long id, @Valid CommentForm commentForm, BindingResult bindingResult, Principal principal, HttpServletRequest request, HttpServletResponse response){
+        NoticePost noticePost = this.noticePostService.getNotice(id,request,response);
         SiteUser siteUser = this.userService.findByUsername(principal.getName());
         if(bindingResult.hasErrors()){
             model.addAttribute("notice", noticePost);

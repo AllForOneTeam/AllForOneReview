@@ -42,4 +42,6 @@ public class CommentService {
     public void delete(NoticeComment comment) {
         this.commentRepository.delete(comment);
     }
+
+
 }
