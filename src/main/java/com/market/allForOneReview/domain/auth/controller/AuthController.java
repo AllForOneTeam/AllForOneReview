@@ -62,7 +62,7 @@ public class AuthController {
                 model.addAttribute("error", "인증번호가 일치하지 않거나 만료되었습니다.");
             }
         }
-        return "member/auth";
+        return "auth/auth";
     }
 
     @PostMapping("/auth")
@@ -98,16 +98,16 @@ public class AuthController {
                 log.warn("Email verification failed for: {} with auth number: {}",
                         email, authNumber);
                 model.addAttribute("error", "인증번호가 일치하지 않거나 만료되었습니다.");
-                return "member/auth";
+                return "auth/auth";
             }
         } catch (UsernameNotFoundException e) {
             log.error("User not found for email: {}", email);
             model.addAttribute("error", "등록되지 않은 이메일입니다.");
-            return "member/auth";
+            return "auth/auth";
         } catch (Exception e) {
             log.error("Error during email verification: ", e);
             model.addAttribute("error", "인증 처리 중 오류가 발생했습니다.");
-            return "member/auth";
+            return "auth/auth";
         }
     }
 

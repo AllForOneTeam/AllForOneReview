@@ -1,8 +1,8 @@
 package com.market.allForOneReview.domain.user.controller;
 
 import com.market.allForOneReview.domain.auth.service.AuthService;
-import com.market.allForOneReview.domain.email.EmailDTO;
-import com.market.allForOneReview.domain.user.UserCreateForm;
+import com.market.allForOneReview.domain.email.dto.EmailDTO;
+import com.market.allForOneReview.domain.user.dto.UserCreateForm;
 import com.market.allForOneReview.domain.user.dto.PasswordResetRequest;
 import com.market.allForOneReview.domain.user.entity.SiteUser;
 import com.market.allForOneReview.domain.user.service.UserService;
@@ -34,7 +34,7 @@ public class UserController {
 
     @GetMapping("/login")
     public String login() {
-        return "member/login";
+        return "auth/login";
     }
 
     @GetMapping("/membership")
@@ -100,7 +100,7 @@ public class UserController {
 
             log.info("User created and verification code sent to: {}", user.getEmail());
 
-            return "member/auth";
+            return "auth/auth";
 
         } catch (DataIntegrityViolationException e) {
             log.error("회원가입 중 데이터 무결성 위반 오류 발생", e);
@@ -116,7 +116,7 @@ public class UserController {
     // 아이디/비밀번호 찾기 페이지 보여주기
     @GetMapping("/find-account")
     public String findAccount() {
-        return "member/find_account";
+        return "auth/find_account";
     }
 
     @PostMapping("/find-id")
@@ -170,7 +170,7 @@ public class UserController {
 
         if (authService.isValidPasswordResetToken(token)) {
             model.addAttribute("token", token);
-            return "member/reset_password";  // 이 경로가 정확해야 함
+            return "auth/reset_password";  // 이 경로가 정확해야 함
         }
 
         return "redirect:/user/find-account?error=invalid_token";
