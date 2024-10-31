@@ -60,6 +60,7 @@ header > nav {
   z-index: 99; /* 컨텐츠 순위 맨 위로 설정 */
   position: relative;
   top: 70px;
+  z-index: 1000;
 }
 
 .dropdown-menu-last {
@@ -129,6 +130,7 @@ a {
 
 nav {
 	position:absolute;
+	z-index: 1001;
 	left:50%;
 	top:50%;
 	transform:translate(-50%, -50%);

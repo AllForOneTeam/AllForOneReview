@@ -19,3 +19,23 @@
 .navArea>span:last-child {
     margin: 0px
 }
+
+.dropdown-menu-end {
+    right: 0;
+    left: auto;
+}
+
+.nav-item.dropdown:hover .dropdown-menu,
+.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-toggle::after {
+    display: none; /* 드롭다운 화살표 제거 */
+}
+
+/* 사용자 메뉴 아이콘 스타일링 */
+.nav-link img {
+    width: 24px;
+    height: 24px;
+}

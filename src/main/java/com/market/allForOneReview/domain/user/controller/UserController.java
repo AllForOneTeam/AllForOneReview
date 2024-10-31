@@ -241,6 +241,6 @@ public class UserController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
-        return "redirect:/profile";
+        return "redirect:/user/profile";
     }
 }

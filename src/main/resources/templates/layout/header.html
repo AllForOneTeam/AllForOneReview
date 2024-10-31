@@ -38,12 +38,26 @@
                             </ul>
                         </li>
                     </ul>
-                    <a class="navbar-brand" sec:authorize="isAnonymous()" th:href="@{/user/login}">
-                        <img th:src="@{/img/svg/login-icon.svg}" alt="icon">
-                    </a>
-                    <a class="navbar-brand" sec:authorize="isAuthenticated()" th:href="@{/user/logout}">
-                        <img th:src="@{/img/svg/login.svg}" alt="icon">
-                    </a>
+                    <!-- 사용자 메뉴 드롭다운으로 변경 -->
+                    <div class="nav-item dropdown">
+                        <!-- 비로그인 상태 -->
+                        <a sec:authorize="isAnonymous()" class="nav-link dropdown-toggle" href="#" role="button">
+                            <img th:src="@{/img/svg/login-icon.svg}" alt="login icon">
+                        </a>
+                        <ul sec:authorize="isAnonymous()" class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" th:href="@{/user/login}">로그인</a></li>
+                            <li><a class="dropdown-item" th:href="@{/user/signup}">회원가입</a></li>
+                        </ul>
+
+                        <!-- 로그인 상태 -->
+                        <a sec:authorize="isAuthenticated()" class="nav-link dropdown-toggle" href="#" role="button">
+                            <img th:src="@{/img/svg/login.svg}" alt="user icon">
+                        </a>
+                        <ul sec:authorize="isAuthenticated()" class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" th:href="@{/user/profile}">프로필 관리</a></li>
+                            <li><a class="dropdown-item" th:href="@{/user/logout}">로그아웃</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
