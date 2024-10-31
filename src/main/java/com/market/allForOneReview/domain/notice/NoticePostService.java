@@ -10,7 +10,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -124,5 +129,31 @@ public class NoticePostService {
     }
     public void delete(NoticePost notice){
         this.noticePostRepository.delete(notice);
+    }
+
+    public Page<NoticePost> searchNoticePosts(String searchTerm, String boardType, String searchType, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        switch (searchType) {
+            case "title":
+                return noticePostRepository.findByTitleContainingAndBoard_BoardType(searchTerm, boardType, pageRequest);
+            case "content":
+                return noticePostRepository.findByContentContainingAndBoard_BoardType(searchTerm, boardType, pageRequest);
+            default:
+                // 전체 검색: 제목과 내용에서 모두 검색
+                Page<NoticePost> titlePage = noticePostRepository.findByTitleContainingAndBoard_BoardType(searchTerm, boardType, pageRequest);
+                Page<NoticePost> contentPage = noticePostRepository.findByContentContainingAndBoard_BoardType(searchTerm, boardType, pageRequest);
+
+                // 결과 합치기
+                List<NoticePost> allResults = new ArrayList<>();
+                allResults.addAll(titlePage.getContent());
+                allResults.addAll(contentPage.getContent());
+
+                // 중복 제거
+                List<NoticePost> uniqueResults = allResults.stream().distinct().collect(Collectors.toList());
+
+                // Page 객체로 반환
+                return new PageImpl<>(uniqueResults, pageRequest, uniqueResults.size());
+        }
     }
 }

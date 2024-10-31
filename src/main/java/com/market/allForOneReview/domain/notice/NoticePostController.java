@@ -93,4 +93,29 @@ public class NoticePostController {
         return "redirect:/notice";
     }
 
+    @GetMapping("/search")
+    public String searchNotices(
+            @RequestParam(value = "searchTerm", required = false) String searchTerm,
+            @RequestParam(value = "boardType", defaultValue = "Notice") String boardType,
+            @RequestParam(value = "searchType", defaultValue = "all") String searchType,
+            @RequestParam(value = "page", defaultValue = "0") int page,
+            Model model) {
+
+        Page<NoticePost> paging = noticePostService.searchNoticePosts(searchTerm, boardType, searchType, page, 10); // 페이지 크기를 10으로 설정
+
+        model.addAttribute("paging", paging);
+        model.addAttribute("currentBoardType", boardType);
+        model.addAttribute("searchTerm", searchTerm); // 검색어를 모델에 추가
+
+        // boardType에 따라 다른 데이터를 추가
+        if (boardType.equals("FAQ")) {
+            model.addAttribute("faqs", paging.getContent());
+        } else {
+            model.addAttribute("notices", paging.getContent());
+        }
+
+
+        return "notice"; // 검색 결과를 notice 템플릿에서 표시
+    }
+
 }
