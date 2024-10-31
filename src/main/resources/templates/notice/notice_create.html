@@ -42,9 +42,13 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
 
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        setBoardType('Notice'); // 기본 탭으로 Notice 선택
+    });
+
     function setBoardType(type) {
         // hidden input의 값 설정
         document.querySelector('input[name="boardType"]').value = type;
         console.log("Selected board type: " + type); // 디버깅을 위한 로그
-        }
+    }
 </script>

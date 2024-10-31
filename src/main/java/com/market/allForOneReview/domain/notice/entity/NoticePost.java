@@ -29,9 +29,16 @@ public class NoticePost extends BaseEntity {
     @JoinColumn(name = "board_id", nullable = false)
     private Board board;
 
-    private Integer views;
+    private Integer views = 0;
 
     @OneToMany(mappedBy = "noticePost", cascade = CascadeType.REMOVE)
     private List<NoticeComment> comments;
+
+    @ManyToOne
+    private SiteUser author;
+
+    public void incrementViews() {
+        this.views++;
+    }
 
 }
