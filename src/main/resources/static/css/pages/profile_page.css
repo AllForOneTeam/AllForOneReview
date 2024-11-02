@@ -30,28 +30,51 @@
 }
 
 /* 탭 스타일링 */
-.tab-content {
-    padding-top: 20px;
-}
-
 .nav-tabs {
     justify-content: center;
     margin-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
 }
 
 .nav-tabs .nav-link {
-    color: #000;
+    color: #000 !important;
     padding: 10px 20px;
     font-weight: 500;
+    min-width: 120px;
+    text-align: center;
+    background-color: #f8f9fa;  /* 밝은 배경색 추가 */
+    border: 1px solid #dee2e6;
+    margin: 0 5px;  /* 탭 사이 간격 */
+    justify-content: center;  /* flex 아이템 중앙 정렬 */
 }
 
 .nav-tabs .nav-link.active {
-    color: #0d6efd;
+    color: #fff !important;  /* 활성 탭 텍스트 색상 흰색으로 */
     font-weight: 600;
+    background-color: #0d6efd;  /* 활성 탭 배경색을 파란색으로 */
+    border-color: #0d6efd;
 }
 
+.nav-tabs .nav-link:hover:not(.active) {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+/* 탭 내부 아이콘 스타일링 */
 .nav-tabs .nav-link i {
-    margin-right: 8px;
+    color: inherit;  /* 아이콘 색상을 텍스트 색상과 동일하게 */
+}
+
+/* 탭 내용 영역 */
+.tab-content {
+    padding-top: 20px;
+    background-color: #fff;
+}
+
+/* d-flex 클래스와 함께 사용될 때의 정렬 유지 */
+.nav-tabs .nav-link.d-flex {
+    display: flex !important;
+    align-items: center !important;
 }
 
 /* 닉네임 입력 섹션 */
