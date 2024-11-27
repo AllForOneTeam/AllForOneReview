@@ -221,6 +221,14 @@ public class UserController {
     public String profilePage(Model model) {
         ProfileResponse profile = userService.getProfile();
 
+        // 프로필 이미지 URL 가져오기
+        String profileImageUrl = profile.getProfileImageUrl();
+        // 기본 이미지 URL 설정
+        if (profileImageUrl == null || profileImageUrl.isEmpty()) {
+            profileImageUrl = "/img/svg/login-icon.svg";
+        }
+
+        model.addAttribute("profileImage", profileImageUrl);
         model.addAttribute("profile", profile);
         model.addAttribute("profileForm", new ProfileUpdateForm());
 

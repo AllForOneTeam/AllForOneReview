@@ -80,11 +80,11 @@ public class AuthService {
         SiteUser user = passwordResetTokenRepository.findUserByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다: " + email));
 
-        // 2. 새 토큰 생성
-        String resetToken = UUID.randomUUID().toString();
-
-        // 3. 기존 토큰이 있다면 삭제
+        // 2. 기존 토큰이 있다면 삭제
         passwordResetTokenRepository.deleteByUser(user);
+
+        // 3. 새 토큰 생성
+        String resetToken = UUID.randomUUID().toString();
 
         // 4. 새 토큰 생성 및 저장
         PasswordResetToken passwordResetToken = new PasswordResetToken(resetToken, user);

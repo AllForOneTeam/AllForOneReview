@@ -160,16 +160,134 @@ function cancelEdit() {
     cancelButton.style.display = 'none';
 }
 
-      // 기존 이미지 프리뷰 함수 유지
-      function previewImage(input) {
-        if (input.files && input.files[0]) {
-          const reader = new FileReader();
-          reader.onload = function(e) {
-            document.getElementById('profile-preview').src = e.target.result;
-          };
-          reader.readAsDataURL(input.files[0]);
+      // 이미지 타입 검증
+function isValidImageType(file) {
+  const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+  return validTypes.includes(file.type);
+}
+
+// 이미지 크기 검증 (5MB 제한)
+function isValidFileSize(file) {
+  const maxSize = 5 * 1024 * 1024; // 5MB
+  return file.size <= maxSize;
+}
+
+// 이미지 리사이징
+function resizeImage(file) {
+  return new Promise((resolve, reject) => {
+    const maxWidth = 800;
+    const maxHeight = 800;
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+
+        // 비율 계산
+        if (width > height) {
+          if (width > maxWidth) {
+            height = Math.round(height * maxWidth / width);
+            width = maxWidth;
+          }
+        } else {
+          if (height > maxHeight) {
+            width = Math.round(width * maxHeight / height);
+            height = maxHeight;
+          }
         }
-      }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // 이미지 품질 0.8로 압축
+        canvas.toBlob((blob) => {
+          resolve(blob);
+        }, 'image/jpeg', 0.8);
+      };
+      img.onerror = reject;
+      img.src = e.target.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// 이미지 미리보기 함수 개선
+async function previewImage(input) {
+  const file = input.files[0];
+  const imagePreview = document.getElementById('profile-preview');
+
+  try {
+    // 파일 유효성 검사
+    if (!file) return;
+
+    if (!isValidImageType(file)) {
+      alert('지원하지 않는 이미지 형식입니다. JPG, PNG, GIF 파일만 업로드 가능합니다.');
+      input.value = '';
+      return;
+    }
+
+    if (!isValidFileSize(file)) {
+      alert('파일 크기가 너무 큽니다. 5MB 이하의 파일만 업로드 가능합니다.');
+      input.value = '';
+      return;
+    }
+
+    // 이미지 리사이징
+    const resizedBlob = await resizeImage(file);
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+      imagePreview.src = e.target.result;
+    };
+
+    reader.readAsDataURL(resizedBlob);
+  } catch (error) {
+    console.error('이미지 처리 중 오류가 발생했습니다:', error);
+    alert('이미지 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+    input.value = '';
+  }
+}
+
+// 폼 제출 전 처리
+document.getElementById('profileForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+
+  const fileInput = document.getElementById('profile-image');
+  const file = fileInput.files[0];
+
+  if (file) {
+    try {
+      const resizedBlob = await resizeImage(file);
+      const formData = new FormData(this);
+      formData.set('profileImage', resizedBlob, 'profile.jpg');
+
+      // 폼 데이터 서버로 전송
+      const response = await fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value
+        }
+      });
+
+      if (!response.ok) throw new Error('업로드 실패');
+
+      // 성공 시 페이지 리로드 또는 성공 메시지 표시
+      location.reload();
+    } catch (error) {
+      console.error('업로드 중 오류가 발생했습니다:', error);
+      alert('업로드 중 오류가 발생했습니다. 다시 시도해주세요.');
+    }
+  } else {
+    this.submit(); // 이미지가 없는 경우 일반 제출
+  }
+});
     </script>
   </th:block>
 </html>

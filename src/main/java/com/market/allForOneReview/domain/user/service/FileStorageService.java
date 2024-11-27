@@ -44,7 +44,7 @@ public class FileStorageService {
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             // 저장된 파일의 접근 URL 반환
-            return "/uploads/" + fileName;
+            return "/uploads/profile-images/" + fileName;
 
         } catch (IOException ex) {
             throw new RuntimeException("Could not store file. Please try again!", ex);
