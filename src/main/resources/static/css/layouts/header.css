@@ -60,6 +60,7 @@ header > nav {
   z-index: 99; /* 컨텐츠 순위 맨 위로 설정 */
   position: relative;
   top: 70px;
+  z-index: 1000;
 }
 
 .dropdown-menu-last {
@@ -78,7 +79,7 @@ header > nav {
 
 .navbar-nav:hover .dropdown-menu {
   display: block;
-  opacity: 1; 
+  opacity: 1;
   transform: translateY(0); /* 원래 위치로 이동 */
   animation: drop 0.3s ease forwards; /* 폭포처럼 떨어지는 애니메이션 적용 */
 
@@ -109,7 +110,7 @@ dropdown-item:active {
 
 /* 서브 메뉴 항목 스타일 */
 .dropdown-menu li {
-  opacity: 1; 
+  opacity: 1;
   transform: translateY(0); /* 원래 위치로 이동 */
 }
 
@@ -129,6 +130,7 @@ a {
 
 nav {
 	position:absolute;
+	z-index: 1001;
 	left:50%;
 	top:50%;
 	transform:translate(-50%, -50%);
@@ -179,4 +181,60 @@ nav ul li a:hover:after {
 }
 .tab-text {
     color: #000 !important; /* 기본 텍스트 색상 */
+}
+
+/* 로그인 드롭다운 관련 스타일 */
+.login-dropdown-container {
+    position: relative;
+    display: inline-block;
+}
+
+.login-icon {
+    position: relative;
+    z-index: 1002;
+    cursor: pointer;
+}
+
+.login-dropdown {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 150px; /* 드롭다운 메뉴 너비 조정 */
+    height: auto !important; /* 기존 고정 높이 제거 */
+    min-height: 100px;
+    padding: 8px 0;
+    margin-top: 10px;
+    background-color: #fff;
+    border: 1px solid #D9D9D9;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: none;
+}
+
+.login-dropdown-container:hover .login-dropdown {
+    display: block;
+    animation: dropdownFade 0.3s ease forwards;
+}
+
+/* 드롭다운 애니메이션 */
+@keyframes dropdownFade {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 드롭다운 메뉴 아이템 스타일 */
+.login-dropdown .dropdown-item {
+    padding: 8px 16px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.login-dropdown .dropdown-item:hover {
+    background-color: #f8f9fa;
 }

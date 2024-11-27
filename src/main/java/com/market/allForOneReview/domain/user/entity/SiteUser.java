@@ -47,4 +47,6 @@ public class SiteUser extends BaseEntity {
 
     private boolean verified = false;  // 이메일 인증 여부
     private boolean enabled = false;   // 계정 활성화 여부
+
+    private String profileImageUrl;
 }

@@ -1,0 +1,115 @@
+/* 프로필 이미지 섹션 */
+.profile-image-container {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 20px;
+}
+
+.profile-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.image-upload-label {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #0d6efd;
+    color: white;
+    padding: 8px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.image-upload-label:hover {
+    background-color: #0b5ed7;
+}
+
+/* 탭 스타일링 */
+.nav-tabs {
+    justify-content: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.nav-tabs .nav-link {
+    color: #000 !important;
+    padding: 10px 20px;
+    font-weight: 500;
+    min-width: 120px;
+    text-align: center;
+    background-color: #f8f9fa;  /* 밝은 배경색 추가 */
+    border: 1px solid #dee2e6;
+    margin: 0 5px;  /* 탭 사이 간격 */
+    justify-content: center;  /* flex 아이템 중앙 정렬 */
+}
+
+.nav-tabs .nav-link.active {
+    color: #fff !important;  /* 활성 탭 텍스트 색상 흰색으로 */
+    font-weight: 600;
+    background-color: #0d6efd;  /* 활성 탭 배경색을 파란색으로 */
+    border-color: #0d6efd;
+}
+
+.nav-tabs .nav-link:hover:not(.active) {
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+
+/* 탭 내부 아이콘 스타일링 */
+.nav-tabs .nav-link i {
+    color: inherit;  /* 아이콘 색상을 텍스트 색상과 동일하게 */
+}
+
+/* 탭 내용 영역 */
+.tab-content {
+    padding-top: 20px;
+    background-color: #fff;
+}
+
+/* d-flex 클래스와 함께 사용될 때의 정렬 유지 */
+.nav-tabs .nav-link.d-flex {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* 닉네임 입력 섹션 */
+.nickname-section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.nickname-section .form-control {
+    flex: 1;
+}
+
+/* 공통 폼 요소 스타일 */
+.form-control,
+.btn {
+    height: 38px;
+    padding: 0.375rem 0.75rem;
+}
+
+/* 버튼 스타일링 */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 0;
+}
+
+.edit-buttons .btn {
+    min-width: 100px;
+}
